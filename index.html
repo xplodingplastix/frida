@@ -1,0 +1,2922 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Mi történik anyával?</title>
+  <meta name="description" content="Segítség gyerekeknek, akiknek az édesanyja mellrákkal küzd">
+  <meta name="theme-color" content="#FBF7F4">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💛</text></svg>">
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+    html, body, #root { height: 100%; }
+    body { background: #FBF7F4; overflow-x: hidden; }
+    button:active { transform: scale(0.97) !important; }
+    ::-webkit-scrollbar { width: 0; }
+  </style>
+</head>
+<body>
+  <div id="root"></div>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.9/babel.min.js"></script>
+  <script type="text/babel">
+// Storage polyfill for standalone mode
+if (!window.storage) {
+  window.storage = {
+    get: function(key) {
+      return new Promise(function(resolve, reject) {
+        try {
+          var val = localStorage.getItem('app_' + key);
+          if (val !== null) resolve({ key: key, value: val });
+          else reject(new Error('Key not found'));
+        } catch(e) { reject(e); }
+      });
+    },
+    set: function(key, value) {
+      return new Promise(function(resolve) {
+        try { localStorage.setItem('app_' + key, value); resolve({ key: key, value: value }); }
+        catch(e) { resolve(null); }
+      });
+    },
+    list: function(prefix) {
+      return new Promise(function(resolve) {
+        var keys = [];
+        for (var i = 0; i < localStorage.length; i++) {
+          var k = localStorage.key(i);
+          if (k.startsWith('app_' + (prefix || ''))) keys.push(k.replace('app_', ''));
+        }
+        resolve({ keys: keys });
+      });
+    },
+    delete: function(key) {
+      return new Promise(function(resolve) {
+        localStorage.removeItem('app_' + key);
+        resolve({ key: key, deleted: true });
+      });
+    }
+  };
+}
+
+var useState = React.useState, useEffect = React.useEffect, useRef = React.useRef;
+
+var COLORS = {
+  bg: "#FBF7F4",
+  softBlue: "#A7C7E7",
+  peach: "#F5C6AA",
+  mint: "#B8E0D2",
+  lavender: "#D6CDEA",
+  warmGray: "#E8E4E0",
+  coral: "#F2845C",
+  text: "#3D3D3D",
+  textLight: "#6B6B6B",
+  white: "#FFFFFF",
+  fear: "#A7C7E7",
+  anger: "#F0B89A",
+  sadness: "#C4B5D6",
+  guilt: "#B0C4CC",
+  loneliness: "#A8D5BA",
+  withdraw: "#D4CFC8",
+  gardenGreen: "#7CB97A",
+  gardenSky: "#C9E4F6",
+  gardenSoil: "#C4A882",
+  gardenWeed: "#8B6D3F",
+  gardenSun: "#FFD93D",
+};
+
+var CSS = [
+  "@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&family=Baloo+2:wght@500;600;700;800&display=swap');",
+  "* { box-sizing: border-box; margin: 0; padding: 0; }",
+  "body { background: #FBF7F4; font-family: 'Nunito', sans-serif; color: #3D3D3D; overflow-x: hidden; }",
+  "@keyframes fadeIn { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }",
+  "@keyframes slideUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }",
+  "@keyframes slideInLeft { from { opacity: 0; transform: translateX(-30px); } to { opacity: 1; transform: translateX(0); } }",
+  "@keyframes slideInRight { from { opacity: 0; transform: translateX(30px); } to { opacity: 1; transform: translateX(0); } }",
+  "@keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }",
+  "@keyframes floatSlow { 0%, 100% { transform: translateY(0) rotate(0deg); } 50% { transform: translateY(-5px) rotate(3deg); } }",
+  "@keyframes pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.08); } }",
+  "@keyframes wiggle { 0%, 100% { transform: rotate(0deg); } 25% { transform: rotate(-5deg); } 75% { transform: rotate(5deg); } }",
+  "@keyframes sparkle { 0%, 100% { opacity: 0.4; transform: scale(0.8); } 50% { opacity: 1; transform: scale(1.2); } }",
+  "@keyframes grow { from { transform: scale(0) rotate(-10deg); opacity: 0; } to { transform: scale(1) rotate(0deg); opacity: 1; } }",
+  "@keyframes sway { 0%, 100% { transform: rotate(-2deg); } 50% { transform: rotate(2deg); } }",
+  "@keyframes sunPulse { 0%, 100% { box-shadow: 0 0 20px #FFD93D44; } 50% { box-shadow: 0 0 40px #FFD93D88; } }",
+  "@keyframes rainDrop { 0% { transform: translateY(-20px); opacity: 0; } 50% { opacity: 1; } 100% { transform: translateY(40px); opacity: 0; } }",
+  "@keyframes gentleBounce { 0%, 100% { transform: translateY(0); } 40% { transform: translateY(-6px); } 60% { transform: translateY(-3px); } }",
+  "@keyframes popIn { 0% { transform: scale(0); opacity: 0; } 60% { transform: scale(1.15); } 100% { transform: scale(1); opacity: 1; } }",
+].join("\n");
+
+// ====== SCREEN DATA ======
+
+var SCREENS = {
+  S00: { title: "Mi történik anyával?", type: "main" },
+
+  // TUDAS
+  S10: {
+    title: "Megértem, mi történik", icon: "📖", color: COLORS.peach, type: "knowledge",
+    intro: "Itt megtudhatod, mi történik anya testében, és mit csinálnak az orvosok. Nem kell mindent egyszerre elolvasnod - koppints arra, ami most érdekel.",
+    topics: [
+      {
+        id: "first", emoji: "⭐", title: "Amit először is tudnod kell",
+        short: "A legfontosabb dolgok, mielőtt bármit is olvasnál.",
+        simple: [
+          { emoji: "🛡️", text: "A mellrák nem fertőző. Nem kaphatod el öleléstől, csóktól, közös evéstől - semmitől. Anya közelében biztonságban vagy, és nyugodtan ölelheted meg." },
+          { emoji: "💛", text: "Nem a te hibád. A mellrák nem azért alakul ki, mert valaki rosszul viselkedett, veszekedett, vagy nem volt elég jó. Senki sem okozza - egy gyerek pedig végképp nem." },
+          { emoji: "🧸", text: "Nem neked kell meggyógyítanod anyát. A gyógyítás az orvosok feladata. A te dolgod az, hogy gyerek legyél." },
+          { emoji: "🔄", text: "Nem kell mindent egyszerre megértened. Bármikor visszajöhetsz, és újra elolvashatod. A saját tempódban haladhatsz." },
+        ],
+      },
+      {
+        id: "what", emoji: "🔬", title: "Mi az a mellrák?",
+        short: "Mit jelent, amikor az orvos azt mondja: mellrák.",
+        simple: [
+          { emoji: "🧩", text: "A testünk apró építőkövekből, úgynevezett sejtekből áll. Ezek a sejtek általában szépen növekednek, elvégzik a dolgukat, majd újak jönnek a helyükre." },
+          { emoji: "🌿", text: "Néha előfordul, hogy néhány sejt megváltozik, és gyorsabban kezd szaporodni, mint kellene. Ebből csomó alakulhat ki." },
+          { emoji: "📍", text: "Ha ez a csomó a mellben keletkezik, azt mellráknak nevezzük. Ez bárkinél előfordulhat - és senki sem tehet róla." },
+        ],
+        more: "A mellrák az egyik leggyakoribb betegség felnőtt nőknél, és az orvosok nagyon sokat tudnak róla. Évtizedek óta kutatják, és egyre jobb kezeléseket találnak. Fontos tudni: a mellrák nem egy betegség, hanem többféle típusa van, és az orvosok mindegyikhez tudják, melyik kezelés a legjobb.",
+      },
+      {
+        id: "doctors", emoji: "🩺", title: "Honnan tudják az orvosok?",
+        short: "Miért jár anya annyit orvoshoz, és mit csinálnak ott.",
+        simple: [
+          { emoji: "🔍", text: "Amikor az orvosok gyanítják, hogy valami nem stimmel, különböző vizsgálatokat végeznek: ultrahangot, röntgent, vérvételt. Ezek nem fájdalmasak, de anya sokat jár miattuk kórházba." },
+          { emoji: "🧪", text: "A legfontosabb vizsgálat a szövetminta: az orvosok egy apró darabkát vesznek a csomóból, és mikroszkóp alatt megnézik, pontosan milyen sejtek vannak benne." },
+          { emoji: "📋", text: "Mindez azért kell, hogy az orvosok pontosan tudják, milyen típusú a betegség, és melyik kezelés segít a legjobban. Olyan ez, mint egy nyomozás - alaposnak kell lenniük." },
+        ],
+        more: "Lehet, hogy az elején anya nagyon sokat jár orvoshoz, és a felnőttek sokat telefonálnak. Ez nem azért van, mert rosszabbodik - hanem azért, mert az orvosok mindent meg akarnak tudni, mielőtt elkezdik a kezelést. Minél többet tudnak, annál jobban tudnak segíteni.",
+      },
+      {
+        id: "heal", emoji: "💚", title: "Meggyógyul anya?",
+        short: "A legfontosabb kérdés, amire őszinte választ érdemelsz.",
+        simple: [
+          { emoji: "📊", text: "A mellrák az egyik legsikeresebben kezelhető betegség. A legtöbb mellrákos embert sikeresen kezelik az orvosok, és utána teljes életet élnek." },
+          { emoji: "🔬", text: "Fontos tudnod: a rák nem egy betegség. Több mint kétszáz fajta létezik, és mindegyik más. A mellrák az egyik legjobb esélyű. Ha hallottál olyasvalakiről, aki belehalt a rákba, az valószínűleg más típusú betegség volt, más időben, más kezeléssel." },
+          { emoji: "⏳", text: "A kezelés időbe telik - néha hónapokig, néha tovább. Ez nem azért van, mert nem működik, hanem mert az orvosok alaposak akarnak lenni." },
+          { emoji: "💪", text: "Anya keményen küzd, és az orvosok is mindent megtesznek. Ez egy csapatmunka - és egy nagyon jól felkészült csapat dolgozik anya gyógyulásáért." },
+        ],
+        more: "Ha ez a kérdés nagyon nyomaszt - különösen, ha másoktól ijesztő történeteket hallottál -, beszélj róla anyával vagy apával. Megérdemled, hogy őszinte választ kapj. Kérdezd meg: milyen esélyeket mondtak az orvosok? Az is fontos, hogy ebben a pillanatban anya itt van, szeret téged, és minden nap azért küzd, hogy meggyógyuljon.",
+      },
+      {
+        id: "body", emoji: "🌱", title: "A test, ami gyógyul",
+        short: "Miért fáradt anya, és miért változik meg a teste a kezelés alatt.",
+        simple: [
+          { emoji: "⚡", text: "Anya teste most keményen dolgozik a gyógyulásért. A kezelések - kemó, sugár, gyógyszerek - mind segítenek, de közben a test nagyon elfárad. Ezért pihen anya többet." },
+          { emoji: "🧣", text: "A mellékhatások - hajhullás, fáradtság, rosszullét - azért vannak, mert a kezelés erős. De ezek átmenetiek: a kezelés végén elmúlnak, a haj visszanő, az energia visszatér." },
+          { emoji: "🌟", text: "A test okos - tudja, hogyan épüljön újjá. A kezelés segít legyőzni a betegséget, és utána a test lassan visszanyeri az erejét. Ez időbe telik, de megtörténik." },
+        ],
+        more: "Lehet, hogy anya másképp néz ki a kezelés alatt: kihullhat a haja, fogyhat, fáradtabb lehet. De belül ugyanaz az ember maradt, aki szeret téged. A külső változások átmenetiek - a szeretete nem az.",
+      },
+      {
+        id: "treatments", emoji: "💊", title: "Hogyan kezelik az orvosok?",
+        short: "Nem mindenki kap mindent - az orvosok anyára szabják a kezelést.",
+        simple: [
+          { emoji: "🩺", text: "Anya kezelése személyre szabott - az orvosok pontosan megvizsgálják a betegséget, és utána döntik el, milyen kezelésre van szükség. Nem mindenki kap minden kezelést." },
+          { emoji: "🔧", text: "A leggyakoribb kezelések: műtét (a csomó eltávolítása), kemoterápia (gyógyszer, ami az egész testben keresi a megváltozott sejteket), sugárkezelés (láthatatlan sugarak, amik pontosan odahatnak, ahol kell), és egyéb gyógyszerek (tabletta vagy injekció)." },
+          { emoji: "🌻", text: "A kert-történetben mindegyik kezelésnek van egy hasonlata: a műtét a gyomkiszedés, a kemó a permet, a sugár a nagyító, a gyógyszerek a kerítés. Ha szeretnéd, nézd meg ott is!" },
+        ],
+        treatments: [
+          { emoji: "🩺", title: "Műtét", gardenTip: "Olyan, mint amikor a kertész kiássa a gyomot a gyökereivel együtt.", desc: "Az orvos eltávolítja a csomót, hogy a megváltozott sejtek ne tudjanak tovább szaporodni. Anya altatásban van, nem érez fájdalmat. Utána pihennie kell, és napról napra jobban lesz." },
+          { emoji: "💊", title: "Kemoterápia", gardenTip: "Olyan, mint egy speciális permet, ami az egész kertben keresi a gyomokat.", desc: "Erős gyógyszer, amit infúzión vagy tablettaként kap. Az egész testben keresi a megváltozott sejteket. Ettől anya fáradt lehet, rosszul érezheti magát, és kihullhat a haja - de a haj visszanő!" },
+          { emoji: "☀️", title: "Sugárkezelés", gardenTip: "Olyan, mint egy nagyító, ami a nap fényét pontosan a gyomra irányítja.", desc: "Egy speciális gép láthatatlan sugarakat irányít pontosan oda, ahol a csomó volt. Csak néhány percig tart, de anya munkanapokon bejár érte. A bőre pirosabb, érzékenyebb lehet." },
+          { emoji: "💉", title: "Egyéb gyógyszerek", gardenTip: "Olyanok, mint egy kerítés a kert körül, ami nem engedi vissza a gyomokat.", desc: "Tabletták vagy injekciók, amiket anya néha évekig szed. Ezek megakadályozzák, hogy a megváltozott sejtek újra szaporodjanak." },
+          { emoji: "🧣", title: "Mellékhatások", gardenTip: "A permet néha a virágokra is hat - de azok újra kinőnek!", desc: "A kezelés erős, és néha az egészséges sejtekre is hat. Ezért lehet anya fáradt, hullhat a haja, vagy érezheti magát rosszul. De mindez átmeneti - a kezelés végén fokozatosan elmúlik." },
+        ],
+        more: "Kérdezd meg anyát vagy apát, milyen kezeléseket kap anya. Nem kell az összeset megjegyezned - elég, ha tudod, miért jár kórházba, és mire számíthatsz. Bármikor visszajöhetsz ide, ha valamit újra el akarsz olvasni.",
+      },
+    ],
+    gardenLink: true,
+  },
+  S13: {
+    title: "Anya teste olyan, mint egy kert", icon: "🌻", color: COLORS.gardenGreen, type: "garden",
+  },
+
+  // CSALAD
+  S30: {
+    title: "Mi változhat otthon?", icon: "🏠", color: COLORS.peach, type: "homeChanges",
+    intro: "A kezelés alatt az otthoni mindennapok is átalakulhatnak - de nem feltétlenül minden, és nem feltétlenül egyszerre. Minden család más: nálatok lehet, hogy alig változik valami, és lehet, hogy sok minden. Nézd végig az alábbi helyzeteket - ha valamelyik ismerős, koppints rá.",
+    situations: [
+      {
+        id: "rest", emoji: "😴", title: "Anya többet pihen",
+        short: "Lehet, hogy fáradtabb, többet alszik, kevesebbet tud játszani.",
+        why: "A kezelések - különösen a kemoterápia - nagyon fárasztóak lehetnek. Anya teste ilyenkor keményen dolgozik a gyógyulásért. Olyan ez, mintha a teste egy maratont futna, még akkor is, ha csak az ágyon fekszik. A pihenés ilyenkor a legfontosabb dolga. De nem minden kezelés okoz ilyen fáradtságot - lehet, hogy anyánál ez kevésbé lesz jellemző.",
+        feels: "Hiányozhat, hogy régen többet játszottatok, vagy hogy anya mindig ott volt. Lehet, hogy úgy érzed, unalmas vagy magányos, amikor anya pihen. Ez teljesen érthető.",
+        canDo: "Rajzolhatsz neki képet, amit felébredve megtalál. Olvashatsz vagy játszhatsz mellette csendben. Odabújhatsz hozzá - a közelséged akkor is jólesik neki, ha fáradt.",
+      },
+      {
+        id: "others", emoji: "🚗", title: "Más segít a mindennapokban",
+        short: "Lehet, hogy nagyszülő, szomszéd, vagy ismerős is besegít.",
+        why: "Ha anya fáradtabb vagy éppen kórházban van, a felnőttek megszervezik, hogy minden fontos dolog meglegyen: iskola, ebéd, házi feladat, fürdés. Néha ehhez másokat is megkérnek segíteni.",
+        feels: "Furcsa lehet, ha nem anya kel fel veled reggel, vagy ha más főz vacsorát. Lehet, hogy a rutin más, mint amit megszoktál - és ez zavaró.",
+        canDo: "Mondd el a segítőknek, ha van valami szokásod, ami fontos neked - például hogy mindig mesét olvasol lefekvés előtt, vagy hogy a szendvicsedet hogyan szereted. Nem kell mindent csendben tűrnöd.",
+      },
+      {
+        id: "whisper", emoji: "🤫", title: "A felnőttek sokat beszélgetnek egymás közt",
+        short: "Suttoghatnak, telefonálhatnak, vagy elhallgathatnak, ha belépsz.",
+        why: "A felnőttek ilyenkor általában a kezelést szervezik: orvosi időpontokat, vizsgálati eredményeket, praktikus dolgokat beszélnek meg. Nem rólad beszélnek titokban - és nem azért hallgatnak el, mert valami szörnyű történt.",
+        feels: "Ijesztő lehet, ha úgy érzed, valamit eltitkolnak előled. Úgy tűnhet, mintha valami nagyon rossz történne, amit nem mondanak el.",
+        canDo: "Kérdezhetsz bátran: Mi történik? Miről beszéltetek? Jogod van tudni, ami téged érint. Ha a felnőttek azt mondják, hogy felnőtt dolgokról volt szó, az általában igaz is - nem mindig rólad szól.",
+      },
+      {
+        id: "looks", emoji: "🧣", title: "Anya teste változhat",
+        short: "A kezeléstől függően anya kinézete is megváltozhat.",
+        why: "Nem minden kezelés változtatja meg anya kinézetét - ez attól függ, milyen kezelést kap. Ha kemoterápiát kap, annak bizonyos fajtái hatnak a hajsejtekre is, ilyenkor a haj elvékonyodhat vagy kihullhat. Ez ijesztő lehet, de fontos tudni: a haj visszanő a kezelés után. Ha anya műtéten esett át, a melle formája megváltozhatott. Erről anya dönt, mit mesél neked, de ha látsz változást és kérdésed van, bátran kérdezhetsz. A fáradtságtól fogyhat is, vagy épp a gyógyszerektől hízhat. De belül anya pontosan ugyanaz az ember maradt.",
+        feels: "Lehet, hogy megijedsz, vagy furcsa ránézni. Lehet, hogy a barátaid kérdezgetnek. Lehet, hogy szomorú vagy, mert anya nem úgy néz ki, mint régen. Mindez normális - és rendben van, ha erről is beszélsz.",
+        canDo: "Ha anya hajat veszít, segíthetsz neki kendőt vagy sapkát választani - ezt sokan együtt csinálják, és móka is lehet. Ha anya teste más formájú, mint régen, emlékezz: a test csak a burok, belül anya ugyanúgy szeret. Ami a legfontosabb: ne tettess úgy, mintha nem látnád a változást. Ha kérdésed van, kérdezz - anya örülni fog, hogy nyíltan beszélhettek róla.",
+      },
+      {
+        id: "programs", emoji: "🎪", title: "Kevesebb közös program",
+        short: "Előfordulhat, hogy ritkábban mentek kirándulni vagy vendégségbe.",
+        why: "Anya immunrendszere bizonyos kezelések alatt gyengébb lehet, ezért kerülnie kell a zsúfolt helyeket. A fáradtság miatt a hosszabb programok is nehezebbek most. De ez nem jelenti, hogy semmit sem csináltok együtt - csak talán másféle dolgokat.",
+        feels: "Hiányozhatnak a közös élmények, a hétvégi kirándulások, a játszóterek. Unatkozhatsz, és úgy érezheted, hogy az élet szürkébb lett.",
+        canDo: "Csinálhattok otthon közös dolgokat: társasjáték, film, közös rajzolás, meseolvasás, sütés. Néha egy nyugodt délután a kanapén többet ér, mint egy egész napos kirándulás.",
+      },
+      {
+        id: "visitors", emoji: "🚪", title: "Sokan jönnek-mennek",
+        short: "Lehet, hogy rokonok, barátok, szomszédok gyakrabban jönnek.",
+        why: "A felnőttek körül most többen lehetnek, mint általában. Ételt hoznak, segítenek a háztartásban, vagy egyszerűen meglátogatják anyát. Ez azért van, mert a családotokat sokan szeretik.",
+        feels: "Zavarhat, hogy folyton idegenek vannak otthon. Lehet, hogy kevesebb nyugalmad van, vagy éppen ellenkezőleg: jólesik, hogy nincs csend.",
+        canDo: "Rendben van, ha néha bezárkózol a szobádba - szükséged van a saját teredre. És rendben van az is, ha örülsz a vendégeknek. Mondd el anyának vagy apának, ha túl sok a látogató.",
+      },
+      {
+        id: "mood", emoji: "😟", title: "A hangulat otthon más",
+        short: "Lehet, hogy a felnőttek szomorúbbak, feszültebbek, vagy túl vidámak.",
+        why: "Anya és apa is sok mindent éreznek most - félelmet, szomorúságot, fáradtságot. Néha emiatt türelmetlenebbek, vagy éppen túlzottan próbálják mutatni, hogy minden rendben van. Ez nem jelenti, hogy baj van - csak azt, hogy ők is emberek.",
+        feels: "Érezheted, hogy valami nem stimmel otthon, még ha senki nem is mondja. A gyerekek nagyon érzékenyek a hangulatváltozásra - nem képzelődsz.",
+        canDo: "Mondhatod: Érzem, hogy szomorú vagy. Segíthetek valamit? De az is rendben van, ha nem szólsz, és csak odabújsz valakihez. Nem neked kell megoldanod a felnőttek érzéseit.",
+      },
+    ],
+    closing: {
+      loveTitle: "Ami biztosan nem változik",
+      loveItems: [
+        { emoji: "❤️", text: "Anya ugyanúgy szeret téged. Ha fáradt, ha a kórházban van, ha alszik, ha másképp néz ki - a szeretete akkor sem változik. Soha." },
+        { emoji: "⭐", text: "Ugyanolyan fontos vagy, mint eddig. A betegség nem jelenti, hogy rólad megfeledkeznek - csak most egy kicsit másképp figyelnek rád." },
+        { emoji: "🎈", text: "Szabad örülnöd, játszanod, nevetned. Anya is azt szeretné, ha boldog lennél. Az öröm nem árulás." },
+      ],
+      roleTitle: "Nem kell kis felnőttnek lenned",
+      roleText: "Néha úgy érezheted, most neked kell vigyáznod mindenkire: erősnek lenni, nem sírni, segíteni. De ez nem a te feladatod. A gyógyítás az orvosok dolga. A háztartás a felnőttek dolga. A te dolgod az, hogy gyerek légy: tanulj, játssz, álmodj, kérdezz, és érezd, amit érzel.",
+      helpText: "Ha segíteni szeretnél, megcsinálhatsz apró dolgokat - rajzolhatsz anyának egy képet, főzhetsz neki teát, vagy mesélhetsz a napodról. De ezeket azért tedd, mert akarod, nem azért, mert úgy érzed, muszáj.",
+    },
+  },
+
+  // TEVHITEK
+  S35: {
+    title: "Amit sok gyerek gondol", icon: "💭", color: COLORS.lavender, type: "kidThoughts",
+    intro: "Ha az anyukád beteg, lehet, hogy járnak a fejedben olyan gondolatok, amikről nem beszélsz senkinek. Talán félsz, hogy buta kérdés, vagy hogy mások furcsán néznének rád. De ezeket rengeteg gyerek gondolja, és mind fontos kérdések.",
+    groups: [
+      {
+        title: "Amit magamról gondolok",
+        thoughts: [
+          {
+            id: "caused", emoji: "😔", question: "Én okoztam?",
+            validation: "Nagyon sok gyerek gondolja titokban, hogy ő tehet róla. Talán veszekedtél anyával, vagy rosszul viselkedtél, és most úgy érzed, azért lett beteg. Ez az egyik leggyakoribb gondolat - és az egyik legfontosabb, amit el kell mondanunk neked.",
+            answer: "Nem. Biztosan, százszázalékosan nem. A mellrákot nem okozhatja veszekedés, rossz jegy, hangoskodás, vagy bármi, amit tettél vagy gondoltál. A mellrák a sejtek megváltozása miatt alakul ki, és ezt senki - sem gyerek, sem felnőtt - nem tudja előidézni a viselkedésével.",
+            remember: "Nem a te hibád. Soha nem volt az, és soha nem is lesz.",
+          },
+          {
+            id: "good", emoji: "🙏", question: "Ha jó leszek, meggyógyul?",
+            validation: "Ez egy nagyon kedves és szeretetteljes gondolat. Azt mutatja, hogy bármit megtennél anyáért. Sok gyerek próbál tökéletesen viselkedni, csendesebb lenni, jobb jegyeket hozni - hátha az segít.",
+            answer: "A gyógyulás az orvosok munkájától és a kezelésektől függ - nem attól, mennyire vagy jó gyerek. Te már most is pont elég jó vagy. Nem kell tökéletesnek lenned, nem kell csendesebbnek lenned, nem kell mást csinálnod, mint eddig.",
+            remember: "A legjobbat, amit tehetsz, már most is teszed: itt vagy, és szereted anyát.",
+          },
+          {
+            id: "laugh", emoji: "😊", question: "Szabad nevetnem?",
+            validation: "Sok gyerek úgy érzi, hogy nem illik jól éreznie magát, ha anya beteg. Mintha árulás lenne, ha nevet, játszik, szórakozik. Mintha mindent le kellene állítania, amíg anya nem gyógyul meg.",
+            answer: "Igen, szabad! Sőt: az öröm segít. Segít neked, mert feltölt energiával, és segít anyának is, mert nincs jobb érzés egy szülőnek, mint amikor a gyerekét boldognak látja. Az élet nem áll meg - és nem is kell, hogy megálljon.",
+            remember: "A nevetés és az öröm nem árulás - hanem erő. Neked is, anyának is.",
+          },
+          {
+            id: "catch", emoji: "🛡️", question: "Én is megkaphatom?",
+            validation: "Ez nagyon gyakori félelem, és teljesen érthető. Ha valami rossz történik a családban, az ember automatikusan aggódni kezd, hogy vele is megtörténhet.",
+            answer: "A mellrák nem fertőző - nem lehet elkapni. Nem terjed öleléssel, csókkal, tüsszentéssel, közös evéssel, vagy bármi mással. Biztonságban vagy anya közelében - sőt, a közelséged most fontosabb, mint valaha.",
+            remember: "Nyugodtan öleld meg anyát. A szeretet nem terjeszt betegséget - de segíthet a gyógyulásban.",
+          },
+        ],
+      },
+      {
+        title: "Amit a helyzetről gondolok",
+        thoughts: [
+          {
+            id: "die", emoji: "🕯️", question: "Meg fog halni?",
+            validation: "Ez a legijesztőbb kérdés, ami felmerülhet benned. Lehet, hogy nappal próbálsz nem gondolni rá, de éjszaka, az ágyban mégis visszajön. Különösen ijesztő, ha hallottál már olyanról, aki belehalt a rákba - egy rokon, egy ismerős, vagy valaki a tévében. Nem vagy egyedül ezzel a félelemmel.",
+            answer: "A legtöbb mellrákos embert sikeresen kezelik az orvosok. Az orvostudomány nagyon sokat fejlődött, és a mellrák az egyik legjobban kezelhető betegség. Fontos tudnod: a rák nem egy betegség, hanem több mint kétszáz különböző fajta. Amit más betegségről hallasz, az nem vonatkozik anya betegségére. Az orvosok mindent megtesznek, és anya is keményen küzd.",
+            remember: "Ha ez a gondolat nagyon nyomaszt - különösen, ha mások rákos történetei ijesztenek -, beszélj róla egy felnőttel. Megérdemled, hogy őszinte választ kapj a kérdéseidre.",
+          },
+          {
+            id: "whyus", emoji: "💔", question: "Miért pont velünk történik ez?",
+            validation: "Ez egy nagyon igazságtalannak tűnő helyzet, és jogos, hogy dühös vagy szomorú miatta. Más családok boldogan élnek, és te azt érzed: miért nem lehetünk mi is olyanok?",
+            answer: "A mellrák sajnos nagyon gyakori - minden nyolcadik nőt érinti. Nem büntetés, nem balszerencse, és nem azért történik, mert a családotok valamit rosszul csinált. Egyszerűen megtörténik - és ez tényleg nem fair.",
+            remember: "Rendben van, ha igazságtalannak érzed. Az is rendben van, ha dühös vagy miatta. Ezek jogos érzések.",
+          },
+          {
+            id: "friends", emoji: "🤔", question: "Elmondjam a barátaimnak?",
+            validation: "Ez nehéz döntés. Lehet, hogy szeretnéd elmondani, de félsz, hogy szánalmat kapsz, vagy furcsán néznek rád. Vagy éppen fordítva: terhes titok, amit nehéz magadban tartani.",
+            answer: "Ez a te döntésed - senki nem kényszeríthet, hogy elmondd, és senki nem tilthatja meg. Ha elmondod, válassz ki egy-két közeli barátot, akikben megbízol. Elég annyit mondani, amennyit akarsz: 'Anya beteg, kezelést kap.' Nem kell mindent részletezned.",
+            remember: "Ha elmondod, az nem gyengeség, hanem bátorság. Ha nem mondod el, az is rendben van. A te tempód számít.",
+          },
+          {
+            id: "crying", emoji: "🥺", question: "Miért sír anya vagy apa?",
+            validation: "Ijesztő lehet, ha a szüleidet sírni látod. A felnőttek általában erősnek mutatják magukat a gyerekek előtt, ezért ha mégis sírnak, az nagyon zavarba ejtő lehet.",
+            answer: "A felnőttek is éreznek félelmet, szomorúságot, fáradtságot - ugyanúgy, mint te. Amikor anya vagy apa sír, az nem azt jelenti, hogy valami nagyon rossz történt. Azt jelenti, hogy ők is emberek, akik néha kimutatják az érzéseiket. Ez egészséges dolog.",
+            remember: "Ha a szüleid sírnak, nem neked kell megvigasztalnod őket. De odamehetsz, és megfoghatod a kezüket - az is sokat jelent.",
+          },
+        ],
+      },
+    ],
+  },
+
+  // ÉRZELMEK
+  S40: {
+    title: "Így érzem magam",
+    subtitle: "Most, hogy tudod, mi történik anyával, lehet, hogy sokféle érzés kavarog benned. Vagy épp semmi különös. Mindkettő rendben van. Nézd meg, melyik áll most legközelebb hozzád - és ne feledd: nincs rossz válasz.",
+    type: "emotions",
+    icon: "💗",
+  },
+  S47: { title: "Jól vagyok", icon: "😊", color: COLORS.mint, feeling: {
+    validation: "Ha most jól érzed magad - az nagyszerű, és teljesen rendben van. Nem kell rosszul érezned magad azért, mert anya beteg. Az, hogy jól vagy, nem jelenti, hogy nem érdekel, nem szereted, vagy nem veszed komolyan a helyzetet. Azt jelenti, hogy gyerek vagy, aki tud örülni az életnek - és anya is pontosan ezt szeretné.",
+    thoughts: [
+      "Jól vagyok, de furcsa, hogy jól vagyok. Szabad ez?",
+      "Néha elfelejtem, hogy anya beteg - utána bűntudatom van.",
+      "A barátaimmal jól érzem magam, aztán hazamegyek és nem tudom, mit érzek.",
+    ],
+    body: "Energikusnak érzed magad. Kedved van játszani, tanulni, szórakozni. Néha talán meglepődsz, hogy ilyen jól érzed magad - és emiatt kicsit zavarba jössz.",
+    tip: "Engedd meg magadnak az örömöt - sőt, gyűjts belőle! A jó pillanatok feltöltenek energiával, és ez az energia segít átvészelni a nehezebb napokat. Nevess, játssz, szórakozz - ez nem árulás, hanem erő. Ha valaki azt mondja, hogy nem kellene jól érezned magad, az nem igaz.",
+    remember: "Az öröm nem jelenti, hogy nem érdekel anya. Az öröm azt jelenti, hogy az élet folytatódik - és anya is pontosan ezt akarja. A te boldogságod neki is jólesik.",
+  }, next: "S40", nextLabel: "Vissza az érzésekhez" },
+  S48: { title: "Mindent egyszerre", icon: "🌀", color: "#A88BC4", feeling: {
+    validation: "Lehet, hogy egyszerre félsz ÉS dühös vagy. Vagy szomorú ÉS boldog. Vagy bűntudatod van, miközben jól szórakozol. Ez az egyik leggyakoribb dolog, amit a gyerekek éreznek ilyen helyzetben - és mégis erről beszélnek a legkevesebbet, mert azt hiszik, zavaros, amit éreznek. Nem az. Teljesen normális.",
+    thoughts: [
+      "Reggel szomorú voltam, délután nevettem, este megint sírtam.",
+      "Egyszerre vagyok dühös és szomorú, és nem tudom, melyiket érzem jobban.",
+      "Az iskolában elfeledem, otthon eszembe jut - és nem tudom, mit érzek igazából.",
+    ],
+    body: "Olyan, mintha egy mosógépben pörögne minden. Az egyik percben sírnál, a másikban nevetnél. A gyomrod szorít, a szíved gyorsan ver, aztán hirtelen semmi - üresség. Ez nem zavar, ez a tested módja, hogy feldolgozza a sok változást.",
+    tip: "Nem kell kiválasztanod egyetlen érzést. Nem kell rájönnöd, mit érzel igazából. Lehet, hogy az igazság az, hogy mindent egyszerre érzel - és ez rendben van. Ha segít: rajzolj le minden érzést külön színnel egy papírra. Meglepődnél, milyen szép lesz az a kép.",
+    remember: "Az érzések nem olyanok, mint a tévécsatornák, hogy egyszerre csak egyet tudsz nézni. Egyszerre is érezheted, hogy szomorú vagy ÉS boldog. Ez nem azt jelenti, hogy össze vagy zavarodva - azt jelenti, hogy ember vagy.",
+  }, next: "S40", nextLabel: "Vissza az érzésekhez" },
+  S41: { title: "Félelem", icon: "😰", color: COLORS.fear, feeling: {
+    validation: "A félelem az egyik legtermészetesebb reakció, amikor valami fontos dolog történik az életedben. Szinte minden gyerek fél, amikor megtudja, hogy anya beteg - még azok is, akik nem mutatják. A félelem azt jelzi, hogy anya fontos neked, és szeretnéd, hogy minden rendben legyen.",
+    thoughts: [
+      "Mi lesz, ha anya nem gyógyul meg?",
+      "Mi történik velem, ha anya a kórházban van?",
+      "Miért nem tudom abbahagyni az aggódást?",
+    ],
+    body: "Gyorsabban ver a szíved. Szorít a gyomrod, mintha csomó lenne benne. Izzadnak a tenyereid. Nehezebb mélyen lélegezni. Este nehéz elaludni, vagy rémálmaid vannak. Nem akarsz egyedül maradni.",
+    tip: "Próbáld meg pontosan megnevezni, mitől félsz. Például: Attól félek, hogy... Ha kimondod vagy leírod, a félelem kisebb lesz. A mély légzés segít megnyugtatni a testedet. És ha a félelem nagyon nagy, beszélj róla egy felnőttnek - a kimondott félelem mindig kisebb, mint a bent tartott.",
+    remember: "A félelem nem azt jelenti, hogy valami rossz fog történni. A félelem azt jelenti, hogy az agyadnak több információra van szüksége. Kérdezz bátran!",
+  }, next: "S50", nextLabel: "Próbáljunk ki egy gyakorlatot" },
+  S42: { title: "Düh", icon: "😠", color: COLORS.anger, feeling: {
+    validation: "Teljesen jogos, ha dühös vagy. Dühös lehetsz a betegségre, arra, hogy miért pont a ti családotokkal történik ez, vagy arra, hogy megváltoztak a napjaid. Lehet, hogy néha még anyára is mérges vagy - és az is rendben van. A düh azt jelzi, hogy valami igazságtalan történt veled.",
+    thoughts: [
+      "Ez nem fair! Miért pont velünk történik?",
+      "Néha arra is mérges vagyok, hogy anya beteg lett.",
+      "Utálom, hogy minden megváltozott!",
+    ],
+    body: "Ökölbe szorulnak a kezeid. Forrónak érzed az arcodat és a füleidet. Feszülnek az izmaid, főleg a vállad és az állkapcsod. Kiabálni vagy dobálni szeretnél. Néha úgy érzed, felrobbansz.",
+    tip: "A dühöd nem rossz dolog - de fontos, hogy ne magadnak vagy másoknak árts vele. Ami segíthet: fuss egy kört az udvarban, üss a párnába, rajzolj vadul egy papírra, vagy mondj el szavakkal valakinek, hogy most mérges vagy. A düh kimondva kisebb lesz. Írhatod is: írd le egy papírra, és ha akarod, tépd össze utána.",
+    remember: "Dühös lenni nem jelenti, hogy rossz ember vagy. A düh egy erős érzés - és az erős érzések azt jelentik, hogy érdekel, mi történik.",
+  }, next: "S50", nextLabel: "Próbáljunk ki egy gyakorlatot" },
+  S43: { title: "Szomorúság", icon: "😢", color: COLORS.sadness, feeling: {
+    validation: "Hiányozhat a régi élet, amikor nem kellett ilyeneken aggódnod. Szomorú lehetsz, hogy anya fáradt, hogy kevesebbet tudtok együtt csinálni, vagy egyszerűen azért, mert minden más most. A szomorúság a szíved módja arra, hogy jelezze: valami fontos dolog megváltozott az életedben.",
+    thoughts: [
+      "Hiányzik, amikor anya egészséges volt.",
+      "Néha ok nélkül is szomorú vagyok.",
+      "Nem is tudom, miért sírok - csak sírok.",
+    ],
+    body: "Nehéz, szorítás a mellkasodban. Fáj a torkod, mintha lenne benne valami. Sokat sírnál - vagy épp egyáltalán nem tudsz sírni. Fáradt vagy, és nem akarsz csinálni semmit, még olyat sem, amit máskor szeretsz. Néha semmi sem érdekel.",
+    tip: "A szomorúságot nem kell elrejteni vagy legyőzni. Szabad sírni - a sírás a test természetes módja a feszültség elengedésére. Szabad odabújni valakihez, szabad csendben lenni. Ha van egy plüssállat, párnád vagy takaród, ami biztonságot ad, tartsd közel. És ha nagyon sokáig vagy szomorú - több héten át, szinte minden nap -, beszélj róla egy felnőttnek.",
+    remember: "A szomorúság nem gyengeség. A szomorúság azt jelenti, hogy szeretsz, és hogy fontos neked, ami történik. És a szomorúság nem marad örökre - jobb napok is jönnek.",
+  }, next: "S50", nextLabel: "Próbáljunk ki egy gyakorlatot" },
+  S44: { title: "Bűntudat", icon: "😞", color: COLORS.guilt, feeling: {
+    validation: "Nagyon sok gyerek gondolja titokban, hogy ők tehettek anya betegségéről. Vagy úgy érzik, nem segítenek eleget, túl sokat szórakoznak, és nem kellene jól érezniük magukat, amíg anya beteg. Ezek a gondolatok nagyon gyakoriak - de fontos tudnod, hogy egyik sem igaz.",
+    thoughts: [
+      "Lehet, hogy azért lett beteg, mert egyszer csúnya voltam vele?",
+      "Nem szabadna most jól éreznem magam.",
+      "Többet kellene segítenem, de nem tudom, hogyan.",
+    ],
+    body: "Nem tudsz rendesen aludni. Szorít vagy fáj a gyomrod. Folyton azon jársz, mit tehettél volna másképp. Néha kerülöd anya tekintetét, mert szégyellesz magad, holott nincs miért.",
+    tip: "A legfontosabb, amit most tehetsz: mondd ki hangosan valakinek, akiben megbízol. Mondd azt: Néha úgy érzem, az én hibám. Amikor egy igazi ember azt mondja neked, hogy nem a te hibád, azt könnyebb elhinni, mint ha csak magadban gondolod. És engedd meg magadnak az örömöt - anya sem azt akarja, hogy szomorkodj.",
+    remember: "A mellrákot nem gondolat, nem viselkedés és nem érzés okozza. Anya betegsége nem a te hibád - és a te dolgod, hogy gyerek légy, nem az, hogy meggyógyítsd.",
+  }, next: "S50", nextLabel: "Próbáljunk ki egy gyakorlatot" },
+  S45: { title: "Magányosság", icon: "🫥", color: COLORS.loneliness, feeling: {
+    validation: "Lehet, hogy úgy érzed, senki sem érti, min mégy keresztül. A barátaid iskoláról és játékokról beszélnek, te meg közben anya betegségén aggódsz. Lehet, hogy másnak tűnsz, mint ők - és ez néha nagyon magányos érzés. De nem vagy egyedül, még ha most úgy is érzed.",
+    thoughts: [
+      "Senki sem érti, milyen ez.",
+      "A barátaimnak ilyen gondjaik nincsenek.",
+      "Másnak érzem magam, mint a többiek.",
+    ],
+    body: "Üres érzés belül. Egyszerre szeretnél egyedül lenni és valakivel lenni. Úgy érzed, nem tartozol sehova. Az iskolában néha úgy érzed, falon át nézed a többieket.",
+    tip: "Keress legalább egy embert - egy barátot, rokont, tanárt -, akinek el tudod mondani, mit érzel. Nem kell mindent elmondanod, elég annyit: Néha nehéz napjaim vannak. És fontos tudnod: sok ezer gyerek él át hasonlót. Nem te vagy az egyetlen. Ha anyád vagy apád ismer más családot hasonló helyzetben, kérd meg, hogy ismerkedjetek össze.",
+    remember: "A magány nem azt jelenti, hogy nincs körülötted senki. A magány azt jelenti, hogy még nem találtál valakit, akinek el tudod mondani, mit érzel. De az az ember létezik - és megtalálható.",
+  }, next: "S50", nextLabel: "Próbáljunk ki egy gyakorlatot" },
+  S46: { title: "Most nem akarok erről beszélni", icon: "🤐", color: COLORS.withdraw, feeling: {
+    validation: "Néha egyszerűen nincs kedved, nincs energiád, vagy nincsenek szavaid ahhoz, hogy erről beszélj. Ez nem baj. Nem vagy köteles minden percben az érzéseiden gondolkodni. Van, amikor a legjobb dolog, amit tehetsz, az, hogy csinálsz valami teljesen mást.",
+    thoughts: [
+      "Nem akarok most ezen gondolkodni.",
+      "Hagyjatok békén egy kicsit.",
+      "Majd később... most nem.",
+    ],
+    body: "Becsuknád az ajtót. Fejhallgatót raknál. Csak ülnél és néznél ki az ablakon. Vagy játszanál, olvasnál, néznél valamit - bármi mást.",
+    tip: "Csinálj valami olyat, ami jólesik és eltereli a figyelmedet: játssz, rajzolj, hallgass zenét, nézz egy filmet, menj ki a szabadba, vagy egyszerűen feküdj le és nézd a plafont. Mindez rendben van. Az érzéseid megvárnak - nem tűnnek el, és nem lesznek rosszabbak attól, hogy most nem foglalkozol velük.",
+    remember: "Az is bátorság, ha most nem beszélsz. Amikor készen állsz - akár napok, hetek múlva -, lesznek körülötted emberek, akik meghallgatnak. Addig is: légy kedves magadhoz.",
+  }, next: "S40", nextLabel: "Vissza az érzésekhez" },
+  // COPING
+  S50: { title: "Nyugi-szerszámok", icon: "🧘", color: COLORS.mint, type: "copingMenu",
+    intro: "Amikor sok minden kavarog benned - félelem, düh, szomorúság -, a tested is reagál: gyorsabban ver a szíved, szorít a gyomrod, feszülnek az izmaid. Ezek a gyakorlatok segítenek megnyugtatni a testedet, és azon keresztül az elmedet is.",
+    howItWorks: "Az agyad és a tested szorosan összeköttetésben vannak. Ha a testedet megnyugtatod - lassabb légzéssel, izomlazítással, a figyelmed irányításával -, az agyad is azt az üzenetet kapja: biztonságban vagyok. Ezért működnek ezek a gyakorlatok.",
+    whenToUse: [
+      "Ha úgy érzed, a szíved túl gyorsan ver",
+      "Ha feszült vagy és nem tudsz nyugodtan ülni",
+      "Ha este nem tudsz elaludni az aggódástól",
+      "Ha a suliban nem tudsz figyelni, mert folyton anya jár az eszedben",
+      "Vagy bármikor, amikor egyszerűen csak jólesne egy kis nyugalom",
+    ],
+    items: [
+      { id: "S51", emoji: "🌟", label: "Csillag-légzés", desc: "Lassú légzés, ami megnyugtatja a szívedet és az elmedet. 2 perc." },
+      { id: "S52", emoji: "🍋", label: "Citromfacsarás", desc: "Feszítsd-engedd el technika, ami segít elengedni a testi feszültséget. 2 perc." },
+      { id: "S53", emoji: "🖐️", label: "5-4-3-2-1 gyakorlat", desc: "Figyelemirányítás az 5 érzéked segítségével. Visszahoz a jelenbe. 3 perc." },
+      { id: "S54", emoji: "🎨", label: "Rajzold le, amit érzel", desc: "Nem verbális kifejezésmód - néha rajzolni könnyebb, mint beszélni." },
+    ],
+  },
+  S51: { title: "Csillag-légzés", icon: "🌟", color: COLORS.mint, type: "breathing" },
+  S52: { title: "Citromfacsarás", icon: "🍋", color: COLORS.mint, type: "lemon" },
+  S53: { title: "5-4-3-2-1 gyakorlat", icon: "🖐️", color: COLORS.mint, type: "grounding" },
+  S54: { title: "Rajzold le, amit érzel", icon: "🎨", color: COLORS.mint,
+    paragraphs: [
+      "Vegyél elő egy papírt és bármilyen rajzeszközt: ceruzát, filcet, zsírkrétát.",
+      "Rajzold le azt, amit most belül érzel. Nem kell, hogy szép legyen, és nem kell, hogy mást ábrázoljon. Lehet egy szín, egy forma, egy firka, vonalak - bármi.",
+      "Néha rajzolni könnyebb, mint beszélni. Az érzések olykor színekben és formákban fejezhetők ki a legjobban.",
+      "Ha kész vagy, nézd meg, amit rajzoltál. Ha akarod, megmutathatod valakinek. Ha nem, az is rendben van - a rajz a tied."
+    ],
+    next: "S50", nextLabel: "Más gyakorlat",
+  },
+
+  // SEGITSEG
+  S60: { title: "Kihez fordulhatok?", icon: "🤝", color: COLORS.peach, type: "helpMenu",
+    intro: "Nem kell egyedül cipelned azt, amit érzel. Körülötted vannak felnőttek és barátok, akik segíthetnek - még ha néha nem is tudják, hogyan. Az első lépés mindig a tied: jelezd, hogy beszélni szeretnél.",
+    important: "Nem kell várnod, amíg valami nagy baj van. Bármikor szólhatsz - akkor is, ha csak furcsan érzed magad, vagy ha egy kérdés nem hagy nyugodni.",
+    adults: [
+      { id: "S64", emoji: "👩", label: "Anya vagy apa", desc: "Ők ismerik a helyzetet és téged is a legjobban." },
+      { id: "S65", emoji: "👩‍🏫", label: "Tanár vagy osztályfőnök", desc: "Segíthet a suliban, és megértőbb lesz, ha tudja." },
+      { id: "S66", emoji: "🪴", label: "Iskolapszichológus", desc: "Szakember, aki pontosan ért az ilyen érzésekhez." },
+      { id: "S67", emoji: "🫂", label: "Más megbízható felnőtt", desc: "Nagyszülő, edző, szomszéd - bárki, akiben megbízol." },
+    ],
+    friends: [
+      { id: "S85", emoji: "🎒", label: "A suliban és a barátokkal", desc: "Részletes segítség: mit mondj, hogyan reagálj, kész mondatok." },
+    ],
+  },
+  S64: { title: "Anya vagy apa", icon: "👩", color: COLORS.peach,
+    blocks: [
+      { q: "Miért hozzájuk?", a: "Ők ismerik a legjobban a helyzetet és téged is. Tudják, mi történik a kezeléssel, és tudnak válaszolni a kérdéseidre. És ők is szeretnék tudni, mit érzel - még ha néha úgy tűnik is, hogy elfoglaltak." },
+      { q: "Mikor érdemes szólni?", a: "Bármikor, ha kérdésed van, félsz valamitől, vagy egyszerűen rosszul érzed magad. Nem kell várnod, amíg valami nagy baj van. És nem kell félned, hogy felzaklatod őket - ők szeretnék tudni, mi jár a fejedben." },
+      { q: "Hogyan kezdd el?", a: "Válassz egy nyugodtabb pillanatot - nem kell tökéletes időpont, de kerüld a rohanást. Mondhatod egyszerűen: Beszélhetünk egy kicsit? Valami nyomaszt. Ez elég a kezdéshez." },
+      { q: "Ha nehéz elkezdeni", a: "Ha szóval nehéz, írhatod is: csinálhatsz egy cetlit, rajzolhatsz valamit, vagy megmutathatod ezt az appot, és rámutathatsz arra a részre, ami érdekel." },
+    ],
+    cards: [
+      { emoji: "💬", text: "Félek, és szeretném, ha elmagyaráznád, mi történik most." },
+      { emoji: "💬", text: "Néha úgy érzem, nekem kell vigyáznom mindenkire. Ez normális?" },
+      { emoji: "💬", text: "Szomorú vagyok, és nem tudom, mit csináljak." },
+    ],
+    next: "S60", nextLabel: "Vissza",
+  },
+  S65: { title: "Tanár vagy osztályfőnök", icon: "👩‍🏫", color: COLORS.peach,
+    blocks: [
+      { q: "Miért hozzájuk?", a: "A tanáraid nap mint nap látnak, és észrevehetik, ha valami más, mint máskor. Ha tudják, mi történik otthon, megértőbben tudnak reagálni, ha fáradtabb vagy, nehezebben figyelsz, vagy szomorúbb vagy." },
+      { q: "Miért érdemes szólni nekik?", a: "Ha a tanáraid tudnak róla, nem gondolják azt, hogy lustálkodsz vagy nem érdeklődsz. Ehelyett megadhatják a teret, amire szükséged van: több idő dolgozatnál, megértőbb hozzáállás, vagy egyszerűen egy kedves szó." },
+      { q: "Mit kell elmondanod?", a: "Nem kell részletekbe menned. Elég annyit mondanod: Anya beteg, kezelést kap. Néha emiatt nehezebb napjaim vannak. Ez már elég ahhoz, hogy megértse." },
+      { q: "Hogyan szólj?", a: "Keress egy csendes percet az óra előtt vagy után, vagy írj egy rövid üzenetet. Ha nehéz egyedül, kérheted anyát, apát, vagy az iskolapszichológust is, hogy segítsen elmondani." },
+    ],
+    cards: [
+      { emoji: "💬", text: "Anya beteg, és néha emiatt nehéz figyelnem az órán." },
+      { emoji: "💬", text: "Szeretném, ha tudná, hogy nem azért vagyok csendesebb, mert nem érdekel a tanulás." },
+    ],
+    next: "S60", nextLabel: "Vissza",
+  },
+  S66: { title: "Iskolapszichológus", icon: "🪴", color: COLORS.peach,
+    blocks: [
+      { q: "Ki az iskolapszichológus?", a: "Ő egy szakember, aki az iskoládban dolgozik, és kifejezetten abban segít, ha egy gyereknek nehezebb időszaka van. Ért az érzésekhez, és tud segíteni feldolgozni őket." },
+      { q: "Miért érdemes hozzá fordulni?", a: "Nem fog megítélni, és nem fogja elmondani másoknak, amit megosztasz vele. Olyan eszközei vannak, amelyek segíthetnek kezelni a félelmet, a szomorúságot vagy a dühöt." },
+      { q: "Milyen ez a beszélgetés?", a: "Nem olyan, mint egy vizsga vagy egy kikérdezés. Inkább olyan, mint egy nyugodt beszélgetés valakivel, aki igazán figyel rád. Kérdez, hallgat, és segít gondolkodni - nem ad leckét, és nem mondja meg, mit érezz." },
+      { q: "Hogyan találom meg?", a: "Kérdezd meg az osztályfőnöködet vagy az iskolai irodát, hogy ki a pszichológus és mikor elérhető. Sok iskolában elég egyszerűen bejelentkezni hozzá." },
+    ],
+    cards: [
+      { emoji: "💬", text: "Anya beteg, és néha nem tudom, mit érzek. Szeretnék beszélni valakivel." },
+      { emoji: "💬", text: "Nehéz napjaim vannak, és nem tudom, kinek mondjam el." },
+    ],
+    next: "S60", nextLabel: "Vissza",
+  },
+  S67: { title: "Más megbízható felnőtt", icon: "🫂", color: COLORS.peach,
+    blocks: [
+      { q: "Kire gondolunk?", a: "Nagymama, nagypapa, nagynéni, nagybácsi, edződ, cserkészvezetőd, a szomszéd néni - bárki, akit ismersz, akiben megbízol, és akivel jól érzed magad." },
+      { q: "Miért érdemes nekik szólni?", a: "Néha könnyebb valakinek elmondani, aki nincs benne a közvetlen helyzetben. Ők kicsit távolabbról látják a dolgokat, és néha épp ezért tudnak segíteni: meghallgatnak, elviszik a figyelmedet, vagy egyszerűen biztonságot adnak." },
+      { q: "Mit mondhatsz nekik?", a: "Annyit, amennyit szeretnél. Mondhatod egyszerűen: Anya beteg, és néha szomorú vagyok. Nem kell mindent elmondanod - elég jelezni, hogy beszélni szeretnél." },
+      { q: "Ha nincs ilyen emberem", a: "Ha úgy érzed, nincs ilyen felnőtt az életedben, szólj anyának vagy apának: Szeretnék valakivel beszélni azon kívül, akivel együtt élek. Ők segíthetnek találni valakit - akár egy pszichológust is." },
+    ],
+    cards: [
+      { emoji: "💬", text: "Beszélhetünk egy kicsit? Valami nyomaszt, és jó lenne elmondanom." },
+      { emoji: "💬", text: "Anyával nehéz dolgok történnek most, és néha jó lenne valakivel beszélni róla." },
+    ],
+    next: "S60", nextLabel: "Vissza",
+  },
+
+  // SULI ES BARATOK
+  S85: { title: "A suliban és a barátokkal", icon: "🎒", color: "#6BB5E0", type: "schoolFriends",
+    intro: "A suli az a hely, ahol te még te lehetsz - ahol a matek matek, a szünet szünet, és a barátaid a barátaid. Ugyanakkor lehet, hogy néha nehéz úgy tenni, mintha minden rendben lenne. Itt segítünk eligazodni: mit mondj, mit ne, és hogyan legyél önmagad egy nehéz helyzetben.",
+    sections: [
+      {
+        id: "decide", emoji: "🤔", title: "Elmondjam vagy ne?",
+        intro: "Ez a te döntésed. Senki nem kényszeríthet, hogy beszélj róla, és senki nem tilthatja meg. Nincs jó vagy rossz válasz - csak az a kérdés, hogy neked most mi esne jól.",
+        content: [
+          { emoji: "✅", text: "Miért jó elmondani: nem kell titkolnod, a barátaid megértőbbek lehetnek, nem kell hazudnod, ha kérdeznek, miért vagy szomorú." },
+          { emoji: "⚠️", text: "Miért nehéz elmondani: félhetsz a szánalomtól, nem akarod, hogy másképp bánjanak veled, vagy egyszerűen nem akarsz erről beszélni a suliban." },
+          { emoji: "💡", text: "Nem kell mindent vagy semmit. Elmondhatod egy-két közeli barátodnak, és kérheted, hogy ne mondják tovább. Vagy mondhatsz annyit: nehéz időszakom van otthon. Nem kell részletezned." },
+          { emoji: "⏳", text: "Nem kell most döntened. Várhatod meg, amíg készen állsz - és ha soha nem mondod el, az is rendben van. A te tempód számít." },
+        ],
+      },
+      {
+        id: "howto", emoji: "💬", title: "Hogyan mondjam el?",
+        intro: "Ha úgy döntesz, hogy beszélsz róla, itt vannak kész mondatok. Nem kell pontosan ezeket mondanod - csak ötletek, hogy könnyebb legyen elkezdeni.",
+        levels: [
+          { level: "🟢 Keveset mondok", examples: [
+            "Anya beteg, kezelést kap. Néha emiatt szomorúbb vagyok.",
+            "Nehéz időszak van otthon, de nem akarok most részletezni.",
+            "Ha furcsán viselkedem, az nem miattatok - otthon van valami.",
+          ]},
+          { level: "🟡 Többet mondok", examples: [
+            "Anyának mellrákja van. Kezelést kap, és bízunk benne, hogy jól lesz. Néha nehezebbek a napjaim emiatt.",
+            "Anya beteg, ezért sokat jár kórházba. Néha félek, néha szomorú vagyok, de nem akarom, hogy ezen aggódjatok.",
+          ]},
+          { level: "🔵 Nyíltan beszélek", examples: [
+            "Anyának mellrákja van. Kemoterápiát kap, és néha nagyon fáradt. Sokat aggódom, de az orvosok optimisták. Ha furcsa vagyok néha, ezért van.",
+          ]},
+        ],
+      },
+      {
+        id: "reactions", emoji: "😶", title: "Ha furcsán reagálnak",
+        intro: "A barátaid nem rosszindulatúak - csak nem tudják, mit mondjanak. Senki nem tanította meg nekik, hogyan reagáljanak ilyen helyzetben. Íme, mire számíthatsz, és mit tehetsz.",
+        scenarios: [
+          { situation: "Zavartan elhallgatnak", why: "Nem tudják, mit illik mondani. Félnek, hogy rosszat mondanak.", what: "Segíthetsz nekik: Nem kell mondanod semmit. Az is jó, ha csak itt vagy." },
+          { situation: "Buta dolgot mondanak", why: "Például: Ja, az nagymamámnak is volt, de meggyógyult! Vagy: Legalább nem kell iskolába járnod. Nem bántani akarnak - csak nem értik.", what: "Mondhatod: Köszi, hogy próbálsz segíteni. Most elég, ha csak normálisan vagyunk együtt." },
+          { situation: "Túlzottan sajnálnak", why: "Szánalmas arccal néznek, mindenben segíteni akarnak, kesztyűs kézzel bánnak veled.", what: "Mondhatod: Kérlek, ne sajnálj - légy inkább ugyanolyan, mint eddig. Az segít a legjobban." },
+          { situation: "Pletykálnak róla", why: "Nem rosszindulatból, hanem mert a gyerekek beszélnek a dolgokról.", what: "Ha zavar, szólj: Amit mondtam, az magánügy volt. Légyszi ne mondd tovább. Ha nagyon zavar, szólj a tanárnak." },
+          { situation: "Úgy tesznek, mintha nem is mondtad volna", why: "Néhányan nem tudnak mit kezdeni a dologgal, és inkább úgy tesznek, mintha nem hallották volna.", what: "Ez nem jelenti, hogy nem érdekli őket. Néha ők is időt kérnek, hogy feldolgozzák." },
+        ],
+      },
+      {
+        id: "cancerstories", emoji: "🕯️", title: "Ha hallod, hogy valaki belehalt a rákba",
+        intro: "Amikor az emberek megtudják, hogy anya beteg, néha saját történeteket mesélnek. Vagy a tévében, az iskolában, a családban hallasz olyanról, aki belehalt a rákba. Ettől az ember nagyon megijedhet. Most erről beszélünk őszintén.",
+        content: [
+          { emoji: "📢", text: "Miért hallasz hirtelen mindenhol erről? Mert az agyad megtanulta, hogy ez fontos téma - és mostantól kiszűri a beszélgetésekből, filmekből, hírekből. Olyan ez, mint amikor megtanulsz egy új szót, és utána mindenhol hallod. Nem lett több rákos beteg - csak az agyad figyel rá jobban." },
+          { emoji: "🔬", text: "A rák nem egy betegség. Több mint kétszáz különböző fajta rák létezik. A mellrák nem ugyanaz, mint a tüdőrák, a hasnyálmirigyrák, vagy bármelyik másik. Más a kezelése, más az esélye, más az orvosa. Amit más betegségről hallasz, az nem vonatkozik anya betegségére." },
+          { emoji: "📊", text: "A mellrák az egyik legsikeresebben kezelhető rákfajta. Az orvostudomány hatalmasat fejlődött - ami tíz-húsz éve még nehéz eset volt, azt ma sokkal jobban tudják kezelni. Ha valaki nagymamája vagy nagypapája régen belehalt a rákba, az a régi orvostudomány volt, nem a mai." },
+          { emoji: "⚠️", text: "Ha valaki azt mondja: Az én nagymamám belehalt - az nem jelenti, hogy anyáddal is ez fog történni. Más ember, más betegség, más időszak, más kezelés. Tudod, mire hasonlít ez? Mintha valaki azt mondaná: Nekem is volt biciklibalesetem, szóval te is el fogsz esni. Nem így működik." },
+          { emoji: "🛡️", text: "Ha ilyet hallasz, és megijed: az rendben van. Érezd az érzést, ne nyomd el. De utána emlékeztesd magad: anya saját orvosai, anya saját kezelése, anya saját teste. A statisztikák anya oldalán állnak." },
+          { emoji: "🗣️", text: "Ha ezek a történetek nagyon bántanak, szólj egy felnőttnek. Nem azért, mert baj van, hanem mert a kimondott félelem kisebb. Kérdezd meg anyát vagy apát: Anya betegségénél milyen esélyeket mondtak az orvosok? Megérdemled az őszinte választ." },
+        ],
+        responses: [
+          { emoji: "🟢", label: "Ha valaki rákos történetet mesél:", text: "Köszi, de anya betegsége más. Az orvosai jó esélyeket mondtak." },
+          { emoji: "🟡", label: "Ha nem akarsz beszélni róla:", text: "Inkább ne beszéljünk most rákos történetekről, jó? Az enyém más, és nem segít, ha ijesztő dolgokat hallok." },
+          { emoji: "🔵", label: "Ha nagyon megijedtél:", text: "Azt hallottam, hogy valaki belehalt a rákba, és most félek. Beszélhetünk erről? - mondd ezt egy felnőttnek." },
+        ],
+      },
+      {
+        id: "school", emoji: "🏫", title: "Ha a suliban nehéz",
+        content: [
+          { emoji: "😶‍🌫️", text: "Nem tudok figyelni: Teljesen normális, ha az agyad elkalandozik. Anya jár az eszedben a matek helyett. Ez nem lustaság - az agyad félelmeket dolgoz fel, és ez energiát vesz el a tanulástól." },
+          { emoji: "😢", text: "Ha sírni kezdek: Kérj engedélyt, hogy kimenj a mosdóba vagy az iskolaudvarra. Nem kell magyaráznod - mondhatod: Kicsit rosszul vagyok, kimehetek egy percre? A legtöbb tanár megérti." },
+          { emoji: "📉", text: "Ha rosszabbak a jegyeim: Ez nem azt jelenti, hogy buta lettél. Egy nehéz időszakban normális, hogy a teljesítmény csökken. Ha a tanárod tudja, mi történik, megértőbb lesz." },
+          { emoji: "🫥", text: "Ha másnak érzem magam: A szünetben mindenki játszik, te meg azon gondolkodsz, mi van anyával. Ez a legmagányosabb érzés. De nem te vagy az egyetlen, aki titokban nehézségekkel küzd - csak mások problémái nem látszanak." },
+          { emoji: "🎭", text: "Ha úgy teszek, mintha jól lennék: Néha a suli az a hely, ahol végre nem kell a betegségre gondolni. Ha a suliban jól érzed magad, az nem baj - sőt, fontos, hogy legyen egy hely, ahol te csak te vagy." },
+        ],
+      },
+      {
+        id: "whatask", emoji: "🤝", title: "Amit kérhetsz a barátaidtól",
+        intro: "A barátaid valószínűleg nem tudják, hogyan segíthetnek. Ha megmondod nekik, mire van szükséged, az mindenkinek könnyebb.",
+        requests: [
+          { emoji: "👂", text: "Hallgass meg - nem kell megoldanod, elég, ha figyelsz rám." },
+          { emoji: "🎮", text: "Játsszunk valamit! Arra van szükségem, hogy ne ezen járjon az agyam." },
+          { emoji: "🤗", text: "Légy ugyanolyan velem, mint eddig. Ez segít a legjobban." },
+          { emoji: "🙅", text: "Ne sajnálj, és ne kérdezgesd folyton, hogy jól vagyok-e." },
+          { emoji: "🤫", text: "Amit mondtam, az maradjon köztünk. Én döntöm el, kinek mondom el." },
+          { emoji: "📱", text: "Ha nem vagyok suliban, írj nekem - jó tudni, hogy gondolsz rám." },
+        ],
+      },
+      {
+        id: "notsay", emoji: "🙊", title: "Ha nem akarok róla beszélni",
+        content: [
+          { emoji: "🔒", text: "Nem kell elmondanod senkinek. A te életed, a te döntésed. Vannak gyerekek, akik soha nem beszélnek róla az iskolában - és ez teljesen rendben van." },
+          { emoji: "🛡️", text: "Ha kérdezgetnek, mert látják, hogy valami más: Nehéz időszakom van, de nem akarok most róla beszélni. Ha ez nem elég, és tovább nyomnak: Ez magánügy. Köszi, hogy megérted." },
+          { emoji: "🎒", text: "A suli lehet a menedéked is: az a hely, ahol nem kell a betegségre gondolnod. Ha a suliban nem beszélsz róla, az nem hazugság - az önvédelem. Szükséged van egy helyre, ahol még minden a régi." },
+          { emoji: "💛", text: "Ha egyszer mégis elmondanád, az nem gyengeség, és nem jelenti, hogy hazudtál eddig. Változhat a véleményed, és az is rendben van." },
+        ],
+      },
+      {
+        id: "teacher", emoji: "👩‍🏫", title: "Ha a tanárom tud róla",
+        content: [
+          { emoji: "📝", text: "Ha anya vagy apa szólt az osztályfőnöknek, az azért van, hogy a tanáraid megértőbbek legyenek veled. Nem azért, hogy mindenki megtudja." },
+          { emoji: "🤝", text: "A tanárod segíthet anélkül, hogy a többiek tudnának: több időt adhat dolgozatnál, elnézőbb lehet, ha fáradtabb vagy, vagy egyszerűen odafigyel rád." },
+          { emoji: "🚫", text: "Ha a tanárod az osztály előtt szóba hozza, és ez zavarba hoz, mondhatod: Köszönöm, de ezt inkább magánban szeretném tartani. Jogod van ehhez." },
+          { emoji: "💬", text: "Ha szeretnéd, hogy a tanárod tudjon róla, de nehéz elmondani, kérd meg anyát vagy apát, hogy írjon egy rövid levelet vagy emailt." },
+        ],
+      },
+    ],
+  },
+
+  // IDOVONAL
+  S70: { title: "Anya útja", icon: "🗺️", color: COLORS.softBlue, type: "treatmentJourney" },
+
+  // KORHAZ
+  S80: { title: "Ha anya kórházba megy", icon: "🏥", color: COLORS.softBlue, type: "hospital",
+    intro: "Lehet, hogy anya néhány napot a kórházban tölt - műtét, kezelés, vagy vizsgálat miatt. Ez ijesztően hangzik, de ha tudod, mire számíthatsz, kevésbé lesz félelmetes.",
+    sections: [
+      {
+        id: "why", emoji: "❓", title: "Miért kell kórházba mennie?",
+        content: [
+          { emoji: "🩺", text: "A kórházban vannak azok a gépek és orvosok, akik a legjobban tudnak segíteni anyának. Otthon ezek nincsenek meg." },
+          { emoji: "⏱️", text: "Néha csak egy napra megy be, néha több napig marad. Ez a kezeléstől függ - nem attól, hogy rosszabbul van." },
+          { emoji: "💡", text: "A kórházba menés nem azt jelenti, hogy baj van. Azt jelenti, hogy az orvosok pontosan azt csinálják, amit kell." },
+        ],
+      },
+      {
+        id: "who", emoji: "👨‍👩‍👧", title: "Ki vigyáz rám, amíg anya ott van?",
+        content: [
+          { emoji: "🏠", text: "Apa, nagyszülők, nagynéni, nagybácsi, vagy egy közeli családbarát. A felnőttek előre megszervezik, hogy valaki mindig legyen veled." },
+          { emoji: "📋", text: "A napirendet próbálják megtartani: iskola, házi, vacsora, lefekvés. Lehet, hogy kicsit másképp, de a lényeg ugyanaz." },
+          { emoji: "📱", text: "Anyával általában tudsz telefonálni vagy videóhívást indítani. Kérdezd meg apát vagy aki vigyáz rád, mikor lehet hívni." },
+        ],
+      },
+      {
+        id: "visit", emoji: "🚶", title: "Ha meglátogatom anyát",
+        content: [
+          { emoji: "👁️", text: "A kórház nem olyan ijesztő, mint a filmekben. Hosszú folyosók, fehér falak, és sok ember, aki segíteni akar. Lehet, hogy furcsa szag van - ez a tisztítószer." },
+          { emoji: "🛏️", text: "Anya egy ágyban fog feküdni, lehet, hogy infúzió lesz a karjában. Ez egy vékony cső, amin keresztül gyógyszert kap - nem fáj neki." },
+          { emoji: "😴", text: "Lehet, hogy anya fáradtabb, mint otthon, vagy kicsit másképp néz ki. Ettől még ugyanaz az anya, aki szeret téged." },
+          { emoji: "💛", text: "Nem kell erősnek tettetned magad. Ha sírni szeretnél, az rendben van. Ha nevetsz, az is. Anya azt szeretné, hogy önmagad légy." },
+        ],
+      },
+      {
+        id: "novisit", emoji: "🚫", title: "Ha nem mehetek be",
+        content: [
+          { emoji: "🦠", text: "Néha gyerekek nem mehetnek be a kórházba - nem azért, mert nem szeretnek, hanem mert a kórházban vannak betegek, akiknek gyenge az immunrendszere, és a gyerekek könnyebben hordoznak kórokozókat." },
+          { emoji: "💌", text: "Ettől még kapcsolatban lehetsz anyával. Rajzolhatsz neki képet, írhatsz levelet, készíthetsz rövid videóüzenetet, vagy küldhetsz fotót arról, mit csináltál aznap." },
+          { emoji: "🤝", text: "Kérd meg apát vagy aki vigyáz rád, hogy mutassa meg anyának, amit küldtél. Anya nagyon fog örülni neki - a kórházban ezek a kis dolgok sokat jelentenek." },
+        ],
+      },
+      {
+        id: "send", emoji: "🎁", title: "Amit otthonról küldhetsz",
+        items: [
+          { emoji: "🎨", text: "Rajz vagy festmény - akár az ágy mellé teheti" },
+          { emoji: "✉️", text: "Levél vagy kis cetli - ha nehéz mondani, könnyebb írni" },
+          { emoji: "📸", text: "Fotó rólad, a háziállatról, vagy a kertről" },
+          { emoji: "🎵", text: "Lejátszási lista a kedvenc zenéiből" },
+          { emoji: "🧸", text: "A te plüssállatod, hogy legyen mellette valami, ami rád emlékezteti" },
+          { emoji: "📖", text: "Egy közösen elkezdett könyv, hogy folytathassa" },
+        ],
+      },
+      {
+        id: "home", emoji: "🏠", title: "Amikor anya hazajön",
+        content: [
+          { emoji: "⏳", text: "Anya nem lesz azonnal olyan, mint előtte. Pihennie kell, talán lassabban mozog, és fáradtabb lesz. Ez normális - a teste gyógyul." },
+          { emoji: "🤫", text: "Otthon csendesebbre kell venni az első napokat. Ez nem azt jelenti, hogy nem játszhatsz - csak próbálj kicsit halkabban." },
+          { emoji: "🫂", text: "A legjobb, amit tehetsz: légy ott mellette. Nem kell csinálnod semmit különöset - az, hogy ott vagy, már önmagában gyógyít." },
+        ],
+      },
+      {
+        id: "feelings", emoji: "💗", title: "Amit érezhetsz",
+        content: [
+          { emoji: "😰", text: "Félelem - természetes, ha aggódsz. A kórház az orvosok otthona, anya jó kezekben van." },
+          { emoji: "😠", text: "Düh - jogos, ha mérges vagy, hogy anya nem lehet otthon. Ez igazságtalan." },
+          { emoji: "😢", text: "Szomorúság - hiányozhat anya. Ez azt jelenti, hogy szereted." },
+          { emoji: "😊", text: "Megkönnyebbülés - ha anya hazajön, lehet, hogy egyszerre örülsz és félsz. Ez normális." },
+        ],
+        closing: "Bármelyiket is érzed, rendben van. És ha nagyon nehéz, szólj annak a felnőttnek, aki veled van.",
+      },
+    ],
+  },
+
+  // ESTI RUTIN
+  S55: { title: "Este, az ágyban", icon: "🌙", color: "#7B8CDE", type: "bedtime",
+    intro: "Este, amikor csend van és lekapcsolod a lámpát, néha az aggódás hangosabb lesz. Ez nem azért van, mert este rosszabb minden - hanem mert nappal ezer dolog eltereli a figyelmedet, este viszont az agyad végre csendben van, és előjönnek a gondolatok. Ez nagyon sok gyereknek így van.",
+    sections: [
+      {
+        id: "why", emoji: "🧠", title: "Miért rosszabb este minden?",
+        content: [
+          { emoji: "🔇", text: "Nappal a suli, a játék, a barátok, a házi - az agyad folyton elfoglalt. Este, amikor csend van, az agyad úgy dönt: most van idő gondolkodni. És sajnos először a félelmek és az aggodalmak jutnak az eszébe." },
+          { emoji: "🌑", text: "A sötétben a testednek nehezebb megnyugodni. A szemed nem lát tisztán, a hangok másnak tűnnek, és az agyad ilyenkor éberebb - figyel, nincs-e veszély. Ez ősi dolog, nem hiba." },
+          { emoji: "💡", text: "Az is sokat számít, hogy este egyedül vagy a gondolataiddal. Nappal kérdezhetsz, beszélhetsz valakivel. Este úgy érzed, minden kérdéssel meg kell várnod a reggelt." },
+        ],
+      },
+      {
+        id: "nightmares", emoji: "😨", title: "Rémálmok",
+        content: [
+          { emoji: "🎬", text: "A rémálmok az agyad módja, hogy feldolgozza a napközben érzett félelmeket. Nem jóslatok, nem üzenetek, és nem azt jelentik, hogy valami rossz fog történni. Inkább olyanok, mint egy film, amit az agyad magának készít az érzéseidből." },
+          { emoji: "😮‍💨", text: "Ha felriadsz egy rémálomból: kapcsold fel a lámpát, nézz körül, és emlékeztesd magad, hol vagy. Biztonságban vagy, a saját szobádban, a saját ágyadban." },
+          { emoji: "🗣️", text: "Ha gyakran vannak rémálmaid, meséld el őket egy felnőttnek. Nem azért, mert veszélyesek, hanem mert a kimondott rémálom elveszíti az erejét. Reggel már sokkal kevésbé lesz ijesztő." },
+          { emoji: "🧸", text: "Ha segít, tarts az ágyad mellett egy plüsst, egy zseblámpát, vagy kérd meg, hogy hagyják résnyire az ajtót. Ezek nem csecsemős dolgok - ezek okos megoldások." },
+        ],
+      },
+      {
+        id: "ritual", emoji: "🌜", title: "Esti kis-rituálé",
+        intro: "Ez egy egyszerű, 5 perces rutin, amit minden este megtehetsz lefekvés előtt. Segít jelezni az agyadnak: most jön az alvás, biztonságban vagyok, elengedhetem a napot.",
+        steps: [
+          { num: "1", emoji: "📱", title: "Képernyő le", text: "10 perccel lefekvés előtt tedd le a telefont, tabletet. A képernyő fénye azt mondja az agyadnak: nappal van, légy éber. Pont az ellenkezőjét, amire szükséged van." },
+          { num: "2", emoji: "🌟", title: "Egy jó dolog", text: "Gondolj a mai nap egyetlen jó pillanatára. Bármi kicsi is: egy finom étel, egy poén, napsütés, valaki mosolya. Tartsd a fejedben egy percig." },
+          { num: "3", emoji: "🫁", title: "5 lassú lélegzet", text: "Fújd ki lassan az orrodon 4-ig számolva. Tartsd 2-ig. Engedd be 4-ig. Nem kell pontosnak lenned - a lényeg, hogy lassabb legyen, mint a normál légzésed." },
+          { num: "4", emoji: "🧶", title: "Test-átfutás", text: "Kezdd a lábujjaidnál: feszítsd meg őket 3 másodpercre, aztán engedd el. Haladj felfelé: lábszár, comb, has, kezek, vállak, arc. Ami feszült, engedd el." },
+          { num: "5", emoji: "💭", title: "Biztonságos hely", text: "Képzeld el a kedvenc helyedet - lehet valódi vagy kitalált. Tengerpart, erdő, nagymama kertje, egy felhő teteje. Képzeld el a színeket, szagokat, hangokat. Maradj ott, amíg el nem alszol." },
+        ],
+      },
+      {
+        id: "selftalk", emoji: "💬", title: "Amit elmondhatsz magadnak",
+        intro: "Ezek a mondatok segíthetnek, ha az agyad este nem akar leállni. Nem varázsmondatok - de ha elismétled őket, az agyad lassan elkezdi elhinni.",
+        phrases: [
+          { emoji: "🛏️", text: "Most este van. A gondok megvárnak holnapig. Most a testemnek pihenés kell." },
+          { emoji: "🛡️", text: "Biztonságban vagyok. A szobámban vagyok, az ágyamban. Körülöttem vannak, akik szeretnek." },
+          { emoji: "👩‍⚕️", text: "Az orvosok most is vigyáznak anyára. Nem nekem kell ébren maradnom, hogy anya rendben legyen." },
+          { emoji: "🌅", text: "A reggel jön. Ha van kérdésem, reggel megkérdezhetem. Most aludni is szabad." },
+          { emoji: "💪", text: "Ma is kibírtam egy napot. Ez erő. Holnap is ki fogom bírni." },
+          { emoji: "🌙", text: "Az alvás nem lustaság. Az alvás az, amitől holnap erős leszek." },
+        ],
+      },
+      {
+        id: "parent", emoji: "👩", title: "Amit kérhetsz a szüleidtől",
+        content: [
+          { emoji: "🚪", text: "Hagyd résnyire az ajtót - vagy ha szükséged van rá, kérd meg, hogy maradjanak veled, amíg el nem alszol. Ez nem gyerekes dolog, ez egy nehéz időszak." },
+          { emoji: "📖", text: "Kérd meg, hogy olvassanak neked - még akkor is, ha 'már nagy vagy hozzá'. Az ismerős hang megnyugtat." },
+          { emoji: "🕐", text: "Ha van egy kérdés, ami nem hagy nyugodni, kérd meg a szüleidet: Reggel megbeszélhetjük? Csak annyit kérek, hogy tudjam, lesz rá idő." },
+          { emoji: "🤗", text: "Ha anya a kórházban van: kérd meg apát vagy aki veled van, hogy este szánjon 5 percet csak rád. Nem kell beszélni - elég, ha ott van." },
+        ],
+      },
+    ],
+  },
+
+  // NAPLO
+  S90: { title: "Az én naplóm", icon: "📓", color: "#E8B4D0", type: "diary" },
+
+};
+
+// ====== ANIMATED GARDEN ======
+
+function GardenScene({ goTo }) {
+  var gardenSteps = [
+    { id: "welcome", title: "Mielőtt elkezdjük...", desc: "Most elmesélünk neked egy történetet, ami segít megérteni, mi történik anya testében. Nem kell orvosi szavakat tudnod hozzá - az egészet úgy meséljük el, mintha egy kertről szólna. Mert a test egy kicsit olyan, mint egy kert.", scene: "welcome" },
+    { id: "intro", title: "Anya teste olyan, mint egy gyönyörű kert", desc: "Képzeld el, hogy anya teste egy szép kert, tele színes virágokkal. Minden virág egy-egy egészséges sejt, amelyik rendesen növekedik és dolgozik. A kert él, lélegzik, és csodálatos.", scene: "healthy" },
+    { id: "weeds", title: "Néha gyomok jelennek meg", desc: "Néha a kertben gyomok kezdenek nőni. Ezek a gyomok a megváltozott sejtek - gyorsabban nőnek, mint kellene, és elvesznek helyet a virágoktól. Ez történt anya testében is.", scene: "weeds" },
+    { id: "gardener", title: "De vannak kertészek!", desc: "Az orvosok olyanok, mint a kertészek: tudják, hogyan kell elbánniuk a gyomokkal. Többféle szerszámuk és módszerük is van! Most megmutatjuk, melyik mire jó.", scene: "gardener" },
+    { id: "surgery", title: "Műtét = Kiássák a gyomot", desc: "A műtét olyan, mint amikor a kertész megkeresi a gyomot és óvatosan kiássa a gyökereivel együtt. Így az a gyom nem tud tovább nőni.", scene: "surgery" },
+    { id: "chemo", title: "Kemo = Speciális permet", desc: "A kemoterápia olyan, mint egy speciális permet, ami az egész kertben keresi a gyomokat. Néha a virágok is kicsit lankadnak tőle, de újra megerősödnek!", scene: "chemo" },
+    { id: "radiation", title: "Sugár = Napfény nagyítóval", desc: "A sugárkezelés olyan, mint amikor a nap fényét egy nagyítóval pontosan a gyomra irányítjuk. Csak a gyomot érinti, a többi virág rendben van.", scene: "radiation" },
+    { id: "meds", title: "Gyógyszerek = Kerítés", desc: "Az egyéb gyógyszerek olyanok, mint egy kerítés és őrök a kert körül. Vigyáznak, hogy ne jöhessenek vissza a gyomok.", scene: "meds" },
+    { id: "recovery", title: "A kert újra virágzik!", desc: "A kezelések után a kert lassan újra széppé válik. A virágok visszanőnek, a gyomok eltűnnek. Időbe telik, de a kert újra tele lesz színekkel és élettel!", scene: "recovery" },
+  ];
+  var _s = useState(0), step = _s[0], setStep = _s[1];
+  var current = gardenSteps[step];
+
+  function renderScene() {
+    var base = {
+      position: "relative", width: "100%", height: 240, borderRadius: 24,
+      overflow: "hidden", marginBottom: 20, transition: "all 0.6s ease",
+    };
+    var sky = { position: "absolute", top: 0, left: 0, right: 0, height: "55%",
+      background: current.scene === "chemo" ? "linear-gradient(180deg, #C8D8E8, #DDE8F0)" :
+        current.scene === "weeds" ? "linear-gradient(180deg, #D4DFE8, #E2EBF2)" :
+        current.scene === "recovery" ? "linear-gradient(180deg, #87CEEB, #D4F1FF)" :
+        "linear-gradient(180deg, " + COLORS.gardenSky + ", #E8F4FD)"
+    };
+    var ground = { position: "absolute", bottom: 0, left: 0, right: 0, height: "45%",
+      background: current.scene === "recovery" ? "linear-gradient(180deg, #7BC67E88, " + COLORS.gardenSoil + ")" :
+        "linear-gradient(180deg, " + COLORS.gardenGreen + "88, " + COLORS.gardenSoil + ")"
+    };
+    var sun = { position: "absolute", top: 15, right: 20, width: 44, height: 44, borderRadius: "50%",
+      background: current.scene === "recovery" ? "#FFD93D" : COLORS.gardenSun,
+      animation: "sunPulse 3s ease-in-out infinite",
+      boxShadow: current.scene === "recovery" ? "0 0 30px #FFD93D66" : "none",
+    };
+
+    var flowers = [];
+    var extras = [];
+
+    // Clouds for all scenes
+    if (current.scene !== "welcome") {
+      extras.push({ emoji: "☁️", left: 12, top: 8, anim: "floatSlow", delay: 0, size: 22, opacity: 0.5 });
+      extras.push({ emoji: "☁️", left: 75, top: 5, anim: "floatSlow", delay: 1.5, size: 18, opacity: 0.4 });
+    }
+
+    if (current.scene === "welcome") {
+      var welcomeFlowers = ["🌷", "🌻", "🌹", "🌺", "🌸", "🌼", "💐"];
+      for (var i = 0; i < 7; i++) {
+        flowers.push({ emoji: welcomeFlowers[i], left: 8 + i * 13, bottom: 33 + (i % 3) * 8, delay: 0.3 + i * 0.2, anim: "grow" });
+      }
+      extras.push({ emoji: "🦋", left: 25, top: 22, anim: "float", delay: 1.5, size: 22 });
+      extras.push({ emoji: "🐝", left: 60, top: 28, anim: "floatSlow", delay: 2.0, size: 18 });
+      extras.push({ emoji: "☁️", left: 40, top: 6, anim: "floatSlow", delay: 0, size: 24, opacity: 0.5 });
+    }
+
+    if (current.scene === "healthy") {
+      var flowerEmojis = ["🌷", "🌻", "🌹", "🌺", "🌸", "💐", "🌼"];
+      for (var i = 0; i < 7; i++) {
+        flowers.push({ emoji: flowerEmojis[i], left: 8 + i * 13, bottom: 35 + (i % 3) * 8, delay: i * 0.15, anim: "sway" });
+      }
+      extras.push({ emoji: "🐝", left: 35, top: 30, anim: "float", delay: 0.5, size: 18 });
+      extras.push({ emoji: "🦋", left: 70, top: 25, anim: "floatSlow", delay: 1.0, size: 20 });
+    }
+
+    if (current.scene === "weeds") {
+      var wFlowers = ["🌷", "🌻", "🌹", "🌺", "🌸"];
+      for (var i = 0; i < 5; i++) {
+        flowers.push({ emoji: wFlowers[i], left: 5 + i * 15, bottom: 35 + (i % 2) * 10, delay: i * 0.15, anim: "sway" });
+      }
+      flowers.push({ emoji: "🌿", left: 35, bottom: 40, delay: 0.6, anim: "grow", size: 32 });
+      flowers.push({ emoji: "🌿", left: 55, bottom: 38, delay: 0.9, anim: "grow", size: 28 });
+      flowers.push({ emoji: "🌿", left: 45, bottom: 44, delay: 1.2, anim: "grow", size: 36 });
+    }
+
+    if (current.scene === "gardener") {
+      var gFlowers = ["🌷", "🌻", "🌹", "🌿", "🌿"];
+      for (var i = 0; i < 5; i++) {
+        flowers.push({ emoji: gFlowers[i], left: 10 + i * 16, bottom: 35, delay: i * 0.1, anim: "sway" });
+      }
+      extras.push({ emoji: "👩‍🌾", left: 72, bottom: 28, anim: "gentleBounce", delay: 0.5, size: 48 });
+      extras.push({ emoji: "🧰", left: 82, bottom: 25, anim: "fadeIn", delay: 0.8, size: 22 });
+    }
+
+    if (current.scene === "surgery") {
+      var sFlowers = ["🌷", "🌻", "🌹", "🌺"];
+      for (var i = 0; i < 4; i++) {
+        flowers.push({ emoji: sFlowers[i], left: 5 + i * 15, bottom: 35, delay: i * 0.1, anim: "sway" });
+      }
+      extras.push({ emoji: "👩‍🌾", left: 65, bottom: 28, anim: "gentleBounce", delay: 0.3, size: 44 });
+      extras.push({ emoji: "🌿", left: 50, bottom: 55, anim: "wiggle", delay: 0.5, size: 28, opacity: 0.5 });
+    }
+
+    if (current.scene === "chemo") {
+      var cFlowers = ["🌷", "🌻", "🌹", "🌺"];
+      for (var i = 0; i < 4; i++) {
+        flowers.push({ emoji: cFlowers[i], left: 8 + i * 18, bottom: 33 + (i % 2) * 6, delay: i * 0.1, anim: "sway", opacity: 0.6 });
+      }
+      for (var i = 0; i < 8; i++) {
+        extras.push({ emoji: "💧", left: 8 + i * 12, top: 38 + (i % 3) * 6, anim: "rainDrop", delay: i * 0.25, size: 14 });
+      }
+    }
+
+    if (current.scene === "radiation") {
+      var rFlowers = ["🌷", "🌻", "🌹", "🌺", "🌸"];
+      for (var i = 0; i < 5; i++) {
+        flowers.push({ emoji: rFlowers[i], left: 5 + i * 15, bottom: 35, delay: i * 0.1, anim: "sway" });
+      }
+      extras.push({ emoji: "🌿", left: 45, bottom: 40, anim: "wiggle", delay: 0.3, size: 28 });
+      extras.push({ emoji: "☀️", left: 43, top: 8, anim: "pulse", delay: 0, size: 40 });
+      // Light beam effect
+      extras.push({ emoji: "✨", left: 44, top: 30, anim: "sparkle", delay: 0.2, size: 16 });
+      extras.push({ emoji: "✨", left: 46, top: 38, anim: "sparkle", delay: 0.4, size: 14 });
+    }
+
+    if (current.scene === "meds") {
+      var mFlowers = ["🌷", "🌻", "🌹", "🌺", "🌸", "🌼"];
+      for (var i = 0; i < 6; i++) {
+        flowers.push({ emoji: mFlowers[i], left: 10 + i * 13, bottom: 35 + (i % 2) * 6, delay: i * 0.12, anim: "sway" });
+      }
+      extras.push({ emoji: "🛡️", left: 2, bottom: 42, anim: "gentleBounce", delay: 0.3, size: 32 });
+      extras.push({ emoji: "🛡️", left: 90, bottom: 42, anim: "gentleBounce", delay: 0.5, size: 32 });
+      extras.push({ emoji: "🛡️", left: 46, bottom: 55, anim: "gentleBounce", delay: 0.7, size: 26 });
+    }
+
+    if (current.scene === "recovery") {
+      var recFlowers = ["🌷", "🌻", "🌹", "🌺", "🌸", "💐", "🌼", "🌻"];
+      for (var i = 0; i < 8; i++) {
+        flowers.push({ emoji: recFlowers[i], left: 5 + i * 12, bottom: 32 + (i % 3) * 8, delay: i * 0.12, anim: "grow" });
+      }
+      extras.push({ emoji: "🦋", left: 20, top: 20, anim: "float", delay: 0.5, size: 24 });
+      extras.push({ emoji: "🦋", left: 55, top: 18, anim: "floatSlow", delay: 1.0, size: 20 });
+      extras.push({ emoji: "🐝", left: 75, top: 28, anim: "float", delay: 1.5, size: 18 });
+      extras.push({ emoji: "✨", left: 35, top: 30, anim: "sparkle", delay: 0.3, size: 16 });
+      extras.push({ emoji: "✨", left: 65, top: 35, anim: "sparkle", delay: 0.8, size: 14 });
+      extras.push({ emoji: "🌈", left: 50, top: 3, anim: "fadeIn", delay: 1.0, size: 36 });
+    }
+
+    return (
+      <div style={base}>
+        <div style={sky} />
+        {current.scene !== "welcome" && <div style={sun} />}
+        <div style={ground} />
+        {flowers.map(function (f, i) {
+          return (
+            <div key={"f" + i} style={{
+              position: "absolute", left: f.left + "%", bottom: (f.bottom || 35) + "%",
+              fontSize: f.size || 28, animation: f.anim + " 2s ease-in-out " + f.delay + "s both",
+              opacity: f.opacity || 1, zIndex: 2, transform: "translateX(-50%)",
+            }}>{f.emoji}</div>
+          );
+        })}
+        {extras.map(function (e, i) {
+          var pos = {};
+          if (e.left !== undefined) pos.left = e.left + "%";
+          if (e.top !== undefined) pos.top = e.top + "%";
+          if (e.bottom !== undefined) pos.bottom = e.bottom + "%";
+          pos.position = "absolute";
+          pos.fontSize = e.size || 24;
+          pos.animation = e.anim + " 2s ease-in-out " + (e.delay || 0) + "s both";
+          pos.opacity = e.opacity || 1;
+          pos.zIndex = 3;
+          pos.transform = "translateX(-50%)";
+          return <div key={"e" + i} style={pos}>{e.emoji}</div>;
+        })}
+        {current.scene === "welcome" && (
+          <div style={{
+            position: "absolute", top: "50%", left: "50%", transform: "translate(-50%, -50%)",
+            fontSize: 50, animation: "float 3s ease-in-out infinite", zIndex: 4,
+          }}>{"🌻"}</div>
+        )}
+      </div>
+    );
+  }
+
+  return (
+    <div>
+      <h2 style={{ fontFamily: "'Baloo 2', cursive", fontSize: 24, fontWeight: 800, marginBottom: 14, animation: "fadeIn 0.4s ease both" }}>
+        {"🌻"} A kert-történet
+      </h2>
+      {step === 0 && (
+        <div style={{
+          background: "linear-gradient(135deg, " + COLORS.gardenGreen + "18, " + COLORS.peach + "18)",
+          borderRadius: 20, padding: "16px 20px", marginBottom: 16,
+          border: "2px solid " + COLORS.gardenGreen + "33",
+          animation: "slideUp 0.4s ease 0.1s both",
+        }}>
+          <p style={{ fontSize: 13, lineHeight: 1.7, color: COLORS.text, fontStyle: "normal" }}>
+            Ez egy mesés történet, ami segít megérteni, miért beteg anya, és hogyan dolgoznak az orvosok a gyógyulásáért. Nem kell hozzá orvosi szavakat tudnod - csak képzelőerő kell!
+          </p>
+        </div>
+      )}
+      {renderScene()}
+      <div style={{
+        background: COLORS.white, borderRadius: 22, padding: "22px 24px",
+        marginBottom: 16, boxShadow: "0 2px 14px rgba(0,0,0,0.05)",
+        animation: "fadeIn 0.5s ease both",
+      }}>
+        <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 12 }}>
+          <span style={{ fontSize: 11, color: COLORS.textLight }}>{(step + 1) + " / " + gardenSteps.length}</span>
+          <div style={{ flex: 1, height: 5, background: COLORS.warmGray + "66", borderRadius: 3 }}>
+            <div style={{ height: 5, borderRadius: 3, background: "linear-gradient(90deg, " + COLORS.gardenGreen + ", " + COLORS.mint + ")", width: ((step + 1) / gardenSteps.length * 100) + "%", transition: "width 0.6s ease" }} />
+          </div>
+        </div>
+        <h3 style={{ fontFamily: "'Baloo 2', cursive", fontSize: 20, fontWeight: 800, marginBottom: 10, color: COLORS.text }}>{current.title}</h3>
+        <p style={{ fontSize: 15.5, lineHeight: 1.85, color: COLORS.text }}>{current.desc}</p>
+      </div>
+      <div style={{ display: "flex", gap: 10 }}>
+        {step > 0 && (
+          <button onClick={function () { setStep(step - 1); }} style={{
+            flex: 1, background: COLORS.warmGray, border: "none", padding: "14px 20px",
+            borderRadius: 16, fontSize: 15, fontWeight: 700, cursor: "pointer", fontFamily: "'Nunito', sans-serif",
+          }}>{"← Előző"}</button>
+        )}
+        {step < gardenSteps.length - 1 ? (
+          <button onClick={function () { setStep(step + 1); }} style={{
+            flex: 2, background: COLORS.gardenGreen + "88", border: "none", padding: "14px 20px",
+            borderRadius: 16, fontSize: 15, fontWeight: 700, cursor: "pointer", fontFamily: "'Nunito', sans-serif",
+            color: COLORS.text, animation: "gentleBounce 2s ease infinite",
+          }}>{"Tovább →"}</button>
+        ) : (
+          <button onClick={function () { goTo("S10"); }} style={{
+            flex: 2, background: COLORS.mint, border: "none", padding: "14px 20px",
+            borderRadius: 16, fontSize: 15, fontWeight: 700, cursor: "pointer", fontFamily: "'Nunito', sans-serif",
+            color: COLORS.text, animation: "pulse 1.5s ease infinite",
+          }}>{"Megértem, mi történik →"}</button>
+        )}
+      </div>
+    </div>
+  );
+}
+
+// ====== REUSABLE COMPONENTS ======
+
+function Card({ emoji, text, color, delay }) {
+  return (
+    <div style={{
+      background: color || COLORS.white, borderRadius: 20, padding: "18px 20px", marginBottom: 12,
+      boxShadow: "0 3px 14px rgba(0,0,0,0.06)", display: "flex", alignItems: "flex-start", gap: 14,
+      animation: "slideUp 0.5s ease " + (delay || 0) + "s both",
+    }}>
+      {emoji && <span style={{ fontSize: 26, flexShrink: 0, animation: "popIn 0.5s ease " + ((delay || 0) + 0.2) + "s both" }}>{emoji}</span>}
+      <span style={{ fontSize: 15.5, lineHeight: 1.75, flex: 1 }}>{text}</span>
+    </div>
+  );
+}
+
+function MenuCard({ emoji, label, onClick, delay, bg, tint }) {
+  return (
+    <div onClick={onClick} style={{
+      background: tint ? "linear-gradient(135deg, " + tint + "18, " + COLORS.white + ")" : (bg || COLORS.white),
+      borderRadius: 20, padding: "18px 22px", marginBottom: 10,
+      boxShadow: "0 3px 14px rgba(0,0,0,0.06)", cursor: "pointer",
+      display: "flex", alignItems: "center", gap: 16,
+      animation: "slideInLeft 0.5s ease " + (delay || 0) + "s both",
+      transition: "transform 0.2s, box-shadow 0.2s",
+      borderLeft: tint ? "4px solid " + tint + "77" : "4px solid transparent",
+    }}>
+      <span style={{ fontSize: 28, animation: "popIn 0.4s ease " + ((delay || 0) + 0.1) + "s both" }}>{emoji}</span>
+      <span style={{ fontSize: 15.5, fontWeight: 700 }}>{label}</span>
+      <span style={{ marginLeft: "auto", color: COLORS.textLight, fontSize: 18 }}>{"→"}</span>
+    </div>
+  );
+}
+
+function InfoBlock({ q, a, delay }) {
+  return (
+    <div style={{
+      background: COLORS.white, borderRadius: 18, padding: "18px 20px", marginBottom: 12,
+      boxShadow: "0 3px 14px rgba(0,0,0,0.06)",
+      animation: "slideUp 0.5s ease " + (delay || 0) + "s both",
+    }}>
+      <div style={{ fontWeight: 800, fontSize: 14, color: COLORS.textLight, marginBottom: 6, fontFamily: "'Baloo 2', cursive" }}>{q}</div>
+      <div style={{ fontSize: 15.5, lineHeight: 1.75 }}>{a}</div>
+    </div>
+  );
+}
+
+function Btn({ label, onClick, color, delay }) {
+  var isCTA = !color || color === COLORS.mint;
+  return (
+    <button onClick={onClick} style={{
+      display: "block", width: "100%",
+      background: isCTA ? "linear-gradient(135deg, " + COLORS.coral + ", #E8734A)" : (color || COLORS.mint),
+      border: "none", padding: "16px 24px", borderRadius: 16,
+      fontSize: 16, fontWeight: 700, fontFamily: "'Nunito', sans-serif",
+      color: isCTA ? COLORS.white : COLORS.text, cursor: "pointer", marginTop: 16,
+      animation: "slideUp 0.5s ease " + (delay || 0) + "s both",
+      transition: "transform 0.15s",
+      boxShadow: isCTA ? "0 4px 14px rgba(242, 132, 92, 0.35)" : "0 2px 8px rgba(0,0,0,0.06)",
+    }}>{label}</button>
+  );
+}
+
+function GardenTip({ text }) {
+  return (
+    <div style={{
+      background: "linear-gradient(135deg, " + COLORS.gardenGreen + "22, " + COLORS.gardenSky + "33)",
+      borderRadius: 18, padding: "16px 20px", marginBottom: 16,
+      border: "2px solid " + COLORS.gardenGreen + "33",
+      display: "flex", alignItems: "center", gap: 12,
+      animation: "slideInRight 0.5s ease 0.1s both",
+    }}>
+      <span style={{ fontSize: 28, animation: "sway 2s ease-in-out infinite" }}>{"🌱"}</span>
+      <div>
+        <div style={{ fontSize: 12, fontWeight: 800, color: COLORS.gardenGreen, marginBottom: 2, textTransform: "uppercase", letterSpacing: 0.5 }}>Kert-hasonlat</div>
+        <div style={{ fontSize: 14, lineHeight: 1.6, color: COLORS.text }}>{text}</div>
+      </div>
+    </div>
+  );
+}
+
+// ====== EXERCISES ======
+
+function BreathingExercise({ goTo }) {
+  var _s = useState("idle"), phase = _s[0], setPhase = _s[1];
+  var _c = useState(0), count = _c[0], setCount = _c[1];
+  var _r = useState(0), round = _r[0], setRound = _r[1];
+  var timerRef = useRef(null);
+  useEffect(function () { return function () { clearInterval(timerRef.current); }; }, []);
+
+  function runCycle(r) {
+    if (r >= 5) { setPhase("done"); return; }
+    setRound(r + 1); setPhase("in"); var c = 3; setCount(c);
+    clearInterval(timerRef.current);
+    timerRef.current = setInterval(function () {
+      c--; if (c > 0) { setCount(c); } else {
+        clearInterval(timerRef.current); setPhase("out"); var c2 = 4; setCount(c2);
+        timerRef.current = setInterval(function () {
+          c2--; if (c2 > 0) { setCount(c2); } else {
+            clearInterval(timerRef.current); setTimeout(function () { runCycle(r + 1); }, 600);
+          }
+        }, 1000);
+      }
+    }, 1000);
+  }
+
+  var sz = phase === "in" ? 180 : phase === "out" ? 100 : 140;
+  var cl = phase === "in" ? COLORS.softBlue : phase === "out" ? COLORS.lavender : COLORS.mint;
+
+  return (
+    <div style={{ textAlign: "center", padding: "20px 0" }}>
+      <div style={{
+        width: sz, height: sz, borderRadius: "50%",
+        background: "radial-gradient(circle, " + cl + ", " + cl + "88)",
+        margin: "30px auto", transition: "all 1s ease",
+        display: "flex", alignItems: "center", justifyContent: "center",
+        boxShadow: "0 0 40px " + cl + "66",
+      }}>
+        {phase !== "idle" && phase !== "done" && <span style={{ fontSize: 40, fontWeight: 800, color: COLORS.white }}>{count}</span>}
+        {phase === "idle" && <span style={{ fontSize: 40 }}>{"⭐"}</span>}
+        {phase === "done" && <span style={{ fontSize: 40, animation: "sparkle 1s ease infinite" }}>{"🌟"}</span>}
+      </div>
+      {phase === "idle" && (
+        <div>
+          <p style={{ fontSize: 15.5, lineHeight: 1.75, marginBottom: 20, padding: "0 10px" }}>Figyeld a kort: amikor no, szívd be lassan a levegőt. Amikor zsugorodik, fújd ki.</p>
+          <Btn label="Kezdjuk!" onClick={function () { runCycle(0); }} color={COLORS.mint} />
+          <Btn label="Más gyakorlat" onClick={function () { goTo("S50"); }} color={COLORS.warmGray} delay={0.1} />
+        </div>
+      )}
+      {phase === "in" && <p style={{ fontSize: 20, fontWeight: 700, color: COLORS.softBlue, animation: "fadeIn 0.3s ease" }}>Lassan szívd be...</p>}
+      {phase === "out" && <p style={{ fontSize: 20, fontWeight: 700, color: COLORS.lavender, animation: "fadeIn 0.3s ease" }}>Lassan fújd ki...</p>}
+      {phase !== "idle" && phase !== "done" && <p style={{ fontSize: 13, color: COLORS.textLight, marginTop: 8 }}>{round}. kor az 5-bol</p>}
+      {phase === "done" && (
+        <div style={{ animation: "slideUp 0.4s ease both" }}>
+          <p style={{ fontSize: 18, fontWeight: 700, marginBottom: 8 }}>Szuper!</p>
+          <Btn label="Más gyakorlat" onClick={function () { goTo("S50"); }} color={COLORS.mint} />
+        </div>
+      )}
+    </div>
+  );
+}
+
+function LemonExercise({ goTo }) {
+  var _s = useState(0), step = _s[0], setStep = _s[1];
+  var steps = [
+    { text: "Kepzeld el, hogy egy nagy, sarga citromot tartasz a kezedben!", emoji: "🍋" },
+    { text: "Most szorítsd össze nagyon erősen mindket kezedet!", emoji: "✊" },
+    { text: "Tartsd 5 masodpercig...", emoji: "💪", timer: 5 },
+    { text: "Most engedd el! Lazítsd el teljesen a kezeidet.", emoji: "🤲" },
+    { text: "Razd még lazan a kezeidet. Milyen jo, ugye?", emoji: "👐" },
+  ];
+  var _cd = useState(null), countdown = _cd[0], setCountdown = _cd[1];
+  var timerRef = useRef(null);
+
+  useEffect(function () { if (steps[step] && steps[step].timer && countdown === null) setCountdown(steps[step].timer); }, [step]);
+  useEffect(function () {
+    if (countdown !== null && countdown > 0) timerRef.current = setTimeout(function () { setCountdown(countdown - 1); }, 1000);
+    return function () { clearTimeout(timerRef.current); };
+  }, [countdown]);
+
+  if (step >= steps.length) {
+    return (
+      <div style={{ textAlign: "center", animation: "slideUp 0.4s ease both", padding: "30px 0" }}>
+        <span style={{ fontSize: 50, animation: "sparkle 1.5s ease infinite" }}>{"🌟"}</span>
+        <p style={{ fontSize: 18, fontWeight: 700, margin: "16px 0 8px" }}>Remek munka!</p>
+        <Btn label="Más gyakorlat" onClick={function () { goTo("S50"); }} color={COLORS.mint} />
+      </div>
+    );
+  }
+
+  return (
+    <div style={{ textAlign: "center", animation: "fadeIn 0.4s ease both", padding: "20px 0" }}>
+      <span style={{ fontSize: 60, display: "block", marginBottom: 20, animation: step === 1 || step === 2 ? "wiggle 0.5s ease infinite" : "float 2s ease infinite" }}>{steps[step].emoji}</span>
+      <p style={{ fontSize: 17, lineHeight: 1.8, marginBottom: 16, padding: "0 10px", fontWeight: 600 }}>{steps[step].text}</p>
+      {countdown !== null && countdown > 0 && (
+        <div style={{ fontSize: 48, fontWeight: 800, color: COLORS.peach, margin: "20px 0", animation: "pulse 1s ease infinite" }}>{countdown}</div>
+      )}
+      <Btn label={step < steps.length - 1 ? "Tovább" : "Még egyszer!"} onClick={function () { setCountdown(null); setStep(step + 1); }} color={COLORS.mint} />
+    </div>
+  );
+}
+
+function GroundingExercise({ goTo }) {
+  var _s = useState(0), step = _s[0], setStep = _s[1];
+  var gSteps = [
+    { label: "Nézz körül! Mondj 3 dolgot, amit LÁTSZ.", key: "see", count: 3, color: COLORS.softBlue, emoji: "👀" },
+    { label: "Figyelj! Mondj 2 dolgot, amit HALLASZ.", key: "hear", count: 2, color: COLORS.mint, emoji: "👂" },
+    { label: "Tapints még valamit! Mondj 1 dolgot, amit ÉRZEL.", key: "feel", count: 1, color: COLORS.peach, emoji: "✋" },
+  ];
+  var _i = useState({ see: ["", "", ""], hear: ["", ""], feel: [""] }), items = _i[0], setItems = _i[1];
+
+  if (step >= 3) {
+    return (
+      <div style={{ textAlign: "center", animation: "slideUp 0.4s ease both", padding: "30px 0" }}>
+        <span style={{ fontSize: 50, animation: "sparkle 1.5s ease infinite" }}>{"🌟"}</span>
+        <p style={{ fontSize: 18, fontWeight: 700, margin: "16px 0 8px" }}>Ügyes vagy!</p>
+        <p style={{ fontSize: 15, color: COLORS.textLight, marginBottom: 24 }}>Ez a gyakorlat segít visszajönni a jelenbe.</p>
+        <Btn label="Más gyakorlat" onClick={function () { goTo("S50"); }} color={COLORS.mint} />
+      </div>
+    );
+  }
+
+  var cur = gSteps[step];
+  return (
+    <div style={{ animation: "fadeIn 0.4s ease both" }}>
+      <div style={{
+        background: cur.color + "30", borderRadius: 20, padding: 24, marginBottom: 16,
+        textAlign: "center", border: "2px solid " + cur.color + "44",
+      }}>
+        <span style={{ fontSize: 40, display: "block", marginBottom: 12, animation: "gentleBounce 1.5s ease infinite" }}>{cur.emoji}</span>
+        <p style={{ fontSize: 18, fontWeight: 700, marginBottom: 20 }}>{cur.label}</p>
+        {Array.from({ length: cur.count }).map(function (_, i) {
+          return (
+            <input key={i} type="text" placeholder={(i + 1) + "..."} value={items[cur.key][i]}
+              onChange={function (ev) { var c = JSON.parse(JSON.stringify(items)); c[cur.key][i] = ev.target.value; setItems(c); }}
+              style={{
+                display: "block", width: "100%", padding: "14px 18px", borderRadius: 14,
+                border: "2px solid " + COLORS.warmGray, fontSize: 16, fontFamily: "'Nunito', sans-serif",
+                marginBottom: 10, outline: "none", background: COLORS.bg,
+              }}
+            />
+          );
+        })}
+      </div>
+      <Btn label="Tovább" onClick={function () { setStep(step + 1); }} color={cur.color + "88"} />
+    </div>
+  );
+}
+
+function SchoolFriendsModule({ screen, goTo }) {
+  var _s = useState(null), openId = _s[0], setOpenId = _s[1];
+
+  return (
+    <div style={{ padding: "10px 0" }}>
+      <h2 style={{ fontFamily: "'Baloo 2', cursive", fontSize: 24, fontWeight: 800, marginBottom: 8, animation: "fadeIn 0.4s ease both" }}>
+        {"🎒"} A suliban és a barátokkal
+      </h2>
+      <div style={{
+        background: "linear-gradient(135deg, #6BB5E022, " + COLORS.mint + "18)",
+        borderRadius: 20, padding: "18px 22px", marginBottom: 22,
+        border: "2px solid #6BB5E033",
+        animation: "slideUp 0.4s ease both",
+      }}>
+        <p style={{ fontSize: 15.5, lineHeight: 1.8 }}>{screen.intro}</p>
+      </div>
+
+      {screen.sections.map(function (section, i) {
+        var isOpen = openId === section.id;
+        return (
+          <div key={section.id} style={{ marginBottom: 12, animation: "slideUp 0.4s ease " + (0.1 + i * 0.06) + "s both" }}>
+            <div onClick={function () { setOpenId(isOpen ? null : section.id); }} style={{
+              background: COLORS.white, borderRadius: 20,
+              padding: isOpen ? "18px 22px" : "14px 20px",
+              boxShadow: isOpen ? "0 4px 18px rgba(0,0,0,0.09)" : "0 2px 10px rgba(0,0,0,0.05)",
+              cursor: "pointer", transition: "all 0.3s",
+              border: isOpen ? "2px solid #6BB5E066" : "2px solid transparent",
+            }}>
+              <div style={{ display: "flex", alignItems: "center", gap: 14 }}>
+                <span style={{ fontSize: 28, animation: isOpen ? "float 3s ease infinite" : "none" }}>{section.emoji}</span>
+                <div style={{ flex: 1, fontWeight: 700, fontSize: 16 }}>{section.title}</div>
+                <span style={{ fontSize: 18, color: COLORS.textLight, transition: "transform 0.3s", transform: isOpen ? "rotate(180deg)" : "rotate(0)" }}>{"▾"}</span>
+              </div>
+
+              {isOpen && (
+                <div style={{ marginTop: 16, animation: "fadeIn 0.3s ease" }}>
+                  {section.intro && (
+                    <div style={{
+                      background: "#6BB5E010", borderRadius: 16, padding: "14px 18px", marginBottom: 14,
+                      borderLeft: "4px solid #6BB5E044",
+                    }}>
+                      <p style={{ fontSize: 15.5, lineHeight: 1.8, color: COLORS.text, fontStyle: "normal" }}>{section.intro}</p>
+                    </div>
+                  )}
+
+                  {section.content && section.content.map(function (item, j) {
+                    return (
+                      <div key={j} style={{
+                        display: "flex", gap: 12, alignItems: "flex-start", marginBottom: 14,
+                        animation: "slideInLeft 0.3s ease " + (j * 0.08) + "s both",
+                      }}>
+                        <span style={{ fontSize: 22, flexShrink: 0, marginTop: 2 }}>{item.emoji}</span>
+                        <p style={{ fontSize: 15.5, lineHeight: 1.8 }}>{item.text}</p>
+                      </div>
+                    );
+                  })}
+
+                  {section.levels && section.levels.map(function (lvl, l) {
+                    return (
+                      <div key={l} style={{
+                        marginBottom: 16, animation: "slideInLeft 0.3s ease " + (l * 0.1) + "s both",
+                      }}>
+                        <div style={{ fontWeight: 700, fontSize: 14, marginBottom: 8, color: "#6BB5E0" }}>{lvl.level}</div>
+                        {lvl.examples.map(function (ex, e) {
+                          return (
+                            <div key={e} style={{
+                              background: "#6BB5E008", borderRadius: 14, padding: "12px 16px",
+                              marginBottom: 8, borderLeft: "3px solid #6BB5E044",
+                            }}>
+                              <p style={{ fontSize: 15.5, lineHeight: 1.75, fontStyle: "italic" }}>{'"' + ex + '"'}</p>
+                            </div>
+                          );
+                        })}
+                      </div>
+                    );
+                  })}
+
+                  {section.scenarios && section.scenarios.map(function (sc, s) {
+                    return (
+                      <div key={s} style={{
+                        background: COLORS.warmGray + "33", borderRadius: 18, padding: "16px 20px",
+                        marginBottom: 12, animation: "slideInLeft 0.3s ease " + (s * 0.08) + "s both",
+                      }}>
+                        <div style={{ fontWeight: 700, fontSize: 15, marginBottom: 8 }}>{sc.situation}</div>
+                        <div style={{ display: "flex", gap: 8, alignItems: "flex-start", marginBottom: 8 }}>
+                          <span style={{ fontSize: 12, fontWeight: 800, color: COLORS.textLight, minWidth: 60 }}>Miért:</span>
+                          <p style={{ fontSize: 13, lineHeight: 1.7, color: COLORS.textLight }}>{sc.why}</p>
+                        </div>
+                        <div style={{ display: "flex", gap: 8, alignItems: "flex-start",
+                          background: COLORS.mint + "18", borderRadius: 12, padding: "10px 14px",
+                        }}>
+                          <span style={{ fontSize: 12, fontWeight: 800, color: COLORS.text, minWidth: 60 }}>Mondhatod:</span>
+                          <p style={{ fontSize: 13, lineHeight: 1.7, fontStyle: "italic" }}>{sc.what}</p>
+                        </div>
+                      </div>
+                    );
+                  })}
+
+                  {section.responses && (
+                    <div style={{ marginTop: 6 }}>
+                      <div style={{ fontSize: 13, fontWeight: 800, color: COLORS.textLight, marginBottom: 10, textTransform: "uppercase", letterSpacing: 0.5 }}>
+                        Amit mondhatsz
+                      </div>
+                      {section.responses.map(function (resp, r) {
+                        return (
+                          <div key={r} style={{
+                            background: COLORS.mint + "12", borderRadius: 16, padding: "14px 18px",
+                            marginBottom: 10, borderLeft: "4px solid " + COLORS.mint + "55",
+                            animation: "slideInLeft 0.3s ease " + (r * 0.08) + "s both",
+                          }}>
+                            <div style={{ display: "flex", gap: 10, alignItems: "flex-start" }}>
+                              <span style={{ fontSize: 18, flexShrink: 0 }}>{resp.emoji}</span>
+                              <div>
+                                <div style={{ fontSize: 12, fontWeight: 800, color: COLORS.textLight, marginBottom: 4 }}>{resp.label}</div>
+                                <p style={{ fontSize: 15.5, lineHeight: 1.75, fontStyle: "italic" }}>{'"' + resp.text + '"'}</p>
+                              </div>
+                            </div>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  )}
+
+                  {section.requests && (
+                    <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10 }}>
+                      {section.requests.map(function (req, r) {
+                        return (
+                          <div key={r} style={{
+                            background: "#6BB5E010", borderRadius: 16, padding: "14px 16px",
+                            display: "flex", alignItems: "flex-start", gap: 10,
+                            animation: "popIn 0.3s ease " + (r * 0.06) + "s both",
+                            border: "1px solid #6BB5E022",
+                          }}>
+                            <span style={{ fontSize: 22, flexShrink: 0 }}>{req.emoji}</span>
+                            <span style={{ fontSize: 13, lineHeight: 1.6 }}>{req.text}</span>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  )}
+                </div>
+              )}
+            </div>
+          </div>
+        );
+      })}
+
+      <div style={{ marginTop: 8 }}>
+        <Btn label="Segítség - felnőttek" onClick={function () { goTo("S60"); }} color={COLORS.peach + "55"} delay={0.6} />
+        <Btn label="Vissza a főmenübe" onClick={function () { goTo("S00"); }} color={COLORS.warmGray} delay={0.65} />
+      </div>
+    </div>
+  );
+}
+
+function BedtimeModule({ screen, goTo }) {
+  var _s = useState(null), openId = _s[0], setOpenId = _s[1];
+  var _ritual = useState(false), showRitual = _ritual[0], setShowRitual = _ritual[1];
+  var _ritStep = useState(0), ritStep = _ritStep[0], setRitStep = _ritStep[1];
+
+  var nightColors = { sky: "#1a1a3e", skyLight: "#2d2d6b", star: "#FFD93D", moon: "#F5E6A3", text: "#E8E0F0", card: "#2a2a5a" };
+
+  return (
+    <div style={{ padding: "10px 0" }}>
+      <div style={{
+        background: "linear-gradient(180deg, " + nightColors.sky + ", " + nightColors.skyLight + ")",
+        borderRadius: 24, padding: "28px 24px 20px", marginBottom: 20,
+        position: "relative", overflow: "hidden",
+        animation: "fadeIn 0.6s ease both",
+      }}>
+        <div style={{ position: "absolute", top: 12, right: 20, fontSize: 40, animation: "float 4s ease infinite" }}>{"🌙"}</div>
+        {[15, 35, 55, 75, 88].map(function (l, i) {
+          return <div key={i} style={{ position: "absolute", left: l + "%", top: (10 + i * 8) + "%", fontSize: 8 + (i % 3) * 4, opacity: 0.4 + (i % 3) * 0.2, animation: "sparkle 3s ease " + (i * 0.5) + "s infinite" }}>{"✦"}</div>;
+        })}
+        <h2 style={{ fontFamily: "'Baloo 2', cursive", fontSize: 24, fontWeight: 800, color: nightColors.text, marginBottom: 10, position: "relative", zIndex: 1 }}>
+          {"🌙"} Este, az ágyban
+        </h2>
+        <p style={{ fontSize: 15.5, lineHeight: 1.85, color: nightColors.text, opacity: 0.9, position: "relative", zIndex: 1 }}>{screen.intro}</p>
+      </div>
+
+      {screen.sections.map(function (section, i) {
+        var isOpen = openId === section.id;
+        var isRitual = section.id === "ritual";
+        var isPhrases = section.id === "selftalk";
+
+        return (
+          <div key={section.id} style={{ marginBottom: 12, animation: "slideUp 0.4s ease " + (0.1 + i * 0.06) + "s both" }}>
+            <div onClick={function () { setOpenId(isOpen ? null : section.id); setShowRitual(false); setRitStep(0); }} style={{
+              background: COLORS.white, borderRadius: 20,
+              padding: isOpen ? "18px 22px" : "14px 20px",
+              boxShadow: isOpen ? "0 4px 18px rgba(0,0,0,0.09)" : "0 2px 10px rgba(0,0,0,0.05)",
+              cursor: "pointer", transition: "all 0.3s",
+              border: isOpen ? "2px solid #7B8CDE66" : "2px solid transparent",
+            }}>
+              <div style={{ display: "flex", alignItems: "center", gap: 14 }}>
+                <span style={{ fontSize: 28, animation: isOpen ? "float 3s ease infinite" : "none" }}>{section.emoji}</span>
+                <div style={{ flex: 1, fontWeight: 700, fontSize: 16 }}>{section.title}</div>
+                <span style={{ fontSize: 18, color: COLORS.textLight, transition: "transform 0.3s", transform: isOpen ? "rotate(180deg)" : "rotate(0)" }}>{"▾"}</span>
+              </div>
+
+              {isOpen && (
+                <div style={{ marginTop: 16, animation: "fadeIn 0.3s ease" }}>
+                  {section.intro && (
+                    <div style={{
+                      background: "#7B8CDE12", borderRadius: 16, padding: "14px 18px", marginBottom: 14,
+                      borderLeft: "4px solid #7B8CDE44",
+                    }}>
+                      <p style={{ fontSize: 15.5, lineHeight: 1.8, color: COLORS.text, fontStyle: "normal" }}>{section.intro}</p>
+                    </div>
+                  )}
+
+                  {section.content && section.content.map(function (item, j) {
+                    return (
+                      <div key={j} style={{
+                        display: "flex", gap: 12, alignItems: "flex-start", marginBottom: 14,
+                        animation: "slideInLeft 0.3s ease " + (j * 0.08) + "s both",
+                      }}>
+                        <span style={{ fontSize: 22, flexShrink: 0, marginTop: 2 }}>{item.emoji}</span>
+                        <p style={{ fontSize: 15.5, lineHeight: 1.8 }}>{item.text}</p>
+                      </div>
+                    );
+                  })}
+
+                  {isRitual && !showRitual && (
+                    <button onClick={function (e) { e.stopPropagation(); setShowRitual(true); setRitStep(0); }} style={{
+                      width: "100%", padding: "16px 20px", borderRadius: 18, border: "none",
+                      background: "linear-gradient(135deg, " + nightColors.skyLight + ", #7B8CDE)",
+                      color: nightColors.text, fontSize: 15, fontWeight: 700, cursor: "pointer",
+                      fontFamily: "'Nunito', sans-serif", animation: "popIn 0.3s ease both",
+                    }}>{"Kezdjük el az esti rituálét 🌙"}</button>
+                  )}
+
+                  {isRitual && showRitual && (
+                    <div onClick={function (e) { e.stopPropagation(); }} style={{ animation: "fadeIn 0.4s ease both" }}>
+                      <div style={{
+                        background: "linear-gradient(135deg, " + nightColors.sky + ", " + nightColors.skyLight + ")",
+                        borderRadius: 20, padding: "22px 24px", marginBottom: 14, position: "relative", overflow: "hidden",
+                      }}>
+                        {[20, 50, 80].map(function (l, idx) {
+                          return <div key={idx} style={{ position: "absolute", left: l + "%", top: (8 + idx * 10) + "%", fontSize: 10, opacity: 0.3, animation: "sparkle 2s ease " + (idx * 0.7) + "s infinite" }}>{"✦"}</div>;
+                        })}
+                        <div style={{ display: "flex", alignItems: "center", gap: 6, marginBottom: 14, position: "relative", zIndex: 1 }}>
+                          <span style={{ fontSize: 11, color: nightColors.text, opacity: 0.6 }}>{(ritStep + 1) + " / " + section.steps.length}</span>
+                          <div style={{ flex: 1, height: 4, background: "#ffffff22", borderRadius: 2 }}>
+                            <div style={{ height: 4, borderRadius: 2, background: nightColors.star, width: ((ritStep + 1) / section.steps.length * 100) + "%", transition: "width 0.5s ease" }} />
+                          </div>
+                        </div>
+                        <div style={{ textAlign: "center", position: "relative", zIndex: 1 }}>
+                          <span style={{ fontSize: 48, display: "block", marginBottom: 12, animation: "float 3s ease infinite" }}>{section.steps[ritStep].emoji}</span>
+                          <div style={{ fontSize: 12, fontWeight: 800, color: nightColors.star, marginBottom: 6, letterSpacing: 1, textTransform: "uppercase" }}>{ritStep + 1 + ". lépés"}</div>
+                          <h3 style={{ fontFamily: "'Baloo 2', cursive", fontSize: 20, fontWeight: 800, color: nightColors.text, marginBottom: 10 }}>{section.steps[ritStep].title}</h3>
+                          <p style={{ fontSize: 15.5, lineHeight: 1.85, color: nightColors.text, opacity: 0.9 }}>{section.steps[ritStep].text}</p>
+                        </div>
+                      </div>
+                      <div style={{ display: "flex", gap: 10 }}>
+                        {ritStep > 0 && (
+                          <button onClick={function () { setRitStep(ritStep - 1); }} style={{
+                            flex: 1, background: COLORS.warmGray, border: "none", padding: "14px 16px",
+                            borderRadius: 16, fontSize: 14, fontWeight: 700, cursor: "pointer", fontFamily: "'Nunito', sans-serif",
+                          }}>{"← Előző"}</button>
+                        )}
+                        {ritStep < section.steps.length - 1 ? (
+                          <button onClick={function () { setRitStep(ritStep + 1); }} style={{
+                            flex: 2, background: "#7B8CDE44", border: "none", padding: "14px 16px",
+                            borderRadius: 16, fontSize: 14, fontWeight: 700, cursor: "pointer", fontFamily: "'Nunito', sans-serif",
+                            color: COLORS.text,
+                          }}>{"Következő →"}</button>
+                        ) : (
+                          <button onClick={function () { setShowRitual(false); }} style={{
+                            flex: 2, background: COLORS.mint + "66", border: "none", padding: "14px 16px",
+                            borderRadius: 16, fontSize: 14, fontWeight: 700, cursor: "pointer", fontFamily: "'Nunito', sans-serif",
+                            color: COLORS.text,
+                          }}>{"Jó éjszakát 🌙"}</button>
+                        )}
+                      </div>
+                    </div>
+                  )}
+
+                  {isPhrases && section.phrases && (
+                    <div>
+                      {section.phrases.map(function (phrase, j) {
+                        return (
+                          <div key={j} style={{
+                            background: "linear-gradient(135deg, #7B8CDE08, #7B8CDE15)",
+                            borderRadius: 16, padding: "14px 18px", marginBottom: 10,
+                            borderLeft: "4px solid #7B8CDE44",
+                            animation: "slideInLeft 0.3s ease " + (j * 0.08) + "s both",
+                          }}>
+                            <div style={{ display: "flex", gap: 12, alignItems: "flex-start" }}>
+                              <span style={{ fontSize: 20, flexShrink: 0, marginTop: 2 }}>{phrase.emoji}</span>
+                              <p style={{ fontSize: 15.5, lineHeight: 1.8, fontStyle: "italic" }}>{phrase.text}</p>
+                            </div>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  )}
+                </div>
+              )}
+            </div>
+          </div>
+        );
+      })}
+
+      <div style={{ marginTop: 8 }}>
+        <Btn label="Nyugi-szerszámok" onClick={function () { goTo("S50"); }} color={COLORS.mint + "66"} delay={0.55} />
+        <Btn label="Vissza a főmenübe" onClick={function () { goTo("S00"); }} color={COLORS.warmGray} delay={0.6} />
+      </div>
+    </div>
+  );
+}
+
+function DiaryModule({ goTo }) {
+  var _view = useState("today"), view = _view[0], setView = _view[1];
+  var _loading = useState(true), loading = _loading[0], setLoading = _loading[1];
+  var _saved = useState(false), saved = _saved[0], setSaved = _saved[1];
+  var _today = useState(null), todayEntry = _today[0], setTodayEntry = _today[1];
+  var _history = useState([]), history = _history[0], setHistory = _history[1];
+  var _mood = useState(null), mood = _mood[0], setMood = _mood[1];
+  var _text = useState(""), text = _text[0], setText = _text[1];
+  var _good = useState(""), good = _good[0], setGood = _good[1];
+
+  var moods = [
+    { id: "happy", emoji: "😊", label: "Jól vagyok", color: COLORS.mint },
+    { id: "mixed", emoji: "🌀", label: "Vegyes", color: "#A88BC4" },
+    { id: "fear", emoji: "😰", label: "Félek", color: COLORS.fear },
+    { id: "anger", emoji: "😠", label: "Dühös", color: COLORS.anger },
+    { id: "sad", emoji: "😢", label: "Szomorú", color: COLORS.sadness },
+    { id: "guilt", emoji: "😞", label: "Bűntudatos", color: COLORS.guilt },
+    { id: "lonely", emoji: "🫥", label: "Magányos", color: COLORS.loneliness },
+    { id: "nope", emoji: "😶", label: "Nem tudom", color: COLORS.withdraw },
+  ];
+
+  var todayKey = (function () {
+    var d = new Date();
+    return d.getFullYear() + "-" + String(d.getMonth() + 1).padStart(2, "0") + "-" + String(d.getDate()).padStart(2, "0");
+  })();
+
+  var dayNames = ["Vasárnap", "Hétfő", "Kedd", "Szerda", "Csütörtök", "Péntek", "Szombat"];
+  var monthNames = ["jan.", "feb.", "márc.", "ápr.", "máj.", "jún.", "júl.", "aug.", "szept.", "okt.", "nov.", "dec."];
+
+  function formatDate(dateStr) {
+    var parts = dateStr.split("-");
+    var d = new Date(parseInt(parts[0]), parseInt(parts[1]) - 1, parseInt(parts[2]));
+    return monthNames[d.getMonth()] + " " + d.getDate() + ". " + dayNames[d.getDay()];
+  }
+
+  function formatDateShort(dateStr) {
+    var parts = dateStr.split("-");
+    var d = new Date(parseInt(parts[0]), parseInt(parts[1]) - 1, parseInt(parts[2]));
+    return monthNames[d.getMonth()] + " " + d.getDate() + ".";
+  }
+
+  useEffect(function () {
+    loadData();
+  }, []);
+
+  function loadData() {
+    setLoading(true);
+    (async function () {
+      try {
+        var result = await window.storage.get("diary:" + todayKey);
+        if (result && result.value) {
+          var entry = JSON.parse(result.value);
+          setTodayEntry(entry);
+          setMood(entry.mood);
+          setText(entry.text || "");
+          setGood(entry.good || "");
+          setSaved(true);
+        }
+      } catch (e) { /* no entry yet */ }
+
+      try {
+        var keys = await window.storage.list("diary:");
+        if (keys && keys.keys) {
+          var entries = [];
+          var sortedKeys = keys.keys.sort().reverse().slice(0, 14);
+          for (var i = 0; i < sortedKeys.length; i++) {
+            try {
+              var r = await window.storage.get(sortedKeys[i]);
+              if (r && r.value) {
+                var e = JSON.parse(r.value);
+                e.date = sortedKeys[i].replace("diary:", "");
+                entries.push(e);
+              }
+            } catch (err) { /* skip */ }
+          }
+          setHistory(entries);
+        }
+      } catch (e) { /* no history */ }
+
+      setLoading(false);
+    })();
+  }
+
+  function saveEntry() {
+    if (!mood) return;
+    var entry = { mood: mood, text: text, good: good, time: new Date().toISOString() };
+    (async function () {
+      try {
+        await window.storage.set("diary:" + todayKey, JSON.stringify(entry));
+        setTodayEntry(entry);
+        setSaved(true);
+        loadData();
+      } catch (e) {
+        console.error("Mentés sikertelen:", e);
+      }
+    })();
+  }
+
+  function getMoodData(moodId) {
+    for (var i = 0; i < moods.length; i++) {
+      if (moods[i].id === moodId) return moods[i];
+    }
+    return { emoji: "❓", label: "?", color: "#999" };
+  }
+
+  var encouragements = [
+    "Nagyon jó, hogy figyelsz az érzéseidre!",
+    "Büszke lehetsz magadra, hogy leírtad!",
+    "Minden nap számít - és te már írtál ma!",
+    "A naplóírás bátorság. Ügyes vagy!",
+  ];
+  var encouragement = encouragements[new Date().getDate() % encouragements.length];
+
+  var goodDays = 0;
+  for (var h = 0; h < history.length; h++) {
+    if (history[h].mood === "happy") goodDays++;
+  }
+
+  if (loading) {
+    return (
+      <div style={{ textAlign: "center", padding: 40 }}>
+        <span style={{ fontSize: 40, animation: "float 2s ease infinite" }}>{"📓"}</span>
+        <p style={{ marginTop: 16, color: COLORS.textLight }}>Betöltés...</p>
+      </div>
+    );
+  }
+
+  return (
+    <div style={{ padding: "10px 0" }}>
+      <h2 style={{ fontFamily: "'Baloo 2', cursive", fontSize: 24, fontWeight: 800, marginBottom: 8, animation: "fadeIn 0.4s ease both" }}>
+        {"📓"} Az én naplóm
+      </h2>
+
+      <div style={{ display: "flex", gap: 8, marginBottom: 20, animation: "slideUp 0.3s ease both" }}>
+        <button onClick={function () { setView("today"); }} style={{
+          flex: 1, padding: "12px 16px", borderRadius: 14, border: "none", fontSize: 14, fontWeight: 700,
+          cursor: "pointer", fontFamily: "'Nunito', sans-serif",
+          background: view === "today" ? COLORS.peach + "44" : COLORS.warmGray,
+          color: COLORS.text, transition: "all 0.2s",
+        }}>{"📝 Ma"}</button>
+        <button onClick={function () { setView("history"); }} style={{
+          flex: 1, padding: "12px 16px", borderRadius: 14, border: "none", fontSize: 14, fontWeight: 700,
+          cursor: "pointer", fontFamily: "'Nunito', sans-serif",
+          background: view === "history" ? COLORS.softBlue + "44" : COLORS.warmGray,
+          color: COLORS.text, transition: "all 0.2s",
+        }}>{"📅 Visszanézem"}</button>
+      </div>
+
+      {view === "today" && (
+        <div style={{ animation: "fadeIn 0.4s ease both" }}>
+          <div style={{
+            background: "linear-gradient(135deg, #E8B4D022, " + COLORS.peach + "18)",
+            borderRadius: 20, padding: "18px 22px", marginBottom: 20,
+            border: "2px solid #E8B4D033",
+          }}>
+            <p style={{ fontSize: 15.5, lineHeight: 1.8 }}>
+              {saved ? encouragement : "Hogyan érzed ma magad? Válassz egy hangulatot - nem kell többet csinálnod, de ha szeretnél, írhatsz is."}
+            </p>
+          </div>
+
+          <div style={{ marginBottom: 20 }}>
+            <div style={{ fontSize: 13, fontWeight: 800, color: COLORS.textLight, marginBottom: 10, textTransform: "uppercase", letterSpacing: 0.5 }}>
+              Ma így érzem magam
+            </div>
+            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr 1fr", gap: 10 }}>
+              {moods.map(function (m, i) {
+                var selected = mood === m.id;
+                return (
+                  <div key={m.id} onClick={function () { setMood(m.id); setSaved(false); }} style={{
+                    background: selected ? m.color + "44" : COLORS.white,
+                    borderRadius: 18, padding: "16px 8px", textAlign: "center",
+                    cursor: "pointer", transition: "all 0.2s",
+                    border: selected ? "2px solid " + m.color + "88" : "2px solid " + COLORS.warmGray,
+                    boxShadow: selected ? "0 4px 12px " + m.color + "22" : "none",
+                    animation: "popIn 0.3s ease " + (i * 0.05) + "s both",
+                  }}>
+                    <span style={{ fontSize: 32, display: "block", marginBottom: 6, animation: selected ? "float 2s ease infinite" : "none" }}>{m.emoji}</span>
+                    <span style={{ fontSize: 11, fontWeight: 700, color: selected ? m.color : COLORS.textLight }}>{m.label}</span>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+
+          <div style={{ marginBottom: 16, animation: "slideUp 0.4s ease 0.2s both" }}>
+            <div style={{ fontSize: 13, fontWeight: 800, color: COLORS.textLight, marginBottom: 8, textTransform: "uppercase", letterSpacing: 0.5 }}>
+              {"Ha szeretnél írni (nem kötelező)"}
+            </div>
+            <textarea value={text} onChange={function (e) { setText(e.target.value); setSaved(false); }} placeholder="Mi történt ma? Mit érzel? Bármit írhatsz ide..." style={{
+              width: "100%", minHeight: 80, borderRadius: 16, border: "2px solid " + COLORS.warmGray,
+              padding: "14px 18px", fontSize: 15.5, lineHeight: 1.75, fontFamily: "'Nunito', sans-serif",
+              resize: "vertical", outline: "none", boxSizing: "border-box",
+              transition: "border-color 0.2s",
+            }} />
+          </div>
+
+          <div style={{ marginBottom: 20, animation: "slideUp 0.4s ease 0.3s both" }}>
+            <div style={{ fontSize: 13, fontWeight: 800, color: COLORS.textLight, marginBottom: 8, textTransform: "uppercase", letterSpacing: 0.5 }}>
+              {"🌟 Ma ez volt a jó pillanat"}
+            </div>
+            <textarea value={good} onChange={function (e) { setGood(e.target.value); setSaved(false); }} placeholder="Valami, ami jó volt ma - bármi kicsi is. Egy kedves szó, napsütés, a kedvenc filmed..." style={{
+              width: "100%", minHeight: 60, borderRadius: 16,
+              border: "2px solid " + COLORS.mint + "66",
+              background: COLORS.mint + "08",
+              padding: "14px 18px", fontSize: 15.5, lineHeight: 1.75, fontFamily: "'Nunito', sans-serif",
+              resize: "vertical", outline: "none", boxSizing: "border-box",
+              transition: "border-color 0.2s",
+            }} />
+          </div>
+
+          {mood && !saved && (
+            <button onClick={saveEntry} style={{
+              width: "100%", padding: "16px 24px", borderRadius: 18, border: "none",
+              background: "linear-gradient(135deg, #E8B4D0, " + COLORS.peach + ")",
+              fontSize: 16, fontWeight: 700, cursor: "pointer", fontFamily: "'Nunito', sans-serif",
+              color: COLORS.text, animation: "popIn 0.3s ease both",
+              boxShadow: "0 4px 16px #E8B4D033",
+            }}>{"Mentés 💛"}</button>
+          )}
+
+          {saved && (
+            <div style={{
+              textAlign: "center", padding: "20px 16px", animation: "popIn 0.4s ease both",
+              background: COLORS.mint + "18", borderRadius: 18, border: "2px solid " + COLORS.mint + "44",
+            }}>
+              <span style={{ fontSize: 36, display: "block", marginBottom: 8 }}>{"✅"}</span>
+              <p style={{ fontSize: 15, fontWeight: 700 }}>Mentve! Szuper, hogy ma is írtál.</p>
+              <p style={{ fontSize: 13, color: COLORS.textLight, marginTop: 6 }}>Bármikor visszajöhetsz módosítani.</p>
+            </div>
+          )}
+        </div>
+      )}
+
+      {view === "history" && (
+        <div style={{ animation: "fadeIn 0.4s ease both" }}>
+          {history.length === 0 ? (
+            <div style={{
+              textAlign: "center", padding: "40px 20px",
+              background: COLORS.white, borderRadius: 22,
+              boxShadow: "0 3px 14px rgba(0,0,0,0.06)",
+            }}>
+              <span style={{ fontSize: 48, display: "block", marginBottom: 14 }}>{"📓"}</span>
+              <p style={{ fontSize: 16, fontWeight: 700, marginBottom: 8 }}>Még nincs bejegyzés</p>
+              <p style={{ fontSize: 14, color: COLORS.textLight }}>Menj a Ma fülre, és írd meg az elsőt!</p>
+            </div>
+          ) : (
+            <div>
+              {history.length >= 3 && (
+                <div style={{
+                  background: "linear-gradient(135deg, " + COLORS.mint + "22, " + COLORS.softBlue + "18)",
+                  borderRadius: 20, padding: "16px 22px", marginBottom: 18,
+                  border: "2px solid " + COLORS.mint + "33",
+                  animation: "slideUp 0.3s ease both",
+                }}>
+                  <p style={{ fontSize: 15.5, lineHeight: 1.75 }}>
+                    {"Már " + history.length + " bejegyzésed van! "}
+                    {goodDays > 0 ? "Ebből " + goodDays + " napon jól érezted magad - látod, vannak jó napok is!" : "Nézd meg, milyen erős vagy, hogy figyelsz az érzéseidre."}
+                  </p>
+                </div>
+              )}
+
+              <div style={{
+                display: "flex", gap: 6, marginBottom: 20, overflowX: "auto", padding: "4px 0",
+                animation: "slideUp 0.3s ease 0.1s both",
+              }}>
+                {history.slice(0, 7).reverse().map(function (entry, i) {
+                  var md = getMoodData(entry.mood);
+                  return (
+                    <div key={i} style={{
+                      minWidth: 54, textAlign: "center", padding: "10px 6px",
+                      background: md.color + "22", borderRadius: 14,
+                      border: entry.date === todayKey ? "2px solid " + md.color + "88" : "2px solid transparent",
+                    }}>
+                      <span style={{ fontSize: 24, display: "block", marginBottom: 4 }}>{md.emoji}</span>
+                      <span style={{ fontSize: 10, color: COLORS.textLight }}>{formatDateShort(entry.date)}</span>
+                    </div>
+                  );
+                })}
+              </div>
+
+              {history.map(function (entry, i) {
+                var md = getMoodData(entry.mood);
+                return (
+                  <div key={i} style={{
+                    background: COLORS.white, borderRadius: 20, padding: "18px 20px",
+                    marginBottom: 12, boxShadow: "0 3px 12px rgba(0,0,0,0.06)",
+                    borderLeft: "4px solid " + md.color,
+                    animation: "slideUp 0.3s ease " + (0.1 + i * 0.06) + "s both",
+                  }}>
+                    <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: entry.text || entry.good ? 12 : 0 }}>
+                      <span style={{ fontSize: 32 }}>{md.emoji}</span>
+                      <div style={{ flex: 1 }}>
+                        <div style={{ fontWeight: 700, fontSize: 15 }}>{md.label}</div>
+                        <div style={{ fontSize: 12, color: COLORS.textLight }}>{formatDate(entry.date)}{entry.date === todayKey ? " (ma)" : ""}</div>
+                      </div>
+                    </div>
+                    {entry.text && (
+                      <p style={{ fontSize: 15.5, lineHeight: 1.75, color: COLORS.text, marginBottom: entry.good ? 10 : 0,
+                        background: COLORS.warmGray + "44", borderRadius: 12, padding: "10px 14px" }}>{entry.text}</p>
+                    )}
+                    {entry.good && (
+                      <div style={{
+                        background: COLORS.mint + "15", borderRadius: 12, padding: "10px 14px",
+                        display: "flex", gap: 8, alignItems: "flex-start",
+                      }}>
+                        <span style={{ fontSize: 16, flexShrink: 0 }}>{"🌟"}</span>
+                        <p style={{ fontSize: 13, lineHeight: 1.6, color: COLORS.text }}>{entry.good}</p>
+                      </div>
+                    )}
+                  </div>
+                );
+              })}
+            </div>
+          )}
+        </div>
+      )}
+
+      <div style={{ marginTop: 16 }}>
+        <Btn label="Vissza a főmenübe" onClick={function () { goTo("S00"); }} color={COLORS.warmGray} delay={0.5} />
+      </div>
+    </div>
+  );
+}
+
+function HospitalModule({ screen, goTo }) {
+  var _s = useState(null), openId = _s[0], setOpenId = _s[1];
+
+  return (
+    <div style={{ padding: "10px 0" }}>
+      <h2 style={{ fontFamily: "'Baloo 2', cursive", fontSize: 24, fontWeight: 800, marginBottom: 8, animation: "fadeIn 0.4s ease both" }}>
+        {"🏥"} Ha anya kórházba megy
+      </h2>
+      <div style={{
+        background: "linear-gradient(135deg, " + COLORS.softBlue + "22, " + COLORS.mint + "18)",
+        borderRadius: 20, padding: "18px 22px", marginBottom: 22,
+        border: "2px solid " + COLORS.softBlue + "33",
+        animation: "slideUp 0.4s ease both",
+      }}>
+        <p style={{ fontSize: 15.5, lineHeight: 1.8 }}>{screen.intro}</p>
+      </div>
+
+      {screen.sections.map(function (section, i) {
+        var isOpen = openId === section.id;
+        return (
+          <div key={section.id} style={{ marginBottom: 12, animation: "slideUp 0.4s ease " + (0.1 + i * 0.06) + "s both" }}>
+            <div onClick={function () { setOpenId(isOpen ? null : section.id); }} style={{
+              background: COLORS.white, borderRadius: 20,
+              padding: isOpen ? "18px 22px" : "14px 20px",
+              boxShadow: isOpen ? "0 4px 18px rgba(0,0,0,0.09)" : "0 2px 10px rgba(0,0,0,0.05)",
+              cursor: "pointer", transition: "all 0.3s",
+              border: isOpen ? "2px solid " + COLORS.softBlue + "55" : "2px solid transparent",
+            }}>
+              <div style={{ display: "flex", alignItems: "center", gap: 14 }}>
+                <span style={{ fontSize: 28, animation: isOpen ? "float 3s ease infinite" : "none" }}>{section.emoji}</span>
+                <div style={{ flex: 1, fontWeight: 700, fontSize: 16 }}>{section.title}</div>
+                <span style={{ fontSize: 18, color: COLORS.textLight, transition: "transform 0.3s", transform: isOpen ? "rotate(180deg)" : "rotate(0)" }}>{"▾"}</span>
+              </div>
+
+              {isOpen && (
+                <div style={{ marginTop: 16, animation: "fadeIn 0.3s ease" }}>
+                  {section.content && section.content.map(function (item, j) {
+                    return (
+                      <div key={j} style={{
+                        display: "flex", gap: 12, alignItems: "flex-start", marginBottom: 14,
+                        animation: "slideInLeft 0.3s ease " + (j * 0.08) + "s both",
+                      }}>
+                        <span style={{ fontSize: 22, flexShrink: 0, marginTop: 2 }}>{item.emoji}</span>
+                        <p style={{ fontSize: 15.5, lineHeight: 1.8 }}>{item.text}</p>
+                      </div>
+                    );
+                  })}
+
+                  {section.items && (
+                    <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10 }}>
+                      {section.items.map(function (item, j) {
+                        return (
+                          <div key={j} style={{
+                            background: COLORS.softBlue + "12", borderRadius: 16, padding: "14px 16px",
+                            display: "flex", alignItems: "flex-start", gap: 10,
+                            animation: "popIn 0.3s ease " + (j * 0.08) + "s both",
+                          }}>
+                            <span style={{ fontSize: 22, flexShrink: 0 }}>{item.emoji}</span>
+                            <span style={{ fontSize: 13, lineHeight: 1.6 }}>{item.text}</span>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  )}
+
+                  {section.closing && (
+                    <div style={{
+                      background: "linear-gradient(135deg, " + COLORS.mint + "22, " + COLORS.softBlue + "18)",
+                      borderRadius: 14, padding: "12px 16px", marginTop: 10,
+                      borderLeft: "4px solid " + COLORS.mint + "66",
+                    }}>
+                      <p style={{ fontSize: 13, lineHeight: 1.7, fontStyle: "italic" }}>{section.closing}</p>
+                    </div>
+                  )}
+                </div>
+              )}
+            </div>
+          </div>
+        );
+      })}
+
+      <Btn label="Vissza a főmenübe" onClick={function () { goTo("S00"); }} color={COLORS.warmGray} delay={0.6} />
+    </div>
+  );
+}
+
+function KnowledgeModule({ screen, goTo }) {
+  var _s = useState(null), openId = _s[0], setOpenId = _s[1];
+  var _s2 = useState(false), showMore = _s2[0], setShowMore = _s2[1];
+
+  return (
+    <div style={{ padding: "10px 0" }}>
+      <h2 style={{ fontFamily: "'Baloo 2', cursive", fontSize: 24, fontWeight: 800, marginBottom: 8, animation: "fadeIn 0.4s ease both" }}>
+        {"📖"} Megértem, mi történik
+      </h2>
+      <div style={{
+        background: "linear-gradient(135deg, " + COLORS.peach + "22, " + COLORS.softBlue + "18)",
+        borderRadius: 20, padding: "18px 22px", marginBottom: 22,
+        border: "2px solid " + COLORS.peach + "40",
+        animation: "slideUp 0.4s ease both",
+      }}>
+        <p style={{ fontSize: 15.5, lineHeight: 1.8 }}>{screen.intro}</p>
+      </div>
+
+      {screen.topics.map(function (topic, i) {
+        var isOpen = openId === topic.id;
+        return (
+          <div key={topic.id} style={{ marginBottom: 12, animation: "slideUp 0.4s ease " + (0.1 + i * 0.07) + "s both" }}>
+            <div onClick={function () { setOpenId(isOpen ? null : topic.id); setShowMore(false); }} style={{
+              background: COLORS.white, borderRadius: 20,
+              padding: isOpen ? "18px 22px" : "14px 20px",
+              boxShadow: isOpen ? "0 4px 18px rgba(0,0,0,0.09)" : "0 2px 10px rgba(0,0,0,0.05)",
+              cursor: "pointer", transition: "all 0.3s",
+              border: isOpen ? "2px solid " + COLORS.peach + "55" : "2px solid transparent",
+            }}>
+              <div style={{ display: "flex", alignItems: "center", gap: 14 }}>
+                <span style={{ fontSize: 28, animation: isOpen ? "float 3s ease infinite" : "none" }}>{topic.emoji}</span>
+                <div style={{ flex: 1 }}>
+                  <div style={{ fontWeight: 700, fontSize: 16 }}>{topic.title}</div>
+                  {!isOpen && <div style={{ fontSize: 13, color: COLORS.textLight, marginTop: 3, lineHeight: 1.5 }}>{topic.short}</div>}
+                </div>
+                <span style={{ fontSize: 18, color: COLORS.textLight, transition: "transform 0.3s", transform: isOpen ? "rotate(180deg)" : "rotate(0)" }}>{"▾"}</span>
+              </div>
+
+              {isOpen && (
+                <div style={{ marginTop: 16, animation: "fadeIn 0.3s ease" }}>
+                  {topic.simple.map(function (item, j) {
+                    return (
+                      <div key={j} style={{
+                        display: "flex", gap: 12, alignItems: "flex-start", marginBottom: 14,
+                        animation: "slideInLeft 0.3s ease " + (j * 0.08) + "s both",
+                      }}>
+                        <span style={{ fontSize: 22, flexShrink: 0, marginTop: 2 }}>{item.emoji}</span>
+                        <p style={{ fontSize: 15.5, lineHeight: 1.8 }}>{item.text}</p>
+                      </div>
+                    );
+                  })}
+
+                  {topic.treatments && (
+                    <div style={{ marginTop: 8 }}>
+                      {topic.treatments.map(function (tr, t) {
+                        return (
+                          <div key={t} style={{
+                            background: COLORS.softBlue + "08", borderRadius: 16, padding: "14px 18px",
+                            marginBottom: 10, borderLeft: "4px solid " + COLORS.softBlue + "44",
+                            animation: "slideInLeft 0.3s ease " + (t * 0.08) + "s both",
+                          }}>
+                            <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 8 }}>
+                              <span style={{ fontSize: 22 }}>{tr.emoji}</span>
+                              <span style={{ fontWeight: 700, fontSize: 15 }}>{tr.title}</span>
+                            </div>
+                            <div style={{
+                              background: COLORS.gardenGreen + "12", borderRadius: 10, padding: "8px 12px",
+                              marginBottom: 8, display: "flex", gap: 8, alignItems: "center",
+                            }}>
+                              <span style={{ fontSize: 14 }}>{"🌻"}</span>
+                              <span style={{ fontSize: 12, fontStyle: "italic", color: COLORS.textLight }}>{tr.gardenTip}</span>
+                            </div>
+                            <p style={{ fontSize: 13, lineHeight: 1.75, color: COLORS.text }}>{tr.desc}</p>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  )}
+
+                  {topic.more && !showMore && (
+                    <div onClick={function (e) { e.stopPropagation(); setShowMore(true); }} style={{
+                      textAlign: "center", padding: "10px 16px", marginTop: 4,
+                      background: COLORS.softBlue + "12", borderRadius: 14, cursor: "pointer",
+                      transition: "all 0.2s",
+                    }}>
+                      <span style={{ fontSize: 13, fontWeight: 700, color: COLORS.softBlue }}>{"Ha többet szeretnél tudni ▾"}</span>
+                    </div>
+                  )}
+
+                  {topic.more && showMore && (
+                    <div style={{
+                      background: COLORS.softBlue + "10", borderRadius: 16, padding: "14px 18px",
+                      borderLeft: "4px solid " + COLORS.softBlue + "66", marginTop: 8,
+                      animation: "fadeIn 0.3s ease",
+                    }}>
+                      <p style={{ fontSize: 15.5, lineHeight: 1.8, color: COLORS.textLight }}>{topic.more}</p>
+                    </div>
+                  )}
+                </div>
+              )}
+            </div>
+          </div>
+        );
+      })}
+
+      {screen.gardenLink && (
+        <div onClick={function () { goTo("S13"); }} style={{
+          background: "linear-gradient(135deg, " + COLORS.gardenGreen + "22, " + COLORS.mint + "22)",
+          borderRadius: 20, padding: "18px 22px", marginTop: 8, marginBottom: 16,
+          border: "2px solid " + COLORS.gardenGreen + "33", cursor: "pointer",
+          display: "flex", alignItems: "center", gap: 14,
+          animation: "slideUp 0.5s ease 0.5s both",
+          transition: "transform 0.2s",
+        }}>
+          <span style={{ fontSize: 36, animation: "sway 2s ease infinite" }}>{"🌻"}</span>
+          <div>
+            <div style={{ fontWeight: 700, fontSize: 15 }}>A kert-történet</div>
+            <div style={{ fontSize: 13, color: COLORS.textLight, marginTop: 2 }}>Ha mesével szeretnéd megérteni, mi történik anya testében</div>
+          </div>
+          <span style={{ fontSize: 18, color: COLORS.textLight }}>{"→"}</span>
+        </div>
+      )}
+
+      <Btn label="Vissza a főmenübe" onClick={function () { goTo("S00"); }} color={COLORS.warmGray} delay={0.55} />
+    </div>
+  );
+}
+
+function KidThoughts({ screen, goTo }) {
+  var _s = useState(null), openId = _s[0], setOpenId = _s[1];
+
+  return (
+    <div style={{ padding: "10px 0" }}>
+      <h2 style={{ fontFamily: "'Baloo 2', cursive", fontSize: 24, fontWeight: 800, marginBottom: 8, animation: "fadeIn 0.4s ease both" }}>
+        {"💭"} Amit sok gyerek gondol
+      </h2>
+      <div style={{
+        background: "linear-gradient(135deg, " + COLORS.lavender + "22, " + COLORS.peach + "22)",
+        borderRadius: 20, padding: "18px 22px", marginBottom: 22,
+        border: "2px solid " + COLORS.lavender + "33",
+        animation: "slideUp 0.4s ease both",
+      }}>
+        <p style={{ fontSize: 15.5, lineHeight: 1.8 }}>{screen.intro}</p>
+      </div>
+
+      {screen.groups.map(function (group, gi) {
+        return (
+          <div key={gi} style={{ marginBottom: 22 }}>
+            <div style={{
+              fontSize: 13, fontWeight: 800, color: COLORS.lavender, textTransform: "uppercase",
+              letterSpacing: 1, marginBottom: 12, paddingLeft: 4,
+              animation: "slideUp 0.4s ease " + (0.15 + gi * 0.3) + "s both",
+            }}>
+              {gi === 0 ? "🧒 " : "🌍 "}{group.title}
+            </div>
+            {group.thoughts.map(function (thought, ti) {
+              var isOpen = openId === thought.id;
+              var delay = 0.2 + gi * 0.3 + ti * 0.06;
+              return (
+                <div key={thought.id} style={{ marginBottom: 10, animation: "slideUp 0.4s ease " + delay + "s both" }}>
+                  <div onClick={function () { setOpenId(isOpen ? null : thought.id); }} style={{
+                    background: COLORS.white, borderRadius: 20,
+                    padding: isOpen ? "18px 22px" : "14px 20px",
+                    boxShadow: isOpen ? "0 4px 18px rgba(0,0,0,0.09)" : "0 2px 10px rgba(0,0,0,0.05)",
+                    cursor: "pointer", transition: "all 0.3s",
+                    border: isOpen ? "2px solid " + COLORS.lavender + "55" : "2px solid transparent",
+                  }}>
+                    <div style={{ display: "flex", alignItems: "center", gap: 14 }}>
+                      <span style={{ fontSize: 28, animation: isOpen ? "float 3s ease infinite" : "none" }}>{thought.emoji}</span>
+                      <div style={{ flex: 1, fontWeight: 700, fontSize: 16, fontStyle: "italic" }}>{thought.question}</div>
+                      <span style={{ fontSize: 18, color: COLORS.textLight, transition: "transform 0.3s", transform: isOpen ? "rotate(180deg)" : "rotate(0)" }}>{"▾"}</span>
+                    </div>
+
+                    {isOpen && (
+                      <div style={{ marginTop: 16, animation: "fadeIn 0.3s ease" }}>
+                        <div style={{
+                          background: COLORS.lavender + "15", borderRadius: 16, padding: "14px 18px", marginBottom: 12,
+                          borderLeft: "4px solid " + COLORS.lavender,
+                        }}>
+                          <div style={{ fontSize: 12, fontWeight: 800, color: COLORS.lavender, marginBottom: 6, textTransform: "uppercase", letterSpacing: 0.5 }}>{"🫂 Ezt sokan érzik"}</div>
+                          <div style={{ fontSize: 15.5, lineHeight: 1.8 }}>{thought.validation}</div>
+                        </div>
+
+                        <div style={{
+                          background: COLORS.softBlue + "12", borderRadius: 16, padding: "14px 18px", marginBottom: 12,
+                          borderLeft: "4px solid " + COLORS.softBlue,
+                        }}>
+                          <div style={{ fontSize: 12, fontWeight: 800, color: COLORS.softBlue, marginBottom: 6, textTransform: "uppercase", letterSpacing: 0.5 }}>{"💡 A válasz"}</div>
+                          <div style={{ fontSize: 15.5, lineHeight: 1.8 }}>{thought.answer}</div>
+                        </div>
+
+                        <div style={{
+                          background: "linear-gradient(135deg, " + COLORS.mint + "18, " + COLORS.peach + "12)",
+                          borderRadius: 16, padding: "14px 18px",
+                          display: "flex", alignItems: "flex-start", gap: 10,
+                        }}>
+                          <span style={{ fontSize: 18, marginTop: 1, animation: "sparkle 2s ease infinite" }}>{"💛"}</span>
+                          <div>
+                            <div style={{ fontSize: 12, fontWeight: 800, color: COLORS.gardenGreen, marginBottom: 4, textTransform: "uppercase", letterSpacing: 0.5 }}>Emlékezz</div>
+                            <div style={{ fontSize: 15.5, lineHeight: 1.75, fontWeight: 600 }}>{thought.remember}</div>
+                          </div>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        );
+      })}
+
+      <div style={{ marginTop: 8, animation: "slideUp 0.5s ease 0.9s both" }}>
+        <Btn label="Vissza a főmenübe" onClick={function () { goTo("S00"); }} color={COLORS.warmGray} />
+      </div>
+    </div>
+  );
+}
+
+function HomeChanges({ screen, goTo }) {
+  var _s = useState(null), openSit = _s[0], setOpenSit = _s[1];
+  var _s2 = useState(null), openTab = _s2[0], setOpenTab = _s2[1];
+  var tabColors = { why: COLORS.softBlue, feels: COLORS.lavender, canDo: COLORS.mint };
+  var tabLabels = { why: "Miért van ez?", feels: "Amit érezhetsz", canDo: "Mit tehetsz" };
+  var tabEmojis = { why: "💡", feels: "💜", canDo: "🌟" };
+
+  return (
+    <div style={{ padding: "10px 0" }}>
+      <h2 style={{ fontFamily: "'Baloo 2', cursive", fontSize: 24, fontWeight: 800, marginBottom: 8, animation: "fadeIn 0.4s ease both" }}>
+        {"🏠"} Mi változhat otthon?
+      </h2>
+      <div style={{
+        background: "linear-gradient(135deg, " + COLORS.peach + "22, " + COLORS.lavender + "22)",
+        borderRadius: 20, padding: "18px 22px", marginBottom: 20,
+        border: "2px solid " + COLORS.peach + "40",
+        animation: "slideUp 0.4s ease both",
+      }}>
+        <p style={{ fontSize: 15.5, lineHeight: 1.8 }}>{screen.intro}</p>
+      </div>
+
+      {screen.situations.map(function (sit, i) {
+        var isOpen = openSit === sit.id;
+        return (
+          <div key={sit.id} style={{ marginBottom: 12, animation: "slideUp 0.4s ease " + (0.1 + i * 0.06) + "s both" }}>
+            <div onClick={function () { setOpenSit(isOpen ? null : sit.id); setOpenTab(null); }} style={{
+              background: COLORS.white, borderRadius: 20, padding: isOpen ? "18px 22px" : "14px 20px",
+              boxShadow: isOpen ? "0 4px 18px rgba(0,0,0,0.09)" : "0 2px 10px rgba(0,0,0,0.05)",
+              cursor: "pointer", transition: "all 0.3s",
+              border: isOpen ? "2px solid " + COLORS.peach + "55" : "2px solid transparent",
+            }}>
+              <div style={{ display: "flex", alignItems: "center", gap: 14 }}>
+                <span style={{ fontSize: 28, animation: isOpen ? "float 3s ease infinite" : "none" }}>{sit.emoji}</span>
+                <div style={{ flex: 1 }}>
+                  <div style={{ fontWeight: 700, fontSize: 16 }}>{sit.title}</div>
+                  {!isOpen && <div style={{ fontSize: 13, color: COLORS.textLight, marginTop: 3, lineHeight: 1.5 }}>{sit.short}</div>}
+                </div>
+                <span style={{ fontSize: 18, color: COLORS.textLight, transition: "transform 0.3s", transform: isOpen ? "rotate(180deg)" : "rotate(0)" }}>{"▾"}</span>
+              </div>
+
+              {isOpen && (
+                <div style={{ marginTop: 16, animation: "fadeIn 0.3s ease" }}>
+                  <div style={{ fontSize: 14, color: COLORS.text, fontStyle: "normal", marginBottom: 14, lineHeight: 1.6 }}>{sit.short}</div>
+
+                  <div style={{ display: "flex", gap: 8, marginBottom: 14 }}>
+                    {["why", "feels", "canDo"].map(function (tab) {
+                      var isActive = openTab === tab;
+                      return (
+                        <div key={tab} onClick={function (e) { e.stopPropagation(); setOpenTab(isActive ? null : tab); }} style={{
+                          flex: 1, textAlign: "center", padding: "10px 6px", borderRadius: 14, cursor: "pointer",
+                          background: isActive ? tabColors[tab] + "22" : COLORS.cream + "88",
+                          border: "2px solid " + (isActive ? tabColors[tab] + "66" : "transparent"),
+                          transition: "all 0.2s",
+                        }}>
+                          <span style={{ fontSize: 18, display: "block" }}>{tabEmojis[tab]}</span>
+                          <span style={{ fontSize: 11, fontWeight: 700, color: isActive ? tabColors[tab] : COLORS.textLight }}>{tabLabels[tab]}</span>
+                        </div>
+                      );
+                    })}
+                  </div>
+
+                  {openTab && (
+                    <div style={{
+                      background: tabColors[openTab] + "11", borderRadius: 16, padding: "16px 18px",
+                      borderLeft: "4px solid " + tabColors[openTab],
+                      animation: "fadeIn 0.3s ease",
+                    }}>
+                      <div style={{ fontSize: 15.5, lineHeight: 1.8 }}>{sit[openTab]}</div>
+                    </div>
+                  )}
+                </div>
+              )}
+            </div>
+          </div>
+        );
+      })}
+
+      <div style={{ marginTop: 24, animation: "slideUp 0.5s ease 0.6s both" }}>
+        <div style={{
+          background: "linear-gradient(135deg, " + COLORS.mint + "22, " + COLORS.peach + "11)",
+          borderRadius: 22, padding: "22px 24px", marginBottom: 14,
+          border: "2px solid " + COLORS.mint + "44",
+        }}>
+          <h3 style={{ fontFamily: "'Baloo 2', cursive", fontSize: 20, fontWeight: 800, marginBottom: 14 }}>
+            {"💛 "}{screen.closing.loveTitle}
+          </h3>
+          {screen.closing.loveItems.map(function (item, i) {
+            return (
+              <div key={i} style={{
+                display: "flex", gap: 12, alignItems: "flex-start", marginBottom: 12,
+                animation: "slideInLeft 0.4s ease " + (0.65 + i * 0.1) + "s both",
+              }}>
+                <span style={{ fontSize: 22, flexShrink: 0, marginTop: 2 }}>{item.emoji}</span>
+                <p style={{ fontSize: 15.5, lineHeight: 1.75 }}>{item.text}</p>
+              </div>
+            );
+          })}
+        </div>
+
+        <div style={{
+          background: "linear-gradient(135deg, " + COLORS.lavender + "22, " + COLORS.peach + "11)",
+          borderRadius: 22, padding: "22px 24px",
+          border: "2px solid " + COLORS.lavender + "44",
+          animation: "slideUp 0.5s ease 0.75s both",
+        }}>
+          <h3 style={{ fontFamily: "'Baloo 2', cursive", fontSize: 20, fontWeight: 800, marginBottom: 10 }}>
+            {"🧸 "}{screen.closing.roleTitle}
+          </h3>
+          <p style={{ fontSize: 15.5, lineHeight: 1.8, marginBottom: 14 }}>{screen.closing.roleText}</p>
+          <div style={{
+            background: COLORS.white, borderRadius: 16, padding: "14px 18px",
+            borderLeft: "4px solid " + COLORS.lavender,
+          }}>
+            <p style={{ fontSize: 15.5, lineHeight: 1.75, fontStyle: "italic", color: COLORS.textLight }}>{screen.closing.helpText}</p>
+          </div>
+        </div>
+      </div>
+
+      <div style={{ marginTop: 20, animation: "slideUp 0.5s ease 0.85s both" }}>
+        <Btn label="Vissza a főmenübe" onClick={function () { goTo("S00"); }} color={COLORS.warmGray} />
+      </div>
+    </div>
+  );
+}
+
+function TreatmentJourney({ goTo }) {
+  var _s = useState(null), openPhase = _s[0], setOpenPhase = _s[1];
+
+  var phases = [
+    {
+      id: "diag", emoji: "🔍", title: "Vizsgálatok és diagnózis",
+      when: "Ez általában az első lépés.",
+      who: "Mindenkinél - ez az, ahonnan minden indul.",
+      what: "Az orvosok különböző vizsgálatokkal (vér, ultrahang, szövetminta) megállapítják, pontosan milyen típusú a betegség, mekkora, és hol van. Ez segít eldönteni, melyik kezelés a legjobb anyának.",
+      forKid: "Lehet, hogy anya ilyenkor sokat jár orvoshoz, és a felnőttek sokat beszélgetnek egymás között. Kérdezhetsz bátran, ha valami nem világos.",
+      color: COLORS.softBlue,
+    },
+    {
+      id: "surg", emoji: "🏥", title: "Műtét",
+      when: "Általában az első kezelési lépés, de néha a kemo jön előbb.",
+      who: "A legtöbb mellrákos beteg kap műtétet, de nem mindenki.",
+      what: "Az orvosok eltávolítják a csomót és a körülötte lévő szövetet. Ez egy altatásos beavatkozás - anya alszik közben, és nem érez fájdalmat. A műtét után néhány napig pihennie kell.",
+      forKid: "Anya pár napig a kórházban lesz, aztán otthon lábadozik. Fáradtabb lesz egy ideig, és a műtét helye fájhat. De napról napra jobban lesz.",
+      color: COLORS.softBlue,
+    },
+    {
+      id: "chemo", emoji: "💊", title: "Kemoterápia",
+      when: "A műtét előtt vagy után. Általában néhány hónapig tart.",
+      who: "Nem mindenki kap kemót - az orvosok döntik el, kinek van rá szüksége.",
+      what: "Erős gyógyszer, amit anya infúzión vagy tablettaként kap. A gyógyszer az egész testben keresi a megváltozott sejteket. A kezelés ciklusokban zajlik: van kezelési nap, utána pihenés.",
+      forKid: "A kemó mellékhatásai lehetnek: fáradtság, rosszullét, és kihullhat anya haja. Ezek ijesztőek lehetnek, de átmenetiek - a kezelés végeztével elmúlnak.",
+      color: COLORS.softBlue,
+    },
+    {
+      id: "rad", emoji: "☀️", title: "Sugárkezelés",
+      when: "Általában a műtét után. Hétköznapokon, néhány héten át.",
+      who: "Gyakori műtét után, de nem mindenki kapja.",
+      what: "Egy speciális gép láthatatlan sugarakkal pontosan oda céloz, ahol a csomó volt. A kezelés maga csak néhány percig tart, de anya minden munkanapon bejár a kórházba.",
+      forKid: "Ez a kezelés nem fáj, és anya utána hazajöhet. Lehet, hogy a bőre pirosabb lesz a kezelt területen, és fáradtabb lesz.",
+      color: COLORS.softBlue,
+    },
+    {
+      id: "meds", emoji: "💉", title: "Gyógyszerek (hormon- és célzott terápia)",
+      when: "Akár évekig is tarthat a műtét/kemo után.",
+      who: "A mellrák típusától függ. Nem mindenki kapja.",
+      what: "Tabletták vagy injekciók, amelyek megakadályozzák, hogy a megváltozott sejtek visszatérjenek. Ezeket anya néha hosszú ideig, akár évekig szedi.",
+      forKid: "Anya ebben az időszakban általában normálisan éli az életét, csak naponta beveszi a gyógyszert. Néha fáradtabb lehet tőle.",
+      color: COLORS.softBlue,
+    },
+    {
+      id: "check", emoji: "✅", title: "Ellenőrzések (kontroll)",
+      when: "A kezelés befejezése után, rendszeresen.",
+      who: "Mindenki, aki mellrákkezelésen esett át.",
+      what: "A kezelés végeztével anya rendszeresen visszajár az orvoshoz vizsgálatokra. Ezek célja, hogy meggyőződjenek: minden rendben van, és a betegség nem tért vissza.",
+      forKid: "Ilyenkor anya néha izgul a vizsgálat előtt - ez normális. De ezek a vizsgálatok pont azért vannak, hogy mindenki megnyugodjon.",
+      color: COLORS.mint,
+    },
+  ];
+
+  return (
+    <div style={{ padding: "10px 0" }}>
+      <h2 style={{ fontFamily: "'Baloo 2', cursive", fontSize: 24, fontWeight: 800, marginBottom: 8, animation: "fadeIn 0.4s ease both" }}>
+        {"🗺️"} Anya útja
+      </h2>
+      <div style={{
+        background: "linear-gradient(135deg, " + COLORS.softBlue + "22, " + COLORS.mint + "22)",
+        borderRadius: 20, padding: "18px 22px", marginBottom: 16,
+        border: "2px solid " + COLORS.softBlue + "33",
+        animation: "slideUp 0.4s ease both",
+      }}>
+        <p style={{ fontSize: 15.5, lineHeight: 1.8 }}>
+          {"A mellrák kezelése több lépésből áll - de nem mindenki ugyanazt az utat járja be. Az orvosok minden anyának egyéni tervet készítenek, ami pontosan az ő betegségéhez illik."}
+        </p>
+      </div>
+      <div style={{
+        background: COLORS.white, borderRadius: 16, padding: "14px 18px", marginBottom: 20,
+        display: "flex", alignItems: "flex-start", gap: 10,
+        animation: "slideUp 0.4s ease 0.1s both",
+      }}>
+        <span style={{ fontSize: 20, marginTop: 1 }}>{"💡"}</span>
+        <p style={{ fontSize: 13, lineHeight: 1.6, color: COLORS.text, fontStyle: "normal" }}>
+          {"Az alábbi lépések közül lehet, hogy anyának csak néhányra van szüksége. A sorrend is lehet más. Kérdezd meg anyát vagy apát, melyik lépésnél tartotok most!"}
+        </p>
+      </div>
+
+      <div style={{ position: "relative", paddingLeft: 24 }}>
+        <div style={{
+          position: "absolute", left: 16, top: 14, bottom: 40, width: 3,
+          background: "linear-gradient(to bottom, " + COLORS.softBlue + "66, " + COLORS.mint + "66)",
+          borderRadius: 2,
+        }} />
+        {phases.map(function (phase, i) {
+          var isOpen = openPhase === phase.id;
+          return (
+            <div key={phase.id} style={{ position: "relative", marginBottom: 12, animation: "slideUp 0.4s ease " + (0.15 + i * 0.07) + "s both" }}>
+              <div style={{
+                position: "absolute", left: -16, top: 16, width: 22, height: 22,
+                borderRadius: "50%", background: isOpen ? phase.color : COLORS.white,
+                border: "3px solid " + (isOpen ? phase.color : COLORS.warmGray + "88"),
+                display: "flex", alignItems: "center", justifyContent: "center",
+                fontSize: 11, transition: "all 0.3s", zIndex: 1,
+              }}>{isOpen ? "✓" : ""}</div>
+              <div onClick={function () { setOpenPhase(isOpen ? null : phase.id); }} style={{
+                background: COLORS.white, borderRadius: 18, padding: isOpen ? "18px 22px" : "14px 22px",
+                boxShadow: isOpen ? "0 4px 18px rgba(0,0,0,0.09)" : "0 2px 10px rgba(0,0,0,0.05)",
+                cursor: "pointer", transition: "all 0.3s",
+                border: isOpen ? "2px solid " + phase.color + "44" : "2px solid transparent",
+              }}>
+                <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
+                  <span style={{ fontSize: 24 }}>{phase.emoji}</span>
+                  <div style={{ flex: 1 }}>
+                    <div style={{ fontWeight: 700, fontSize: 16 }}>{phase.title}</div>
+                    {!isOpen && <div style={{ fontSize: 12, color: COLORS.textLight, marginTop: 2 }}>{phase.when}</div>}
+                  </div>
+                  <span style={{ fontSize: 18, color: COLORS.textLight, transition: "transform 0.3s", transform: isOpen ? "rotate(180deg)" : "rotate(0)" }}>{"▾"}</span>
+                </div>
+                {isOpen && (
+                  <div style={{ marginTop: 16, animation: "fadeIn 0.3s ease" }}>
+                    <div style={{ background: COLORS.softBlue + "12", borderRadius: 14, padding: "12px 16px", marginBottom: 10 }}>
+                      <div style={{ fontSize: 12, fontWeight: 800, color: COLORS.softBlue, marginBottom: 4, textTransform: "uppercase", letterSpacing: 0.5 }}>{"⏱ Mikor?"}</div>
+                      <div style={{ fontSize: 14, lineHeight: 1.6 }}>{phase.when}</div>
+                    </div>
+                    <div style={{ background: COLORS.lavender + "22", borderRadius: 14, padding: "12px 16px", marginBottom: 10 }}>
+                      <div style={{ fontSize: 12, fontWeight: 800, color: COLORS.lavender, marginBottom: 4, textTransform: "uppercase", letterSpacing: 0.5 }}>{"👥 Kinek?"}</div>
+                      <div style={{ fontSize: 14, lineHeight: 1.6 }}>{phase.who}</div>
+                    </div>
+                    <div style={{ background: COLORS.peach + "22", borderRadius: 14, padding: "12px 16px", marginBottom: 10 }}>
+                      <div style={{ fontSize: 12, fontWeight: 800, color: COLORS.peach, marginBottom: 4, textTransform: "uppercase", letterSpacing: 0.5 }}>{"📋 Mi történik?"}</div>
+                      <div style={{ fontSize: 14, lineHeight: 1.6 }}>{phase.what}</div>
+                    </div>
+                    <div style={{ background: COLORS.mint + "22", borderRadius: 14, padding: "12px 16px" }}>
+                      <div style={{ fontSize: 12, fontWeight: 800, color: COLORS.gardenGreen, marginBottom: 4, textTransform: "uppercase", letterSpacing: 0.5 }}>{"🧒 Amit te láthatsz"}</div>
+                      <div style={{ fontSize: 14, lineHeight: 1.6 }}>{phase.forKid}</div>
+                    </div>
+                  </div>
+                )}
+              </div>
+            </div>
+          );
+        })}
+      </div>
+
+      <div style={{
+        background: "linear-gradient(135deg, " + COLORS.mint + "22, " + COLORS.peach + "22)",
+        borderRadius: 18, padding: "16px 20px", marginTop: 8, marginBottom: 16,
+        border: "2px solid " + COLORS.mint + "33",
+        display: "flex", alignItems: "flex-start", gap: 12,
+        animation: "slideUp 0.5s ease 0.6s both",
+      }}>
+        <span style={{ fontSize: 22 }}>{"💛"}</span>
+        <div>
+          <div style={{ fontSize: 12, fontWeight: 800, color: COLORS.gardenGreen, marginBottom: 4, textTransform: "uppercase", letterSpacing: 0.5 }}>Emlékezz</div>
+          <div style={{ fontSize: 15.5, lineHeight: 1.75 }}>{"Nem kell minden lépést értened vagy megjegyezned. Elég annyit tudnod, hol tartotok most, és mi a következő lépés. Ha bármi nem világos, kérdezz bátran anyától, apától, vagy az orvosoktól."}</div>
+        </div>
+      </div>
+
+      <Btn label="Vissza a főmenübe" onClick={function () { goTo("S00"); }} color={COLORS.warmGray} delay={0.65} />
+    </div>
+  );
+}
+
+function EmotionGrid({ goTo }) {
+  var topEmotions = [
+    { id: "S47", emoji: "😊", label: "Jól vagyok", color: COLORS.mint },
+    { id: "S48", emoji: "🌀", label: "Mindent\negyszerre érzek", color: "#A88BC4" },
+  ];
+  var emotions = [
+    { id: "S41", emoji: "😰", label: "Félelem", color: COLORS.fear },
+    { id: "S42", emoji: "😠", label: "Düh", color: COLORS.anger },
+    { id: "S43", emoji: "😢", label: "Szomorúság", color: COLORS.sadness },
+    { id: "S44", emoji: "😞", label: "Bűntudat", color: COLORS.guilt },
+    { id: "S45", emoji: "🫥", label: "Magányosság", color: COLORS.loneliness },
+    { id: "S46", emoji: "🤐", label: "Most nem\nakarok beszélni", color: COLORS.withdraw },
+  ];
+  return (
+    <div>
+      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 14, marginBottom: 14 }}>
+        {topEmotions.map(function (em, i) {
+          return (
+            <div key={em.id} onClick={function () { goTo(em.id); }} style={{
+              background: "linear-gradient(135deg, " + em.color + "33, " + em.color + "18)",
+              borderRadius: 22, padding: "24px 16px",
+              textAlign: "center", cursor: "pointer", border: "2px solid " + em.color + "55",
+              animation: "popIn 0.4s ease " + (i * 0.08) + "s both", transition: "transform 0.2s",
+            }}>
+              <span style={{ fontSize: 40, display: "block", marginBottom: 8, animation: "float 3s ease " + (i * 0.3) + "s infinite" }}>{em.emoji}</span>
+              <span style={{ fontSize: 14, fontWeight: 700, whiteSpace: "pre-line" }}>{em.label}</span>
+            </div>
+          );
+        })}
+      </div>
+      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 14 }}>
+        {emotions.map(function (em, i) {
+          return (
+            <div key={em.id} onClick={function () { goTo(em.id); }} style={{
+              background: em.color + "40", borderRadius: 22, padding: "24px 16px",
+              textAlign: "center", cursor: "pointer", border: "2px solid " + em.color + "55",
+              animation: "popIn 0.4s ease " + (0.16 + i * 0.08) + "s both", transition: "transform 0.2s",
+            }}>
+              <span style={{ fontSize: 40, display: "block", marginBottom: 8, animation: "float 3s ease " + (i * 0.3) + "s infinite" }}>{em.emoji}</span>
+              <span style={{ fontSize: 14, fontWeight: 700, whiteSpace: "pre-line" }}>{em.label}</span>
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+
+function FeelingScreen({ screen, goTo }) {
+  return (
+    <div>
+      <div style={{
+        background: screen.color + "40", borderRadius: 22, padding: 24,
+        marginBottom: 16, textAlign: "center", animation: "slideUp 0.4s ease both",
+        border: "2px solid " + screen.color + "55",
+      }}>
+        <span style={{ fontSize: 50, display: "block", marginBottom: 12, animation: "float 2.5s ease infinite" }}>{screen.icon}</span>
+        <h3 style={{ fontFamily: "'Baloo 2', cursive", fontSize: 22, fontWeight: 800, marginBottom: 10, color: COLORS.text }}>{screen.title}</h3>
+        <p style={{ fontSize: 15.5, lineHeight: 1.75 }}>{screen.feeling.validation}</p>
+      </div>
+      {screen.feeling.thoughts && (
+        <div style={{
+          background: COLORS.white, borderRadius: 18, padding: "18px 20px", marginBottom: 12,
+          boxShadow: "0 3px 12px rgba(0,0,0,0.06)", animation: "slideUp 0.5s ease 0.1s both",
+        }}>
+          <div style={{ fontWeight: 800, fontSize: 14, color: COLORS.textLight, marginBottom: 10, fontFamily: "'Baloo 2', cursive" }}>Lehet, hogy ilyeneket gondolsz:</div>
+          {screen.feeling.thoughts.map(function (t, i) {
+            return (
+              <div key={i} style={{
+                background: screen.color + "15", borderRadius: 14, padding: "10px 16px",
+                marginBottom: 8, fontSize: 14, lineHeight: 1.6, fontStyle: "italic",
+                borderLeft: "3px solid " + screen.color + "66",
+                animation: "slideInLeft 0.4s ease " + (0.15 + i * 0.1) + "s both",
+              }}>
+                {'"' + t + '"'}
+              </div>
+            );
+          })}
+        </div>
+      )}
+      <InfoBlock q="Hol érzed a testedben?" a={screen.feeling.body} delay={0.25} />
+      <InfoBlock q="Mit próbálhatsz ki?" a={screen.feeling.tip} delay={0.35} />
+      {screen.feeling.remember && (
+        <div style={{
+          background: "linear-gradient(135deg, " + screen.color + "22, " + COLORS.mint + "22)",
+          borderRadius: 18, padding: "16px 20px", marginBottom: 12,
+          border: "2px solid " + screen.color + "33",
+          display: "flex", alignItems: "flex-start", gap: 12,
+          animation: "slideUp 0.5s ease 0.45s both",
+        }}>
+          <span style={{ fontSize: 22, animation: "sparkle 2s ease infinite" }}>{"💛"}</span>
+          <div>
+            <div style={{ fontSize: 12, fontWeight: 800, color: screen.color, marginBottom: 4, textTransform: "uppercase", letterSpacing: 0.5 }}>Emlékezz</div>
+            <div style={{ fontSize: 15.5, lineHeight: 1.75 }}>{screen.feeling.remember}</div>
+          </div>
+        </div>
+      )}
+      <Btn label={screen.nextLabel} onClick={function () { goTo(screen.next); }} color={screen.color + "66"} delay={0.5} />
+      <Btn label="Vissza az érzésekhez" onClick={function () { goTo("S40"); }} color={COLORS.warmGray} delay={0.55} />
+    </div>
+  );
+}
+
+// ====== MAIN APP ======
+
+function App() {
+  var _s = useState("S00"), currentScreen = _s[0], setCurrentScreen = _s[1];
+  var _h = useState([]), history = _h[0], setHistory = _h[1];
+  var _t = useState(false), transitioning = _t[0], setTransitioning = _t[1];
+
+  useEffect(function () {
+    var style = document.createElement("style");
+    style.textContent = CSS;
+    document.head.appendChild(style);
+    return function () { try { document.head.removeChild(style); } catch (err) {} };
+  }, []);
+
+  function goTo(id) {
+    setTransitioning(true);
+    setHistory(function (prev) { return prev.concat([currentScreen]); });
+    setTimeout(function () { setCurrentScreen(id); setTransitioning(false); window.scrollTo({ top: 0, behavior: "smooth" }); }, 200);
+  }
+
+  function goBack() {
+    if (history.length === 0) return;
+    setTransitioning(true);
+    var prev = history[history.length - 1];
+    setHistory(function (h) { return h.slice(0, -1); });
+    setTimeout(function () { setCurrentScreen(prev); setTransitioning(false); window.scrollTo({ top: 0, behavior: "smooth" }); }, 200);
+  }
+
+  var screen = SCREENS[currentScreen];
+
+  function renderContent() {
+    if (!screen) return <p>Nem található.</p>;
+
+    if (currentScreen === "S00") {
+      var primaryItems = [
+        { id: "S10", emoji: "📖", label: "Megértem,\nmi történik", color: COLORS.peach },
+        { id: "S40", emoji: "💗", label: "Így érzem\nmagam", color: COLORS.lavender },
+        { id: "S85", emoji: "🎒", label: "A suliban\nés a barátokkal", color: "#6BB5E0" },
+        { id: "S60", emoji: "🤝", label: "Kihez\nfordulhatok?", color: COLORS.peach },
+      ];
+      var dailyItems = [
+        { id: "S90", emoji: "📓", label: "Az én naplóm", tint: "#E8B4D0" },
+        { id: "S55", emoji: "🌙", label: "Este, az ágyban", tint: "#7B8CDE" },
+        { id: "S50", emoji: "🧘", label: "Nyugi-szerszámok", tint: COLORS.mint },
+      ];
+      var situationItems = [
+        { id: "S13", emoji: "🌻", label: "A kert-történet", tint: COLORS.gardenGreen },
+        { id: "S35", emoji: "💭", label: "Amit sok gyerek gondol", tint: COLORS.lavender },
+        { id: "S30", emoji: "🏠", label: "Mi változhat otthon?", tint: COLORS.peach },
+        { id: "S80", emoji: "🏥", label: "Ha anya kórházba megy", tint: COLORS.softBlue },
+        { id: "S70", emoji: "🗺️", label: "Anya útja", tint: COLORS.softBlue },
+      ];
+      return (
+        <div>
+          <div style={{ textAlign: "center", padding: "20px 0 14px", animation: "fadeIn 0.6s ease both" }}>
+            <div style={{ fontSize: 60, marginBottom: 8, animation: "float 3s ease-in-out infinite" }}>{"💛"}</div>
+            <h1 style={{ fontFamily: "'Baloo 2', cursive", fontSize: 28, fontWeight: 800, marginBottom: 6 }}>Mi történik anyával?</h1>
+          </div>
+          <div style={{
+            background: "linear-gradient(135deg, " + COLORS.peach + "22, " + COLORS.lavender + "22)",
+            borderRadius: 22, padding: "18px 22px", marginBottom: 24,
+            animation: "slideUp 0.4s ease 0.15s both",
+            boxShadow: "0 3px 16px rgba(0,0,0,0.06)",
+          }}>
+            <p style={{ fontSize: 15.5, lineHeight: 1.85, textAlign: "center", color: COLORS.text }}>
+              Tudjuk, hogy most sok minden kavarog a fejedben. Ez az app azért van, hogy segítsen megérteni, mi történik, és hogy tudd: nem vagy egyedül. Nézz körül - azt olvasd el, amihez kedved van, abban a sorrendben, amiben szeretnéd.
+            </p>
+          </div>
+
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 14, marginBottom: 26 }}>
+            {primaryItems.map(function (item, i) {
+              return (
+                <div key={item.id} onClick={function () { goTo(item.id); }} style={{
+                  background: "linear-gradient(145deg, " + item.color + "55, " + item.color + "28)",
+                  borderRadius: 22, padding: "26px 16px",
+                  textAlign: "center", cursor: "pointer",
+                  animation: "popIn 0.5s ease " + (0.25 + i * 0.1) + "s both",
+                  border: "2px solid " + item.color + "66", transition: "transform 0.2s",
+                  boxShadow: "0 4px 16px " + item.color + "22",
+                }}>
+                  <span style={{ fontSize: 36, display: "block", marginBottom: 10, animation: "float 3s ease " + (i * 0.4) + "s infinite" }}>{item.emoji}</span>
+                  <span style={{ fontSize: 13.5, fontWeight: 700, whiteSpace: "pre-line", lineHeight: 1.4 }}>{item.label}</span>
+                </div>
+              );
+            })}
+          </div>
+
+          <div style={{ fontSize: 11, fontWeight: 800, color: "#D4849E", textTransform: "uppercase", letterSpacing: 1.5, marginBottom: 10, paddingLeft: 8, animation: "slideUp 0.4s ease 0.6s both" }}>
+            {"📅 Minden napra"}
+          </div>
+          {dailyItems.map(function (item, i) {
+            return <MenuCard key={item.id} emoji={item.emoji} label={item.label} tint={item.tint} onClick={function () { goTo(item.id); }} delay={0.65 + i * 0.08} />;
+          })}
+
+          <div style={{ fontSize: 11, fontWeight: 800, color: COLORS.softBlue, textTransform: "uppercase", letterSpacing: 1.5, marginBottom: 10, marginTop: 14, paddingLeft: 8, animation: "slideUp 0.4s ease 0.9s both" }}>
+            {"📚 Helyzetek és tudás"}
+          </div>
+          {situationItems.map(function (item, i) {
+            return <MenuCard key={item.id} emoji={item.emoji} label={item.label} tint={item.tint} onClick={function () { goTo(item.id); }} delay={0.95 + i * 0.08} />;
+          })}
+        </div>
+      );
+    }
+
+    if (screen.type === "garden") return <GardenScene goTo={goTo} />;
+    if (screen.type === "breathing") return <BreathingExercise goTo={goTo} />;
+    if (screen.type === "lemon") return <LemonExercise goTo={goTo} />;
+    if (screen.type === "grounding") return <GroundingExercise goTo={goTo} />;
+    if (screen.type === "schoolFriends") return <SchoolFriendsModule screen={screen} goTo={goTo} />;
+    if (screen.type === "bedtime") return <BedtimeModule screen={screen} goTo={goTo} />;
+    if (screen.type === "diary") return <DiaryModule goTo={goTo} />;
+    if (screen.type === "hospital") return <HospitalModule screen={screen} goTo={goTo} />;
+    if (screen.type === "knowledge") return <KnowledgeModule screen={screen} goTo={goTo} />;
+    if (screen.type === "kidThoughts") return <KidThoughts screen={screen} goTo={goTo} />;
+    if (screen.type === "homeChanges") return <HomeChanges screen={screen} goTo={goTo} />;
+    if (screen.type === "treatmentJourney") return <TreatmentJourney goTo={goTo} />;
+    if (screen.type === "emotions") return <EmotionGrid goTo={goTo} />;
+    if (screen.feeling) return <FeelingScreen screen={screen} goTo={goTo} />;
+
+    if (screen.type === "copingMenu") {
+      return (
+        <div>
+          <div style={{
+            background: "linear-gradient(135deg, " + COLORS.mint + "33, " + COLORS.softBlue + "22)",
+            borderRadius: 22, padding: "22px 24px", marginBottom: 16,
+            border: "2px solid " + COLORS.mint + "44",
+            animation: "slideUp 0.4s ease both",
+          }}>
+            <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 12 }}>
+              <span style={{ fontSize: 32, animation: "float 3s ease infinite" }}>{"🧘"}</span>
+              <h3 style={{ fontFamily: "'Baloo 2', cursive", fontSize: 20, fontWeight: 800 }}>Mik ezek?</h3>
+            </div>
+            <p style={{ fontSize: 15.5, lineHeight: 1.8 }}>{screen.intro}</p>
+          </div>
+          <div style={{
+            background: COLORS.white, borderRadius: 18, padding: "18px 20px", marginBottom: 16,
+            boxShadow: "0 3px 12px rgba(0,0,0,0.06)", animation: "slideUp 0.5s ease 0.1s both",
+          }}>
+            <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 10 }}>
+              <span style={{ fontSize: 22 }}>{"🧠"}</span>
+              <div style={{ fontWeight: 800, fontSize: 14, color: COLORS.textLight, fontFamily: "'Baloo 2', cursive" }}>Hogyan működnek?</div>
+            </div>
+            <p style={{ fontSize: 15.5, lineHeight: 1.75 }}>{screen.howItWorks}</p>
+          </div>
+          <div style={{
+            background: COLORS.white, borderRadius: 18, padding: "18px 20px", marginBottom: 20,
+            boxShadow: "0 3px 12px rgba(0,0,0,0.06)", animation: "slideUp 0.5s ease 0.2s both",
+          }}>
+            <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 10 }}>
+              <span style={{ fontSize: 22 }}>{"🕐"}</span>
+              <div style={{ fontWeight: 800, fontSize: 14, color: COLORS.textLight, fontFamily: "'Baloo 2', cursive" }}>Mikor érdemes csinálni?</div>
+            </div>
+            {screen.whenToUse.map(function (w, i) {
+              return (
+                <div key={i} style={{
+                  display: "flex", alignItems: "flex-start", gap: 8, marginBottom: 6,
+                  animation: "slideInLeft 0.4s ease " + (0.25 + i * 0.06) + "s both",
+                }}>
+                  <span style={{ color: COLORS.mint, fontSize: 16, marginTop: 1, flexShrink: 0 }}>{"•"}</span>
+                  <span style={{ fontSize: 14, lineHeight: 1.6 }}>{w}</span>
+                </div>
+              );
+            })}
+          </div>
+          <div style={{ fontSize: 13, fontWeight: 700, color: COLORS.textLight, marginBottom: 10, textTransform: "uppercase", letterSpacing: 0.5, animation: "fadeIn 0.4s ease 0.35s both" }}>Válassz egy gyakorlatot:</div>
+          {screen.items.map(function (item, i) {
+            return (
+              <div key={item.id} onClick={function () { goTo(item.id); }} style={{
+                background: COLORS.white, borderRadius: 20, padding: "18px 22px", marginBottom: 12,
+                boxShadow: "0 3px 14px rgba(0,0,0,0.06)", cursor: "pointer",
+                display: "flex", alignItems: "center", gap: 16,
+                animation: "slideInLeft 0.5s ease " + (0.4 + i * 0.08) + "s both",
+                transition: "transform 0.2s",
+              }}>
+                <span style={{ fontSize: 30, animation: "popIn 0.4s ease " + (0.45 + i * 0.08) + "s both" }}>{item.emoji}</span>
+                <div style={{ flex: 1 }}>
+                  <div style={{ fontSize: 16, fontWeight: 700 }}>{item.label}</div>
+                  {item.desc && <div style={{ fontSize: 13, color: COLORS.textLight, marginTop: 2, lineHeight: 1.5 }}>{item.desc}</div>}
+                </div>
+                <span style={{ color: COLORS.textLight, fontSize: 18 }}>{"→"}</span>
+              </div>
+            );
+          })}
+          <Btn label="Vissza a főmenübe" onClick={function () { goTo("S00"); }} color={COLORS.warmGray} delay={0.6} />
+        </div>
+      );
+    }
+
+    if (screen.type === "helpMenu") {
+      return (
+        <div>
+          <div style={{
+            background: "linear-gradient(135deg, " + COLORS.peach + "33, " + COLORS.mint + "22)",
+            borderRadius: 22, padding: "22px 24px", marginBottom: 16,
+            border: "2px solid " + COLORS.peach + "44",
+            animation: "slideUp 0.4s ease both",
+          }}>
+            <p style={{ fontSize: 15.5, lineHeight: 1.8 }}>{screen.intro}</p>
+          </div>
+          <div style={{
+            background: COLORS.white, borderRadius: 18, padding: "14px 18px", marginBottom: 20,
+            boxShadow: "0 3px 12px rgba(0,0,0,0.06)",
+            display: "flex", alignItems: "flex-start", gap: 10,
+            animation: "slideUp 0.4s ease 0.1s both",
+          }}>
+            <span style={{ fontSize: 20, marginTop: 1 }}>{"💡"}</span>
+            <p style={{ fontSize: 15.5, lineHeight: 1.75, color: COLORS.text, fontStyle: "normal" }}>{screen.important}</p>
+          </div>
+          <div style={{ fontSize: 13, fontWeight: 700, color: COLORS.textLight, marginBottom: 10, textTransform: "uppercase", letterSpacing: 0.5, animation: "fadeIn 0.4s ease 0.2s both" }}>Felnőttek, akik segíthetnek:</div>
+          {screen.adults.map(function (item, i) {
+            return (
+              <div key={item.id} onClick={function () { goTo(item.id); }} style={{
+                background: COLORS.white, borderRadius: 20, padding: "18px 22px", marginBottom: 12,
+                boxShadow: "0 3px 14px rgba(0,0,0,0.06)", cursor: "pointer",
+                display: "flex", alignItems: "center", gap: 16,
+                animation: "slideInLeft 0.5s ease " + (0.25 + i * 0.08) + "s both",
+              }}>
+                <span style={{ fontSize: 30, animation: "popIn 0.4s ease " + (0.3 + i * 0.08) + "s both" }}>{item.emoji}</span>
+                <div style={{ flex: 1 }}>
+                  <div style={{ fontSize: 16, fontWeight: 700 }}>{item.label}</div>
+                  {item.desc && <div style={{ fontSize: 13, color: COLORS.textLight, marginTop: 2, lineHeight: 1.5 }}>{item.desc}</div>}
+                </div>
+                <span style={{ color: COLORS.textLight, fontSize: 18 }}>{"→"}</span>
+              </div>
+            );
+          })}
+          <div style={{ fontSize: 13, fontWeight: 700, color: COLORS.textLight, marginBottom: 10, marginTop: 20, textTransform: "uppercase", letterSpacing: 0.5, animation: "fadeIn 0.4s ease 0.5s both" }}>Barátok, suli:</div>
+          {screen.friends.map(function (item, i) {
+            return (
+              <div key={item.id} onClick={function () { goTo(item.id); }} style={{
+                background: "#6BB5E012", borderRadius: 20, padding: "18px 22px", marginBottom: 12,
+                boxShadow: "0 3px 14px rgba(0,0,0,0.06)", cursor: "pointer",
+                display: "flex", alignItems: "center", gap: 16,
+                animation: "slideInLeft 0.5s ease " + (0.55 + i * 0.08) + "s both",
+                border: "1px solid #6BB5E022",
+              }}>
+                <span style={{ fontSize: 30 }}>{item.emoji}</span>
+                <div style={{ flex: 1 }}>
+                  <div style={{ fontSize: 16, fontWeight: 700 }}>{item.label}</div>
+                  {item.desc && <div style={{ fontSize: 13, color: COLORS.textLight, marginTop: 2, lineHeight: 1.5 }}>{item.desc}</div>}
+                </div>
+                <span style={{ marginLeft: "auto", color: COLORS.textLight, fontSize: 18 }}>{"→"}</span>
+              </div>
+            );
+          })}
+          <Btn label="Vissza a főmenübe" onClick={function () { goTo("S00"); }} color={COLORS.warmGray} delay={0.7} />
+        </div>
+      );
+    }
+
+    if (screen.type === "menu") {
+      return (
+        <div>
+          {screen.subtitle && <p style={{ fontSize: 15, color: COLORS.textLight, marginBottom: 20, lineHeight: 1.6, animation: "fadeIn 0.4s ease both" }}>{screen.subtitle}</p>}
+          {screen.extraCards && (
+            <div style={{ marginBottom: 20 }}>
+              <p style={{ fontSize: 13, fontWeight: 700, color: COLORS.textLight, marginBottom: 10, textTransform: "uppercase", letterSpacing: 0.5 }}>Akikhez fordulhatsz:</p>
+              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10 }}>
+                {screen.extraCards.map(function (c, i) {
+                  return (
+                    <div key={i} style={{
+                      background: COLORS.white, borderRadius: 16, padding: "14px 16px",
+                      textAlign: "center", fontSize: 14, boxShadow: "0 3px 10px rgba(0,0,0,0.06)",
+                      animation: "popIn 0.4s ease " + (i * 0.1) + "s both",
+                    }}>
+                      <span style={{ fontSize: 24, display: "block", marginBottom: 4 }}>{c.emoji}</span>
+                      {c.text}
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          )}
+          {screen.items.map(function (item, i) {
+            return <MenuCard key={item.id} emoji={item.emoji} label={item.label} onClick={function () { goTo(item.id); }} delay={i * 0.08} />;
+          })}
+          <Btn label="Vissza a főmenübe" onClick={function () { goTo("S00"); }} color={COLORS.warmGray} delay={0.3} />
+        </div>
+      );
+    }
+
+    // Default content screen
+    return (
+      <div>
+        {screen.gardenTip && <GardenTip text={screen.gardenTip} />}
+        {screen.paragraphs && screen.paragraphs.map(function (p, i) {
+          return <p key={i} style={{ fontSize: 16, lineHeight: 1.8, marginBottom: 16, animation: "slideUp 0.5s ease " + (i * 0.1) + "s both" }}>{p}</p>;
+        })}
+        {screen.cards && screen.cards.map(function (c, i) {
+          var d = screen.paragraphs ? screen.paragraphs.length * 0.1 + i * 0.1 : i * 0.1;
+          return <Card key={i} emoji={c.emoji} text={c.text} color={screen.color ? screen.color + "30" : undefined} delay={d} />;
+        })}
+        {screen.blocks && screen.blocks.map(function (b, i) {
+          var d = screen.paragraphs ? screen.paragraphs.length * 0.1 + i * 0.1 : i * 0.1;
+          return <InfoBlock key={i} q={b.q} a={b.a} delay={d} />;
+        })}
+        {screen.next && (
+          <Btn label={screen.nextLabel || "Tovább"} onClick={function () { goTo(screen.next); }} color={screen.color ? screen.color + "66" : COLORS.mint} delay={0.4} />
+        )}
+      </div>
+    );
+  }
+
+  var navTabs = [
+    { id: "S00", emoji: "🏠", label: "Főmenü" },
+    { id: "S10", emoji: "📖", label: "Tudás" },
+    { id: "S40", emoji: "💗", label: "Érzések" },
+    { id: "S90", emoji: "📓", label: "Napló" },
+    { id: "S60", emoji: "🤝", label: "Segítség" },
+  ];
+
+  return (
+    <div style={{ maxWidth: 480, margin: "0 auto", minHeight: "100vh", paddingBottom: 80, fontFamily: "'Nunito', sans-serif" }}>
+      {currentScreen !== "S00" && (
+        <div style={{
+          position: "sticky", top: 0, zIndex: 100,
+          background: (screen.color || COLORS.softBlue) + "e8",
+          backdropFilter: "blur(16px)", padding: "14px 16px",
+          display: "flex", alignItems: "center", justifyContent: "space-between",
+          borderBottom: "1px solid rgba(255,255,255,0.4)",
+          boxShadow: "0 2px 12px rgba(0,0,0,0.06)",
+        }}>
+          <button onClick={goBack} style={{
+            background: "rgba(255,255,255,0.5)", border: "none", borderRadius: 12,
+            padding: "8px 14px", fontSize: 14, fontWeight: 700, cursor: "pointer", fontFamily: "'Nunito', sans-serif",
+          }}>{"← Vissza"}</button>
+          <span style={{ fontWeight: 800, fontSize: 15, fontFamily: "'Baloo 2', cursive", maxWidth: "50%", textAlign: "center", lineHeight: 1.3 }}>
+            {screen.icon} {screen.title}
+          </span>
+          <button onClick={function () { goTo("S00"); }} style={{
+            background: "rgba(255,255,255,0.5)", border: "none", borderRadius: 12,
+            padding: "8px 14px", fontSize: 14, cursor: "pointer", fontFamily: "'Nunito', sans-serif",
+          }}>{"🏠"}</button>
+        </div>
+      )}
+
+      <div style={{ padding: "24px 20px", opacity: transitioning ? 0 : 1, transition: "opacity 0.2s ease" }}>
+        {currentScreen !== "S00" && screen.title && !screen.feeling && !["breathing", "lemon", "grounding", "treatmentJourney", "garden", "homeChanges", "kidThoughts", "knowledge", "hospital", "diary", "bedtime", "schoolFriends"].includes(screen.type) && (
+          <h2 style={{ fontFamily: "'Baloo 2', cursive", fontSize: 26, fontWeight: 800, marginBottom: 6, animation: "fadeIn 0.4s ease both" }}>{screen.title}</h2>
+        )}
+        {currentScreen !== "S00" && screen.subtitle && screen.type !== "menu" && (
+          <p style={{ fontSize: 15, color: COLORS.textLight, marginBottom: 20, lineHeight: 1.7, animation: "fadeIn 0.5s ease both" }}>{screen.subtitle}</p>
+        )}
+        {renderContent()}
+      </div>
+
+      <div style={{
+        position: "fixed", bottom: 0, left: 0, right: 0,
+        background: COLORS.white + "f5", backdropFilter: "blur(16px)",
+        display: "flex", justifyContent: "center", gap: 4,
+        padding: "8px 10px 12px", borderTop: "1px solid rgba(0,0,0,0.08)",
+        zIndex: 100, maxWidth: 480, margin: "0 auto",
+        boxShadow: "0 -2px 16px rgba(0,0,0,0.06)",
+      }}>
+        {navTabs.map(function (tab) {
+          var isActive = currentScreen === tab.id;
+          return (
+            <button key={tab.id} onClick={function () { goTo(tab.id); }} style={{
+              background: isActive ? COLORS.coral + "18" : "transparent",
+              border: "none", borderRadius: 16, padding: "8px 14px",
+              fontSize: 12, fontWeight: isActive ? 800 : 600,
+              cursor: "pointer", fontFamily: "'Nunito', sans-serif",
+              color: isActive ? COLORS.coral : COLORS.textLight,
+              display: "flex", flexDirection: "column", alignItems: "center", gap: 3,
+              transition: "all 0.2s",
+            }}>
+              <span style={{ fontSize: 24 }}>{tab.emoji}</span>
+              {tab.label}
+            </button>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+  </script>
+</body>
+</html>
