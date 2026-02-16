@@ -90,7 +90,7 @@ var SCREENS_HU = {
         id: "first", emoji: "⭐", title: "Amit először is tudnod kell",
         short: "A legfontosabb dolgok, mielőtt bármit is olvasnál.",
         simple: [
-          { emoji: "🛡️", text: "A mellrák nem fertőző. Nem kaphatod el öleléstől, csóktól, közös evéstől – semmitől. Anya közelében biztonságban vagy, és nyugodtan ölelheted meg." },
+          { emoji: "🛡️", text: "A mellrák nem fertőző. Nem kaphatod el öleléstől, puszitól, közös evéstől – semmitől. Anya közelében biztonságban vagy, és nyugodtan megölelheted." },
           { emoji: "💛", text: "Nem a te hibád. A mellrák nem azért alakul ki, mert valaki rosszul viselkedett, veszekedett, vagy nem volt elég jó. Senki sem okozza – egy gyerek pedig végképp nem." },
           { emoji: "🧸", text: "Nem neked kell meggyógyítanod anyát. A gyógyítás az orvosok feladata. A te dolgod az, hogy gyerek legyél." },
           { emoji: "🔄", text: "Nem kell mindent egyszerre megértened. Bármikor visszajöhetsz és újra elolvashatod. A saját tempódban haladhatsz." },
@@ -260,7 +260,7 @@ var SCREENS_HU = {
           {
             id: "catch", emoji: "🛡️", question: "Én is megkaphatom?",
             validation: "Ez nagyon gyakori félelem, és teljesen érthető. Ha valami rossz történik a családban, az ember automatikusan aggódni kezd, hogy vele is megtörténhet.",
-            answer: "A mellrák nem fertőző – nem lehet elkapni. Nem terjed öleléssel, csókkal, tüsszentéssel, közös evéssel, vagy bármi mással. Biztonságban vagy anya közelében – sőt, a közelséged most fontosabb, mint valaha.",
+            answer: "A mellrák nem fertőző – nem lehet elkapni. Nem terjed öleléssel, puszival, tüsszentéssel, közös evéssel, vagy bármi mással. Biztonságban vagy anya közelében – sőt, a közelséged most fontosabb, mint valaha.",
             remember: "Nyugodtan öleld meg anyát. A szeretet nem terjeszt betegséget – de segíthet a gyógyulásban.",
           },
         ],
@@ -505,8 +505,8 @@ var SCREENS_HU = {
 
   // SEGITSEG
   S60: { title: "Kihez fordulhatok?", icon: "🤝", color: COLORS.peach, type: "helpMenu",
-    intro: "Nem kell egyedül cipelned azt, amit érzel. Körülötted vannak felnőttek és barátok, akik segíthetnek – még ha néha nem is tudják, hogyan. Az első lépés mindig a tied: jelezd, hogy beszélni szeretnél.",
-    important: "Nem kell várnod, amíg valami nagy baj van. Bármikor szólhatsz – akkor is, ha csak furcsan érzed magad, vagy ha egy kérdés nem hagy nyugodni.",
+    intro: "Nem kell egyedül hordoznod azt, amit érzel. Körülötted vannak felnőttek és barátok, akik segíthetnek – még ha néha nem is tudják, hogyan. Az első lépés mindig a tied: jelezd, hogy beszélni szeretnél.",
+    important: "Nem kell várnod, amíg valami nagy baj van. Bármikor szólhatsz – akkor is, ha csak furcsán érzed magad, vagy ha egy kérdés nem hagy nyugodni.",
     adults: [
       { id: "S64", emoji: "👩", label: "Anya vagy apa", desc: "Ők ismerik a helyzetet és téged is a legjobban." },
       { id: "S65", emoji: "👩‍🏫", label: "Tanár vagy osztályfőnök", desc: "Segíthet a suliban, és megértőbb lesz, ha tudja." },
@@ -520,9 +520,9 @@ var SCREENS_HU = {
   S64: { title: "Anya vagy apa", icon: "👩", color: COLORS.peach,
     blocks: [
       { q: "Miért hozzájuk?", a: "Ők ismerik a legjobban a helyzetet és téged is. Tudják, mi történik a kezeléssel, és tudnak válaszolni a kérdéseidre. És ők is szeretnék tudni, mit érzel – még ha néha úgy tűnik is, hogy elfoglaltak." },
-      { q: "Mikor érdemes szólni?", a: "Bármikor, ha kérdésed van, félsz valamitől, vagy egyszerűen rosszul érzed magad. Nem kell várnod, amíg valami nagy baj van. És nem kell félned, hogy felzaklatod őket – ők szeretnék tudni, mi jár a fejedben." },
+      { q: "Mikor érdemes szólni?", a: "Bármikor, ha kérdésed van, félsz valamitől, vagy egyszerűen rosszul érzed magad. Nem kell várnod, amíg valami nagy baj van. És nem kell félned, hogy elszomorítod őket – ők szeretnék tudni, mi jár a fejedben." },
       { q: "Hogyan kezdd el?", a: "Válassz egy nyugodtabb pillanatot – nem kell tökéletes időpont, de kerüld a rohanást. Mondhatod egyszerűen: Beszélhetünk egy kicsit? Valami nyomaszt. Ez elég a kezdéshez." },
-      { q: "Ha nehéz elkezdeni", a: "Ha szóval nehéz, írhatod is: csinálhatsz egy cetlit, rajzolhatsz valamit, vagy megmutathatod ezt az appot, és rámutathatsz arra a részre, ami érdekel." },
+      { q: "Ha nehéz elkezdeni", a: "Ha szóval nehéz, írhatod is: csinálhatsz egy cetlit, rajzolhatsz valamit, vagy megmutathatod ezt az appot, és rámutathatsz arra a részre, ami foglalkoztat." },
     ],
     cards: [
       { emoji: "💬", text: "Félek, és szeretném, ha elmagyaráznád, mi történik most." },
@@ -533,8 +533,8 @@ var SCREENS_HU = {
   },
   S65: { title: "Tanár vagy osztályfőnök", icon: "👩‍🏫", color: COLORS.peach,
     blocks: [
-      { q: "Miért hozzájuk?", a: "A tanáraid nap mint nap látnak, és észrevehetik, ha valami más, mint máskor. Ha tudják, mi történik otthon, megértőbben tudnak reagálni, ha fáradtabb vagy, nehezebben figyelsz, vagy szomorúbb vagy." },
-      { q: "Miért érdemes szólni nekik?", a: "Ha a tanáraid tudnak róla, nem gondolják azt, hogy lustálkodsz vagy nem érdeklődsz. Ehelyett megadhatják a teret, amire szükséged van: több idő dolgozatnál, megértőbb hozzáállás, vagy egyszerűen egy kedves szó." },
+      { q: "Miért hozzájuk?", a: "A tanáraid nap mint nap látnak, és észrevehetik, ha valami más, mint máskor. Ha tudják, mi történik otthon, megértőbben tudnak reagálni, ha fáradtabb vagy, nehezebben figyelsz, vagy szomorúbbnak tűnsz." },
+      { q: "Miért érdemes szólni nekik?", a: "Ha a tanáraid tudnak róla, nem gondolják azt, hogy nem próbálkozol, vagy hogy nem érdekel. Ehelyett megadhatják a teret, amire szükséged van: több idő dolgozatnál, megértőbb hozzáállás, vagy egyszerűen egy kedves szó." },
       { q: "Mit kell elmondanod?", a: "Nem kell részletekbe menned. Elég annyit mondanod: Anya beteg, kezelést kap. Néha emiatt nehezebb napjaim vannak. Ez már elég ahhoz, hogy megértse." },
       { q: "Hogyan szólj?", a: "Keress egy csendes percet az óra előtt vagy után, vagy írj egy rövid üzenetet. Ha nehéz egyedül, kérheted anyát, apát, vagy az iskolapszichológust is, hogy segítsen elmondani." },
     ],
@@ -547,9 +547,9 @@ var SCREENS_HU = {
   S66: { title: "Iskolapszichológus", icon: "🪴", color: COLORS.peach,
     blocks: [
       { q: "Ki az iskolapszichológus?", a: "Ő egy szakember, aki az iskoládban dolgozik, és kifejezetten abban segít, ha egy gyereknek nehezebb időszaka van. Ért az érzésekhez, és tud segíteni feldolgozni őket." },
-      { q: "Miért érdemes hozzá fordulni?", a: "Nem fog megítélni, és nem fogja elmondani másoknak, amit megosztasz vele. Olyan eszközei vannak, amelyek segíthetnek kezelni a félelmet, a szomorúságot vagy a dühöt." },
-      { q: "Milyen ez a beszélgetés?", a: "Nem olyan, mint egy vizsga vagy egy kikérdezés. Inkább olyan, mint egy nyugodt beszélgetés valakivel, aki igazán figyel rád. Kérdez, hallgat, és segít gondolkodni – nem ad leckét, és nem mondja meg, mit érezz." },
-      { q: "Hogyan találom meg?", a: "Kérdezd meg az osztályfőnöködet vagy az iskolai irodát, hogy ki a pszichológus és mikor elérhető. Sok iskolában elég egyszerűen bejelentkezni hozzá." },
+      { q: "Miért érdemes hozzá fordulni?", a: "Nem fog megítélni, és nem fogja elmondani másoknak, amit megosztasz vele. Olyan módszerei vannak, amik segíthetnek, ha félsz, szomorú vagy, vagy dühös." },
+      { q: "Milyen ez a beszélgetés?", a: "Nem olyan, mint egy vizsga vagy egy kikérdezés. Inkább olyan, mint egy nyugodt beszélgetés valakivel, aki igazán figyel rád. Kérdez, hallgat, és segít gondolkodni – nem ad feladatot, és nem mondja meg, mit kellene érezned." },
+      { q: "Hogyan találom meg?", a: "Kérdezd meg az osztályfőnöködet vagy az iskolai irodát, hogy ki a pszichológus és mikor elérhető. Sok iskolában könnyen lehet hozzá időpontot kérni." },
     ],
     cards: [
       { emoji: "💬", text: "Anya beteg, és néha nem tudom, mit érzek. Szeretnék beszélni valakivel." },
@@ -559,10 +559,10 @@ var SCREENS_HU = {
   },
   S67: { title: "Más megbízható felnőtt", icon: "🫂", color: COLORS.peach,
     blocks: [
-      { q: "Kire gondolunk?", a: "Nagymama, nagypapa, nagynéni, nagybácsi, edződ, cserkészvezetőd, a szomszéd néni – bárki, akit ismersz, akiben megbízol, és akivel jól érzed magad." },
-      { q: "Miért érdemes nekik szólni?", a: "Néha könnyebb valakinek elmondani, aki nincs benne a közvetlen helyzetben. Ők kicsit távolabbról látják a dolgokat, és néha épp ezért tudnak segíteni: meghallgatnak, elviszik a figyelmedet, vagy egyszerűen biztonságot adnak." },
+      { q: "Kire gondolunk?", a: "Nagymama, nagypapa, nagynéni, nagybácsi, edződ, cserkészvezetőd, egy kedves szomszéd – bárki, akit ismersz, akiben megbízol, és akivel jól érzed magad." },
+      { q: "Miért érdemes nekik szólni?", a: "Néha könnyebb valakinek elmondani, aki nincs benne a közvetlen helyzetben. Ők kicsit távolabbról látják a dolgokat, és néha épp ezért tudnak segíteni: meghallgatnak, elterelik a gondolataidat, vagy egyszerűen biztonságot adnak." },
       { q: "Mit mondhatsz nekik?", a: "Annyit, amennyit szeretnél. Mondhatod egyszerűen: Anya beteg, és néha szomorú vagyok. Nem kell mindent elmondanod – elég jelezni, hogy beszélni szeretnél." },
-      { q: "Ha nincs ilyen emberem", a: "Ha úgy érzed, nincs ilyen felnőtt az életedben, szólj anyának vagy apának: Szeretnék valakivel beszélni azon kívül, akivel együtt élek. Ők segíthetnek találni valakit – akár egy pszichológust is." },
+      { q: "Ha nem ismerek ilyen felnőttet", a: "Ha úgy érzed, nincs ilyen felnőtt az életedben, szólj anyának vagy apának: Szeretnék valakivel beszélni rajtatok kívül is. Ők segíthetnek találni valakit – akár egy pszichológust is." },
     ],
     cards: [
       { emoji: "💬", text: "Beszélhetünk egy kicsit? Valami nyomaszt, és jó lenne elmondanom." },
@@ -1621,11 +1621,11 @@ var SCREENS_EN = {
         id: "reactions", emoji: "😶", title: "If they react strangely",
         intro: "People don't always know how to respond to difficult news. This doesn't mean they don't care - most of the time they just don't know what to say.",
         scenarios: [
-          { title: "They go awkwardly silent", why: "They don't know what to say. Nobody taught them how to react to something like this. Their silence doesn't mean they don't care.", response: "That's okay, you don't have to say anything. I just wanted you to know." },
-          { title: "They say something dumb", why: "Like: 'My grandma had that too!' or 'Everything will be fine!' They mean well, they just don't know the right words.", response: "Thanks, but every situation is different. It's enough just to know you're there for me." },
-          { title: "They feel too sorry for you", why: "Pity face, treating you with kid gloves, asking every day if you're okay. They care - just too much.", response: "I appreciate you caring, but I'd rather we just be normal. I'll tell you when I need to talk." },
-          { title: "They gossip about it", why: "Kids talk - this doesn't usually come from malice but from not knowing the 'rules.' They don't realize it might bother you.", response: "I told you because I trust you. I'd appreciate it if you didn't tell others - it's my story." },
-          { title: "They act like you never said anything", why: "Some kids need time to process it. Or they think if they don't bring it up, it won't hurt you.", response: "You don't have to bring it up all the time, but it would mean a lot if you'd ask sometimes how I'm doing." },
+          { situation: "They go awkwardly silent", why: "They don't know what to say. Nobody taught them how to react to something like this. Their silence doesn't mean they don't care.", what: "That's okay, you don't have to say anything. I just wanted you to know." },
+          { situation: "They say something dumb", why: "Like: 'My grandma had that too!' or 'Everything will be fine!' They mean well, they just don't know the right words.", what: "Thanks, but every situation is different. It's enough just to know you're there for me." },
+          { situation: "They feel too sorry for you", why: "Pity face, treating you with kid gloves, asking every day if you're okay. They care - just too much.", what: "I appreciate you caring, but I'd rather we just be normal. I'll tell you when I need to talk." },
+          { situation: "They gossip about it", why: "Kids talk - this doesn't usually come from malice but from not knowing the 'rules.' They don't realize it might bother you.", what: "I told you because I trust you. I'd appreciate it if you didn't tell others - it's my story." },
+          { situation: "They act like you never said anything", why: "Some kids need time to process it. Or they think if they don't bring it up, it won't hurt you.", what: "You don't have to bring it up all the time, but it would mean a lot if you'd ask sometimes how I'm doing." },
         ],
       },
       {
@@ -1640,24 +1640,23 @@ var SCREENS_EN = {
           { emoji: "🗣️", text: "If these stories hurt, tell an adult. Ask your parents directly: What chances did the doctors give for Mom's illness? You deserve an honest answer." },
         ],
         responses: [
-          { label: "🟢 If someone tells a cancer story", text: "Thanks, but Mom's illness is different. Her doctors gave good chances." },
-          { label: "🟡 If you don't want to discuss it", text: "Let's not talk about cancer stories right now, okay? Mine is different, and it doesn't help when I hear scary things." },
-          { label: "🔵 If you're very scared (to an adult)", text: "I heard that someone didn't get better, and now I'm scared. Can we talk about it?" },
+          { emoji: "🟢", label: "If someone tells a cancer story", text: "Thanks, but Mom's illness is different. Her doctors gave good chances." },
+          { emoji: "🟡", label: "If you don't want to discuss it", text: "Let's not talk about cancer stories right now, okay? Mine is different, and it doesn't help when I hear scary things." },
+          { emoji: "🔵", label: "If you're very scared (to an adult)", text: "I heard that someone didn't get better, and now I'm scared. Can we talk about it?" },
         ],
       },
       {
         id: "school", emoji: "🏫", title: "When school is hard",
-        intro: "It's completely normal if school is harder during this time. Your brain is processing a lot of big things - fear, worry, sadness - and that takes energy away from learning.",
-        scenarios: [
-          { title: "Can't concentrate", why: "Your brain keeps running thoughts about Mom in the background. This is not laziness - your brain is simply busy with something more important right now.", response: "If it helps, write down what you're worried about on a small piece of paper. Once it's written down, your brain lets go a little more easily." },
-          { title: "Crying in class", why: "Sometimes feelings suddenly overwhelm you. This isn't weakness - it's a natural reaction to a difficult situation.", response: "Ask your teacher to step out for a moment. You don't need to explain - 'I need a minute' is enough." },
-          { title: "Grades are dropping", why: "During a difficult period, it's completely normal for your performance to drop. This doesn't mean you've become dumber or lazier.", response: "If possible, tell your teacher what's going on at home. Most teachers will be understanding and give you some grace." },
-          { title: "Feeling different", why: "Your friends' biggest worry is a math test, and you're afraid for Mom. That gap can feel enormous.", response: "Remember: everyone has hidden struggles. You're not the only one with a secret - others just carry different ones." },
-          { title: "Pretending to be okay", why: "Many kids use school as a refuge: a place where cancer doesn't exist. That's perfectly valid.", response: "If school is your safe place, protect it. You don't have to talk about home here if you don't want to." },
+        content: [
+          { emoji: "😶‍🌫️", text: "Can't concentrate: It's completely normal if your brain wanders. Mom's on your mind instead of math. This isn't laziness - your brain is processing fears, and that takes energy away from learning." },
+          { emoji: "😢", text: "If you start crying: Ask to step out to the bathroom or the schoolyard. You don't need to explain - you can say: I'm not feeling great, can I step out? Most teachers understand." },
+          { emoji: "📉", text: "If grades are dropping: This doesn't mean you've become dumber. During a tough time, it's normal for performance to dip. If your teacher knows what's going on, they'll be more understanding." },
+          { emoji: "🫥", text: "Feeling different: Everyone's playing at recess, and you're thinking about Mom. It's the loneliest feeling. But you're not the only one struggling in secret - other kids' problems just aren't visible." },
+          { emoji: "🎭", text: "Pretending to be okay: Sometimes school is the place where you don't have to think about the illness. If you feel good at school, that's not wrong - it's important to have a place where you can just be you." },
         ],
       },
       {
-        id: "askfriends", emoji: "🤝", title: "What you can ask from friends",
+        id: "whatask", emoji: "🤝", title: "What you can ask from friends",
         intro: "If you've told your friends, you can let them know how to help. Most friends want to help - they just don't know how.",
         requests: [
           { emoji: "👂", text: "Just listen, without trying to fix anything." },
@@ -1669,7 +1668,7 @@ var SCREENS_EN = {
         ],
       },
       {
-        id: "silent", emoji: "🙊", title: "If I don't want to talk about it",
+        id: "notsay", emoji: "🙊", title: "If I don't want to talk about it",
         intro: "It's completely okay if you don't want to talk about Mom's illness at school. School can be your refuge too - a place where cancer doesn't exist and you can just be a regular kid.",
         content: [
           { emoji: "🏫", text: "School can be your safe zone. A place where math is math, recess is recess, and nobody looks at you with pity eyes. You have the right to protect this." },
@@ -2775,174 +2774,177 @@ function GroundingExercise({ goTo, t, nick }) {
 function SchoolFriendsModule({ screen, goTo, t, nick }) {
   var _s = useState(null), openId = _s[0], setOpenId = _s[1];
 
+  var _sub = useState(false), subTransitioning = _sub[0], setSubTransitioning = _sub[1];
+  function subGoTo(id) {
+    setSubTransitioning(true);
+    setTimeout(function () { window.scrollTo(0, 0); setOpenId(id); setSubTransitioning(false); }, 200);
+  }
+  function subGoBack() {
+    setSubTransitioning(true);
+    setTimeout(function () { window.scrollTo(0, 0); setOpenId(null); setSubTransitioning(false); }, 200);
+  }
+
+  var openSection = openId ? screen.sections.find(function (s) { return s.id === openId; }) : null;
 
   return (
+    <div style={{ opacity: subTransitioning ? 0 : 1, transition: "opacity 0.18s ease" }}>
     <div style={{ padding: "10px 0" }}>
       <h2 style={{ fontFamily: "'Baloo 2', cursive", fontSize: 24, fontWeight: 800, marginBottom: 8, animation: "fadeIn 0.4s ease both" }}>
-        {"🎒"} A suliban és a barátokkal
+        {"🎒"} {screen.title}
       </h2>
-      <div style={{
-        background: "linear-gradient(135deg, #6BB5E022, " + COLORS.mint + "18)",
-        borderRadius: 20, padding: "18px 22px", marginBottom: 22,
-        border: "2px solid #6BB5E033",
-        animation: "slideUp 0.4s ease both",
-      }}>
-        <p style={{ fontSize: 15.5, lineHeight: 1.8 }}>{screen.intro}</p>
-      </div>
 
-      {screen.sections.map(function (section, i) {
-        var isOpen = openId === section.id;
-        return (
-          <div key={section.id} style={{ marginBottom: 12, animation: "slideUp 0.4s ease " + (0.1 + i * 0.06) + "s both" }}>
-            <div style={{
-              background: COLORS.white, borderRadius: 20,
-              padding: isOpen ? "18px 22px" : "14px 20px",
-              boxShadow: isOpen ? "0 4px 18px rgba(0,0,0,0.09)" : "0 2px 10px rgba(0,0,0,0.05)",
-              transition: "all 0.3s",
-              border: isOpen ? "2px solid #6BB5E066" : "2px solid transparent",
-            }}>
-              <div onClick={function () { setOpenId(isOpen ? null : section.id); }} style={{ display: "flex", alignItems: "center", gap: 14, cursor: "pointer" }}>
-                <span style={{ fontSize: 28, animation: isOpen ? "float 3s ease infinite" : "none" }}>{section.emoji}</span>
-                <div style={{ flex: 1, fontWeight: 700, fontSize: 16 }}>{section.title}</div>
-                <span style={{ fontSize: 18, color: COLORS.textLight, transition: "transform 0.3s", transform: isOpen ? "rotate(180deg)" : "rotate(0)" }}>{"▾"}</span>
-              </div>
-
-              {isOpen && (
-                <div style={{ marginTop: 16, animation: "fadeIn 0.3s ease" }}>
-                  {section.intro && (
-                    <div style={{
-                      background: "#6BB5E010", borderRadius: 16, padding: "14px 18px", marginBottom: 14,
-                      borderLeft: "4px solid #6BB5E044",
-                    }}>
-                      <p style={{ fontSize: 15.5, lineHeight: 1.8, color: COLORS.text, fontStyle: "normal" }}>{section.intro}</p>
-                    </div>
-                  )}
-
-                  {section.content && section.content.map(function (item, j) {
-                    return (
-                      <div key={j} style={{
-                        display: "flex", gap: 12, alignItems: "flex-start", marginBottom: 14,
-                        animation: "slideInLeft 0.3s ease " + (j * 0.08) + "s both",
-                      }}>
-                        <span style={{ fontSize: 22, flexShrink: 0, marginTop: 2 }}>{item.emoji}</span>
-                        <p style={{ fontSize: 15.5, lineHeight: 1.8 }}>{item.text}</p>
-                      </div>
-                    );
-                  })}
-
-                  {section.levels && section.levels.map(function (lvl, l) {
-                    return (
-                      <div key={l} style={{
-                        marginBottom: 16, animation: "slideInLeft 0.3s ease " + (l * 0.1) + "s both",
-                      }}>
-                        <div style={{ fontWeight: 700, fontSize: 14, marginBottom: 8, color: "#6BB5E0" }}>{lvl.level}</div>
-                        {lvl.examples.map(function (ex, e) {
-                          return (
-                            <div key={e} style={{
-                              background: "#6BB5E008", borderRadius: 14, padding: "12px 16px",
-                              marginBottom: 8, borderLeft: "3px solid #6BB5E044",
-                            }}>
-                              <p style={{ fontSize: 15.5, lineHeight: 1.75, fontStyle: "italic" }}>{'"' + ex + '"'}</p>
-                            </div>
-                          );
-                        })}
-                      </div>
-                    );
-                  })}
-
-                  {section.scenarios && section.scenarios.map(function (sc, s) {
-                    return (
-                      <div key={s} style={{
-                        background: COLORS.warmGray + "33", borderRadius: 18, padding: "16px 20px",
-                        marginBottom: 12, animation: "slideInLeft 0.3s ease " + (s * 0.08) + "s both",
-                      }}>
-                        <div style={{ fontWeight: 700, fontSize: 15, marginBottom: 8 }}>{sc.situation}</div>
-                        <div style={{ display: "flex", gap: 8, alignItems: "flex-start", marginBottom: 8 }}>
-                          <span style={{ fontSize: 12, fontWeight: 800, color: COLORS.textLight, minWidth: 60 }}>Miért:</span>
-                          <p style={{ fontSize: 13, lineHeight: 1.7, color: COLORS.textLight }}>{sc.why}</p>
-                        </div>
-                        <div style={{ display: "flex", gap: 8, alignItems: "flex-start",
-                          background: COLORS.mint + "18", borderRadius: 12, padding: "10px 14px",
-                        }}>
-                          <span style={{ fontSize: 12, fontWeight: 800, color: COLORS.text, minWidth: 60 }}>Mondhatod:</span>
-                          <p style={{ fontSize: 13, lineHeight: 1.7, fontStyle: "italic" }}>{sc.what}</p>
-                        </div>
-                      </div>
-                    );
-                  })}
-
-                  {section.responses && (
-                    <div style={{ marginTop: 6 }}>
-                      <div style={{ fontSize: 13, fontWeight: 800, color: COLORS.textLight, marginBottom: 10, textTransform: "uppercase", letterSpacing: 0.5 }}>
-                        Amit mondhatsz
-                      </div>
-                      {section.responses.map(function (resp, r) {
-                        return (
-                          <div key={r} style={{
-                            background: COLORS.mint + "12", borderRadius: 16, padding: "14px 18px",
-                            marginBottom: 10, borderLeft: "4px solid " + COLORS.mint + "55",
-                            animation: "slideInLeft 0.3s ease " + (r * 0.08) + "s both",
-                          }}>
-                            <div style={{ display: "flex", gap: 10, alignItems: "flex-start" }}>
-                              <span style={{ fontSize: 18, flexShrink: 0 }}>{resp.emoji}</span>
-                              <div>
-                                <div style={{ fontSize: 12, fontWeight: 800, color: COLORS.textLight, marginBottom: 4 }}>{resp.label}</div>
-                                <p style={{ fontSize: 15.5, lineHeight: 1.75, fontStyle: "italic" }}>{'"' + resp.text + '"'}</p>
-                              </div>
-                            </div>
-                          </div>
-                        );
-                      })}
-                    </div>
-                  )}
-
-                  {section.requests && (
-                    <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10 }}>
-                      {section.requests.map(function (req, r) {
-                        return (
-                          <div key={r} style={{
-                            background: "#6BB5E010", borderRadius: 16, padding: "14px 16px",
-                            display: "flex", alignItems: "flex-start", gap: 10,
-                            animation: "popIn 0.3s ease " + (r * 0.06) + "s both",
-                            border: "1px solid #6BB5E022",
-                          }}>
-                            <span style={{ fontSize: 22, flexShrink: 0 }}>{req.emoji}</span>
-                            <span style={{ fontSize: 13, lineHeight: 1.6 }}>{req.text}</span>
-                          </div>
-                        );
-                      })}
-                    </div>
-                  )}
-                </div>
-              )}
-            </div>
+      {!openSection && (
+        <div>
+          <div style={{
+            background: "linear-gradient(135deg, #6BB5E022, " + COLORS.mint + "18)",
+            borderRadius: 20, padding: "18px 22px", marginBottom: 22,
+            border: "2px solid #6BB5E033", animation: "slideUp 0.4s ease both",
+          }}>
+            <p style={{ fontSize: 15.5, lineHeight: 1.8 }}>{screen.intro}</p>
           </div>
-        );
-      })}
+          {screen.sections.map(function (section, i) {
+            return (
+              <div key={section.id} onClick={function () { subGoTo(section.id); }} style={{
+                marginBottom: 12, cursor: "pointer", animation: "slideUp 0.4s ease " + (0.1 + i * 0.06) + "s both",
+              }}>
+                <div style={{
+                  background: COLORS.white, borderRadius: 20, padding: "14px 20px",
+                  boxShadow: "0 2px 10px rgba(0,0,0,0.05)", border: "2px solid transparent",
+                  display: "flex", alignItems: "center", gap: 14,
+                }}>
+                  <span style={{ fontSize: 28 }}>{section.emoji}</span>
+                  <div style={{ flex: 1, fontWeight: 700, fontSize: 16 }}>{section.title}</div>
+                  <span style={{ fontSize: 18, color: COLORS.textLight }}>{"→"}</span>
+                </div>
+              </div>
+            );
+          })}
+          <Btn label={t.lang === "hu" ? "Segítség – kihez fordulhatok?" : "Help – who can I turn to?"} onClick={function () { goTo("S60"); }} color={COLORS.peach + "55"} delay={0.6} />
+          <Btn label={t.backToMain} onClick={function () { goTo("S00"); }} color={COLORS.warmGray} delay={0.65} />
+        </div>
+      )}
 
-      <div style={{ marginTop: 8 }}>
-        <Btn label={t.lang === "hu" ? "Segítség - felnőttek" : "Help - adults"} onClick={function () { goTo("S60"); }} color={COLORS.peach + "55"} delay={0.6} />
-        <Btn label={t.backToMain} onClick={function () { goTo("S00"); }} color={COLORS.warmGray} delay={0.65} />
-      </div>
+      {openSection && (
+        <div>
+          <div style={{ display: "flex", alignItems: "center", gap: 14, marginBottom: 16 }}>
+            <span style={{ fontSize: 28, animation: "float 3s ease infinite" }}>{openSection.emoji}</span>
+            <div style={{ fontWeight: 700, fontSize: 20, fontFamily: "'Baloo 2', cursive" }}>{openSection.title}</div>
+          </div>
+          <div style={{
+            background: COLORS.white, borderRadius: 20, padding: "18px 22px",
+            boxShadow: "0 4px 18px rgba(0,0,0,0.09)", border: "2px solid #6BB5E066", marginBottom: 16,
+          }}>
+            {openSection.intro && (
+              <div style={{ background: "#6BB5E010", borderRadius: 16, padding: "14px 18px", marginBottom: 14, borderLeft: "4px solid #6BB5E044" }}>
+                <p style={{ fontSize: 15.5, lineHeight: 1.8 }}>{openSection.intro}</p>
+              </div>
+            )}
+            {openSection.content && openSection.content.map(function (item, j) {
+              return (
+                <div key={j} style={{ display: "flex", gap: 12, alignItems: "flex-start", marginBottom: 14 }}>
+                  <span style={{ fontSize: 22, flexShrink: 0, marginTop: 2 }}>{item.emoji}</span>
+                  <p style={{ fontSize: 15.5, lineHeight: 1.8 }}>{item.text}</p>
+                </div>
+              );
+            })}
+            {openSection.levels && openSection.levels.map(function (lvl, l) {
+              return (
+                <div key={l} style={{ marginBottom: 16 }}>
+                  <div style={{ fontWeight: 700, fontSize: 14, marginBottom: 8, color: "#6BB5E0" }}>{lvl.level}</div>
+                  {lvl.examples.map(function (ex, e) {
+                    return (
+                      <div key={e} style={{ background: "#6BB5E008", borderRadius: 14, padding: "12px 16px", marginBottom: 8, borderLeft: "3px solid #6BB5E044" }}>
+                        <p style={{ fontSize: 15.5, lineHeight: 1.75, fontStyle: "italic" }}>{'"' + ex + '"'}</p>
+                      </div>
+                    );
+                  })}
+                </div>
+              );
+            })}
+            {openSection.scenarios && openSection.scenarios.map(function (sc, s) {
+              return (
+                <div key={s} style={{ background: COLORS.warmGray + "33", borderRadius: 18, padding: "16px 20px", marginBottom: 12 }}>
+                  <div style={{ fontWeight: 700, fontSize: 15, marginBottom: 8 }}>{sc.situation || sc.title}</div>
+                  <div style={{ display: "flex", gap: 8, alignItems: "flex-start", marginBottom: 8 }}>
+                    <span style={{ fontSize: 12, fontWeight: 800, color: COLORS.textLight, minWidth: 60 }}>{t.lang === "hu" ? "Miért:" : "Why:"}</span>
+                    <p style={{ fontSize: 13, lineHeight: 1.7, color: COLORS.textLight }}>{sc.why}</p>
+                  </div>
+                  <div style={{ display: "flex", gap: 8, alignItems: "flex-start", background: COLORS.mint + "18", borderRadius: 12, padding: "10px 14px" }}>
+                    <span style={{ fontSize: 12, fontWeight: 800, color: COLORS.text, minWidth: 60 }}>{t.lang === "hu" ? "Mondhatod:" : "You can say:"}</span>
+                    <p style={{ fontSize: 13, lineHeight: 1.7, fontStyle: "italic" }}>{sc.what || sc.response}</p>
+                  </div>
+                </div>
+              );
+            })}
+            {openSection.responses && (
+              <div style={{ marginTop: 6 }}>
+                <div style={{ fontSize: 13, fontWeight: 800, color: COLORS.textLight, marginBottom: 10, textTransform: "uppercase", letterSpacing: 0.5 }}>
+                  {t.lang === "hu" ? "Amit mondhatsz" : "What you can say"}
+                </div>
+                {openSection.responses.map(function (resp, r) {
+                  return (
+                    <div key={r} style={{ background: COLORS.mint + "12", borderRadius: 16, padding: "14px 18px", marginBottom: 10, borderLeft: "4px solid " + COLORS.mint + "55" }}>
+                      <div style={{ display: "flex", gap: 10, alignItems: "flex-start" }}>
+                        <span style={{ fontSize: 18, flexShrink: 0 }}>{resp.emoji}</span>
+                        <div>
+                          <div style={{ fontSize: 12, fontWeight: 800, color: COLORS.textLight, marginBottom: 4 }}>{resp.label}</div>
+                          <p style={{ fontSize: 15.5, lineHeight: 1.75, fontStyle: "italic" }}>{'"' + resp.text + '"'}</p>
+                        </div>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            )}
+            {openSection.requests && (
+              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10 }}>
+                {openSection.requests.map(function (req, r) {
+                  return (
+                    <div key={r} style={{ background: "#6BB5E010", borderRadius: 16, padding: "14px 16px", display: "flex", alignItems: "flex-start", gap: 10, border: "1px solid #6BB5E022" }}>
+                      <span style={{ fontSize: 22, flexShrink: 0 }}>{req.emoji}</span>
+                      <span style={{ fontSize: 13, lineHeight: 1.6 }}>{req.text}</span>
+                    </div>
+                  );
+                })}
+              </div>
+            )}
+          </div>
+          <Btn label={t.backLabel} onClick={function () { subGoBack(); }} color={"#6BB5E055"} />
+          <Btn label={t.backToMain} onClick={function () { goTo("S00"); }} color={COLORS.warmGray} />
+        </div>
+      )}
+    </div>
     </div>
   );
 }
 
 function BedtimeModule({ screen, goTo, t, nick }) {
   var _s = useState(null), openId = _s[0], setOpenId = _s[1];
-
   var _ritual = useState(false), showRitual = _ritual[0], setShowRitual = _ritual[1];
   var _ritStep = useState(0), ritStep = _ritStep[0], setRitStep = _ritStep[1];
 
+  var _sub = useState(false), subTransitioning = _sub[0], setSubTransitioning = _sub[1];
+  function subGoTo(id) {
+    setSubTransitioning(true);
+    setTimeout(function () { window.scrollTo(0, 0); setOpenId(id); setSubTransitioning(false); }, 200);
+  }
+  function subGoBack() {
+    setSubTransitioning(true);
+    setTimeout(function () { window.scrollTo(0, 0); setOpenId(null); setSubTransitioning(false); }, 200);
+  }
+
   var nightColors = { sky: "#1a1a3e", skyLight: "#2d2d6b", star: "#FFD93D", moon: "#F5E6A3", text: "#E8E0F0", card: "#2a2a5a" };
+  var openSection = openId ? screen.sections.find(function (s) { return s.id === openId; }) : null;
+  var isRitual = openSection && openSection.id === "ritual";
+  var isPhrases = openSection && openSection.id === "selftalk";
 
   return (
+    <div style={{ opacity: subTransitioning ? 0 : 1, transition: "opacity 0.18s ease" }}>
     <div style={{ padding: "10px 0" }}>
       <div style={{
         background: "linear-gradient(180deg, " + nightColors.sky + ", " + nightColors.skyLight + ")",
         borderRadius: 24, padding: "28px 24px 20px", marginBottom: 20,
-        position: "relative", overflow: "hidden",
-        animation: "fadeIn 0.6s ease both",
+        position: "relative", overflow: "hidden", animation: "fadeIn 0.6s ease both",
       }}>
         <div style={{ position: "absolute", top: 12, right: 20, fontSize: 40, animation: "float 4s ease infinite" }}>{"🌙"}</div>
         {[15, 35, 55, 75, 88].map(function (l, i) {
@@ -2954,134 +2956,115 @@ function BedtimeModule({ screen, goTo, t, nick }) {
         <p style={{ fontSize: 15.5, lineHeight: 1.85, color: nightColors.text, opacity: 0.9, position: "relative", zIndex: 1 }}>{screen.intro}</p>
       </div>
 
-      {screen.sections.map(function (section, i) {
-        var isOpen = openId === section.id;
-        var isRitual = section.id === "ritual";
-        var isPhrases = section.id === "selftalk";
-
-        return (
-          <div key={section.id} style={{ marginBottom: 12, animation: "slideUp 0.4s ease " + (0.1 + i * 0.06) + "s both" }}>
-            <div style={{
-              background: COLORS.white, borderRadius: 20,
-              padding: isOpen ? "18px 22px" : "14px 20px",
-              boxShadow: isOpen ? "0 4px 18px rgba(0,0,0,0.09)" : "0 2px 10px rgba(0,0,0,0.05)",
-              transition: "all 0.3s",
-              border: isOpen ? "2px solid #7B8CDE66" : "2px solid transparent",
-            }}>
-              <div onClick={function () { setOpenId(isOpen ? null : section.id); setShowRitual(false); setRitStep(0); }} style={{ display: "flex", alignItems: "center", gap: 14, cursor: "pointer" }}>
-                <span style={{ fontSize: 28, animation: isOpen ? "float 3s ease infinite" : "none" }}>{section.emoji}</span>
-                <div style={{ flex: 1, fontWeight: 700, fontSize: 16 }}>{section.title}</div>
-                <span style={{ fontSize: 18, color: COLORS.textLight, transition: "transform 0.3s", transform: isOpen ? "rotate(180deg)" : "rotate(0)" }}>{"▾"}</span>
+      {!openSection && (
+        <div>
+          {screen.sections.map(function (section, i) {
+            return (
+              <div key={section.id} onClick={function () { subGoTo(section.id); setShowRitual(false); setRitStep(0); }} style={{
+                marginBottom: 12, cursor: "pointer", animation: "slideUp 0.4s ease " + (0.1 + i * 0.06) + "s both",
+              }}>
+                <div style={{ background: COLORS.white, borderRadius: 20, padding: "14px 20px", boxShadow: "0 2px 10px rgba(0,0,0,0.05)", border: "2px solid transparent", display: "flex", alignItems: "center", gap: 14 }}>
+                  <span style={{ fontSize: 28 }}>{section.emoji}</span>
+                  <div style={{ flex: 1, fontWeight: 700, fontSize: 16 }}>{section.title}</div>
+                  <span style={{ fontSize: 18, color: COLORS.textLight }}>{"→"}</span>
+                </div>
               </div>
+            );
+          })}
+          <Btn label={t.coping} onClick={function () { goTo("S50"); }} color={COLORS.mint + "66"} delay={0.55} />
+          <Btn label={t.backToMain} onClick={function () { goTo("S00"); }} color={COLORS.warmGray} delay={0.6} />
+        </div>
+      )}
 
-              {isOpen && (
-                <div style={{ marginTop: 16, animation: "fadeIn 0.3s ease" }}>
-                  {section.intro && (
-                    <div style={{
-                      background: "#7B8CDE12", borderRadius: 16, padding: "14px 18px", marginBottom: 14,
-                      borderLeft: "4px solid #7B8CDE44",
-                    }}>
-                      <p style={{ fontSize: 15.5, lineHeight: 1.8, color: COLORS.text, fontStyle: "normal" }}>{section.intro}</p>
-                    </div>
-                  )}
-
-                  {section.content && section.content.map(function (item, j) {
-                    return (
-                      <div key={j} style={{
-                        display: "flex", gap: 12, alignItems: "flex-start", marginBottom: 14,
-                        animation: "slideInLeft 0.3s ease " + (j * 0.08) + "s both",
-                      }}>
-                        <span style={{ fontSize: 22, flexShrink: 0, marginTop: 2 }}>{item.emoji}</span>
-                        <p style={{ fontSize: 15.5, lineHeight: 1.8 }}>{item.text}</p>
-                      </div>
-                    );
+      {openSection && (
+        <div>
+          <div style={{ display: "flex", alignItems: "center", gap: 14, marginBottom: 16 }}>
+            <span style={{ fontSize: 28, animation: "float 3s ease infinite" }}>{openSection.emoji}</span>
+            <div style={{ fontWeight: 700, fontSize: 20, fontFamily: "'Baloo 2', cursive" }}>{openSection.title}</div>
+          </div>
+          <div style={{ background: COLORS.white, borderRadius: 20, padding: "18px 22px", boxShadow: "0 4px 18px rgba(0,0,0,0.09)", border: "2px solid #7B8CDE66", marginBottom: 16 }}>
+            {openSection.intro && (
+              <div style={{ background: "#7B8CDE12", borderRadius: 16, padding: "14px 18px", marginBottom: 14, borderLeft: "4px solid #7B8CDE44" }}>
+                <p style={{ fontSize: 15.5, lineHeight: 1.8 }}>{openSection.intro}</p>
+              </div>
+            )}
+            {openSection.content && openSection.content.map(function (item, j) {
+              return (
+                <div key={j} style={{ display: "flex", gap: 12, alignItems: "flex-start", marginBottom: 14 }}>
+                  <span style={{ fontSize: 22, flexShrink: 0, marginTop: 2 }}>{item.emoji}</span>
+                  <p style={{ fontSize: 15.5, lineHeight: 1.8 }}>{item.text}</p>
+                </div>
+              );
+            })}
+            {isRitual && !showRitual && (
+              <button onClick={function () { setShowRitual(true); setRitStep(0); }} style={{
+                width: "100%", padding: "16px 20px", borderRadius: 18, border: "none",
+                background: "linear-gradient(135deg, " + nightColors.skyLight + ", #7B8CDE)",
+                color: nightColors.text, fontSize: 15, fontWeight: 700, cursor: "pointer", fontFamily: "'Nunito', sans-serif",
+              }}>{t.startRitual}</button>
+            )}
+            {isRitual && showRitual && (
+              <div>
+                <div style={{
+                  background: "linear-gradient(135deg, " + nightColors.sky + ", " + nightColors.skyLight + ")",
+                  borderRadius: 20, padding: "22px 24px", marginBottom: 14, position: "relative", overflow: "hidden",
+                }}>
+                  {[20, 50, 80].map(function (l, idx) {
+                    return <div key={idx} style={{ position: "absolute", left: l + "%", top: (8 + idx * 10) + "%", fontSize: 10, opacity: 0.3, animation: "sparkle 2s ease " + (idx * 0.7) + "s infinite" }}>{"✦"}</div>;
                   })}
-
-                  {isRitual && !showRitual && (
-                    <button onClick={function (e) { e.stopPropagation(); setShowRitual(true); setRitStep(0); }} style={{
-                      width: "100%", padding: "16px 20px", borderRadius: 18, border: "none",
-                      background: "linear-gradient(135deg, " + nightColors.skyLight + ", #7B8CDE)",
-                      color: nightColors.text, fontSize: 15, fontWeight: 700, cursor: "pointer",
-                      fontFamily: "'Nunito', sans-serif", animation: "popIn 0.3s ease both",
-                    }}>{t.startRitual}</button>
-                  )}
-
-                  {isRitual && showRitual && (
-                    <div onClick={function (e) { e.stopPropagation(); }} style={{ animation: "fadeIn 0.4s ease both" }}>
-                      <div style={{
-                        background: "linear-gradient(135deg, " + nightColors.sky + ", " + nightColors.skyLight + ")",
-                        borderRadius: 20, padding: "22px 24px", marginBottom: 14, position: "relative", overflow: "hidden",
-                      }}>
-                        {[20, 50, 80].map(function (l, idx) {
-                          return <div key={idx} style={{ position: "absolute", left: l + "%", top: (8 + idx * 10) + "%", fontSize: 10, opacity: 0.3, animation: "sparkle 2s ease " + (idx * 0.7) + "s infinite" }}>{"✦"}</div>;
-                        })}
-                        <div style={{ display: "flex", alignItems: "center", gap: 6, marginBottom: 14, position: "relative", zIndex: 1 }}>
-                          <span style={{ fontSize: 11, color: nightColors.text, opacity: 0.6 }}>{(ritStep + 1) + " / " + section.steps.length}</span>
-                          <div style={{ flex: 1, height: 4, background: "#ffffff22", borderRadius: 2 }}>
-                            <div style={{ height: 4, borderRadius: 2, background: nightColors.star, width: ((ritStep + 1) / section.steps.length * 100) + "%", transition: "width 0.5s ease" }} />
-                          </div>
-                        </div>
-                        <div style={{ textAlign: "center", position: "relative", zIndex: 1 }}>
-                          <span style={{ fontSize: 48, display: "block", marginBottom: 12, animation: "float 3s ease infinite" }}>{section.steps[ritStep].emoji}</span>
-                          <div style={{ fontSize: 12, fontWeight: 800, color: nightColors.star, marginBottom: 6, letterSpacing: 1, textTransform: "uppercase" }}>{ritStep + 1 + ". " + t.step}</div>
-                          <h3 style={{ fontFamily: "'Baloo 2', cursive", fontSize: 20, fontWeight: 800, color: nightColors.text, marginBottom: 10 }}>{section.steps[ritStep].title}</h3>
-                          <p style={{ fontSize: 15.5, lineHeight: 1.85, color: nightColors.text, opacity: 0.9 }}>{section.steps[ritStep].text}</p>
-                        </div>
-                      </div>
-                      <div style={{ display: "flex", gap: 10 }}>
-                        {ritStep > 0 && (
-                          <button onClick={function () { setRitStep(ritStep - 1); }} style={{
-                            flex: 1, background: COLORS.warmGray, border: "none", padding: "14px 16px",
-                            borderRadius: 16, fontSize: 14, fontWeight: 700, cursor: "pointer", fontFamily: "'Nunito', sans-serif",
-                          }}>{t.prevStep}</button>
-                        )}
-                        {ritStep < section.steps.length - 1 ? (
-                          <button onClick={function () { setRitStep(ritStep + 1); }} style={{
-                            flex: 2, background: "#7B8CDE44", border: "none", padding: "14px 16px",
-                            borderRadius: 16, fontSize: 14, fontWeight: 700, cursor: "pointer", fontFamily: "'Nunito', sans-serif",
-                            color: COLORS.text,
-                          }}>{t.nextStep}</button>
-                        ) : (
-                          <button onClick={function () { setShowRitual(false); }} style={{
-                            flex: 2, background: COLORS.mint + "66", border: "none", padding: "14px 16px",
-                            borderRadius: 16, fontSize: 14, fontWeight: 700, cursor: "pointer", fontFamily: "'Nunito', sans-serif",
-                            color: COLORS.text,
-                          }}>{nick ? (t.lang === "hu" ? "Jó éjszakát, " + nick + "! 🌙" : "Good night, " + nick + "! 🌙") : t.goodNight}</button>
-                        )}
-                      </div>
+                  <div style={{ display: "flex", alignItems: "center", gap: 6, marginBottom: 14, position: "relative", zIndex: 1 }}>
+                    <span style={{ fontSize: 11, color: nightColors.text, opacity: 0.6 }}>{(ritStep + 1) + " / " + openSection.steps.length}</span>
+                    <div style={{ flex: 1, height: 4, background: "#ffffff22", borderRadius: 2 }}>
+                      <div style={{ height: 4, borderRadius: 2, background: nightColors.star, width: ((ritStep + 1) / openSection.steps.length * 100) + "%", transition: "width 0.5s ease" }} />
                     </div>
+                  </div>
+                  <div style={{ textAlign: "center", position: "relative", zIndex: 1 }}>
+                    <span style={{ fontSize: 48, display: "block", marginBottom: 12, animation: "float 3s ease infinite" }}>{openSection.steps[ritStep].emoji}</span>
+                    <div style={{ fontSize: 12, fontWeight: 800, color: nightColors.star, marginBottom: 6, letterSpacing: 1, textTransform: "uppercase" }}>{ritStep + 1 + ". " + t.step}</div>
+                    <h3 style={{ fontFamily: "'Baloo 2', cursive", fontSize: 20, fontWeight: 800, color: nightColors.text, marginBottom: 10 }}>{openSection.steps[ritStep].title}</h3>
+                    <p style={{ fontSize: 15.5, lineHeight: 1.85, color: nightColors.text, opacity: 0.9 }}>{openSection.steps[ritStep].text}</p>
+                  </div>
+                </div>
+                <div style={{ display: "flex", gap: 10 }}>
+                  {ritStep > 0 && (
+                    <button onClick={function () { setRitStep(ritStep - 1); }} style={{
+                      flex: 1, background: COLORS.warmGray, border: "none", padding: "14px 16px",
+                      borderRadius: 16, fontSize: 14, fontWeight: 700, cursor: "pointer", fontFamily: "'Nunito', sans-serif",
+                    }}>{t.prevStep}</button>
                   )}
-
-                  {isPhrases && section.phrases && (
-                    <div>
-                      {section.phrases.map(function (phrase, j) {
-                        return (
-                          <div key={j} style={{
-                            background: "linear-gradient(135deg, #7B8CDE08, #7B8CDE15)",
-                            borderRadius: 16, padding: "14px 18px", marginBottom: 10,
-                            borderLeft: "4px solid #7B8CDE44",
-                            animation: "slideInLeft 0.3s ease " + (j * 0.08) + "s both",
-                          }}>
-                            <div style={{ display: "flex", gap: 12, alignItems: "flex-start" }}>
-                              <span style={{ fontSize: 20, flexShrink: 0, marginTop: 2 }}>{phrase.emoji}</span>
-                              <p style={{ fontSize: 15.5, lineHeight: 1.8, fontStyle: "italic" }}>{phrase.text}</p>
-                            </div>
-                          </div>
-                        );
-                      })}
-                    </div>
+                  {ritStep < openSection.steps.length - 1 ? (
+                    <button onClick={function () { setRitStep(ritStep + 1); }} style={{
+                      flex: 2, background: "#7B8CDE44", border: "none", padding: "14px 16px",
+                      borderRadius: 16, fontSize: 14, fontWeight: 700, cursor: "pointer", fontFamily: "'Nunito', sans-serif", color: COLORS.text,
+                    }}>{t.nextStep}</button>
+                  ) : (
+                    <button onClick={function () { setShowRitual(false); }} style={{
+                      flex: 2, background: COLORS.mint + "66", border: "none", padding: "14px 16px",
+                      borderRadius: 16, fontSize: 14, fontWeight: 700, cursor: "pointer", fontFamily: "'Nunito', sans-serif", color: COLORS.text,
+                    }}>{nick ? (t.lang === "hu" ? "Jó éjszakát, " + nick + "! 🌙" : "Good night, " + nick + "! 🌙") : t.goodNight}</button>
                   )}
                 </div>
-              )}
-            </div>
+              </div>
+            )}
+            {isPhrases && openSection.phrases && openSection.phrases.map(function (phrase, j) {
+              return (
+                <div key={j} style={{
+                  background: "linear-gradient(135deg, #7B8CDE08, #7B8CDE15)",
+                  borderRadius: 16, padding: "14px 18px", marginBottom: 10, borderLeft: "4px solid #7B8CDE44",
+                }}>
+                  <div style={{ display: "flex", gap: 12, alignItems: "flex-start" }}>
+                    <span style={{ fontSize: 20, flexShrink: 0, marginTop: 2 }}>{phrase.emoji}</span>
+                    <p style={{ fontSize: 15.5, lineHeight: 1.8, fontStyle: "italic" }}>{phrase.text}</p>
+                  </div>
+                </div>
+              );
+            })}
           </div>
-        );
-      })}
-
-      <div style={{ marginTop: 8 }}>
-        <Btn label={t.coping} onClick={function () { goTo("S50"); }} color={COLORS.mint + "66"} delay={0.55} />
-        <Btn label={t.backToMain} onClick={function () { goTo("S00"); }} color={COLORS.warmGray} delay={0.6} />
-      </div>
+          <Btn label={t.backLabel} onClick={function () { subGoBack(); }} color={"#7B8CDE55"} />
+          <Btn label={t.backToMain} onClick={function () { goTo("S00"); }} color={COLORS.warmGray} />
+        </div>
+      )}
+    </div>
     </div>
   );
 }
@@ -3265,7 +3248,7 @@ function DiaryModule({ goTo, t, nick }) {
                     cursor: "pointer", transition: "all 0.2s",
                     border: selected ? "2px solid " + m.color + "88" : "2px solid " + COLORS.warmGray,
                     boxShadow: selected ? "0 4px 12px " + m.color + "22" : "none",
-                    animation: "popIn 0.3s ease " + (i * 0.05) + "s both",
+                    animation: "fadeIn 0.15s ease",
                   }}>
                     <span style={{ fontSize: 32, display: "block", marginBottom: 6, animation: selected ? "float 2s ease infinite" : "none" }}>{m.emoji}</span>
                     <span style={{ fontSize: 11, fontWeight: 700, color: selected ? m.color : COLORS.textLight }}>{m.label}</span>
@@ -3275,7 +3258,7 @@ function DiaryModule({ goTo, t, nick }) {
             </div>
           </div>
 
-          <div style={{ marginBottom: 16, animation: "slideUp 0.4s ease 0.2s both" }}>
+          <div style={{ marginBottom: 16, animation: "fadeIn 0.15s ease" }}>
             <div style={{ fontSize: 13, fontWeight: 800, color: COLORS.textLight, marginBottom: 8, textTransform: "uppercase", letterSpacing: 0.5 }}>
               {t.lang === "hu" ? "Ha szeretnél írni (nem kötelező)" : "If you want to write (optional)"}
             </div>
@@ -3287,7 +3270,7 @@ function DiaryModule({ goTo, t, nick }) {
             }} />
           </div>
 
-          <div style={{ marginBottom: 20, animation: "slideUp 0.4s ease 0.3s both" }}>
+          <div style={{ marginBottom: 20, animation: "fadeIn 0.15s ease" }}>
             <div style={{ fontSize: 13, fontWeight: 800, color: COLORS.textLight, marginBottom: 8, textTransform: "uppercase", letterSpacing: 0.5 }}>
               {t.lang === "hu" ? "🌟 Ma ez volt a jó pillanat" : "🌟 Today's good moment"}
             </div>
@@ -3306,7 +3289,7 @@ function DiaryModule({ goTo, t, nick }) {
               width: "100%", padding: "16px 24px", borderRadius: 18, border: "none",
               background: "linear-gradient(135deg, #E8B4D0, " + COLORS.peach + ")",
               fontSize: 16, fontWeight: 700, cursor: "pointer", fontFamily: "'Nunito', sans-serif",
-              color: COLORS.text, animation: "popIn 0.3s ease both",
+              color: COLORS.text, animation: "fadeIn 0.15s ease",
               boxShadow: "0 4px 16px #E8B4D033",
             }}>{t.lang === "hu" ? "Mentés 💛" : "Save 💛"}</button>
           )}
@@ -3418,254 +3401,250 @@ function DiaryModule({ goTo, t, nick }) {
 function HospitalModule({ screen, goTo, t, nick }) {
   var _s = useState(null), openId = _s[0], setOpenId = _s[1];
 
+  var _sub = useState(false), subTransitioning = _sub[0], setSubTransitioning = _sub[1];
+  function subGoTo(id) {
+    setSubTransitioning(true);
+    setTimeout(function () { window.scrollTo(0, 0); setOpenId(id); setSubTransitioning(false); }, 200);
+  }
+  function subGoBack() {
+    setSubTransitioning(true);
+    setTimeout(function () { window.scrollTo(0, 0); setOpenId(null); setSubTransitioning(false); }, 200);
+  }
+
+  var openSection = openId ? screen.sections.find(function (s) { return s.id === openId; }) : null;
 
   return (
+    <div style={{ opacity: subTransitioning ? 0 : 1, transition: "opacity 0.18s ease" }}>
     <div style={{ padding: "10px 0" }}>
       <h2 style={{ fontFamily: "'Baloo 2', cursive", fontSize: 24, fontWeight: 800, marginBottom: 8, animation: "fadeIn 0.4s ease both" }}>
         {screen.icon || "🏥"} {screen.title}
       </h2>
-      <div style={{
-        background: "linear-gradient(135deg, " + COLORS.softBlue + "22, " + COLORS.mint + "18)",
-        borderRadius: 20, padding: "18px 22px", marginBottom: 22,
-        border: "2px solid " + COLORS.softBlue + "33",
-        animation: "slideUp 0.4s ease both",
-      }}>
-        <p style={{ fontSize: 15.5, lineHeight: 1.8 }}>{screen.intro}</p>
-      </div>
-
-      {screen.sections.map(function (section, i) {
-        var isOpen = openId === section.id;
-        return (
-          <div key={section.id} style={{ marginBottom: 12, animation: "slideUp 0.4s ease " + (0.1 + i * 0.06) + "s both" }}>
-            <div style={{
-              background: COLORS.white, borderRadius: 20,
-              padding: isOpen ? "18px 22px" : "14px 20px",
-              boxShadow: isOpen ? "0 4px 18px rgba(0,0,0,0.09)" : "0 2px 10px rgba(0,0,0,0.05)",
-              transition: "all 0.3s",
-              border: isOpen ? "2px solid " + COLORS.softBlue + "55" : "2px solid transparent",
-            }}>
-              <div onClick={function () { setOpenId(isOpen ? null : section.id); }} style={{ display: "flex", alignItems: "center", gap: 14, cursor: "pointer" }}>
-                <span style={{ fontSize: 28, animation: isOpen ? "float 3s ease infinite" : "none" }}>{section.emoji}</span>
-                <div style={{ flex: 1, fontWeight: 700, fontSize: 16 }}>{section.title}</div>
-                <span style={{ fontSize: 18, color: COLORS.textLight, transition: "transform 0.3s", transform: isOpen ? "rotate(180deg)" : "rotate(0)" }}>{"▾"}</span>
-              </div>
-
-              {isOpen && (
-                <div style={{ marginTop: 16, animation: "fadeIn 0.3s ease" }}>
-                  {section.content && section.content.map(function (item, j) {
-                    return (
-                      <div key={j} style={{
-                        display: "flex", gap: 12, alignItems: "flex-start", marginBottom: 14,
-                      }}>
-                        <span style={{ fontSize: 22, flexShrink: 0, marginTop: 2 }}>{item.emoji}</span>
-                        <p style={{ fontSize: 15.5, lineHeight: 1.8 }}>{item.text}</p>
-                      </div>
-                    );
-                  })}
-
-                  {section.items && (
-                    <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10 }}>
-                      {section.items.map(function (item, j) {
-                        return (
-                          <div key={j} style={{
-                            background: COLORS.softBlue + "12", borderRadius: 16, padding: "14px 16px",
-                            display: "flex", alignItems: "flex-start", gap: 10,
-                          }}>
-                            <span style={{ fontSize: 22, flexShrink: 0 }}>{item.emoji}</span>
-                            <span style={{ fontSize: 13, lineHeight: 1.6 }}>{item.text}</span>
-                          </div>
-                        );
-                      })}
-                    </div>
-                  )}
-
-                  {section.closing && (
-                    <div style={{
-                      background: "linear-gradient(135deg, " + COLORS.mint + "22, " + COLORS.softBlue + "18)",
-                      borderRadius: 14, padding: "12px 16px", marginTop: 10,
-                      borderLeft: "4px solid " + COLORS.mint + "66",
-                    }}>
-                      <p style={{ fontSize: 13, lineHeight: 1.7, fontStyle: "italic" }}>{section.closing}</p>
-                    </div>
-                  )}
-                </div>
-              )}
-            </div>
+      {!openSection && (
+        <div>
+          <div style={{
+            background: "linear-gradient(135deg, " + COLORS.softBlue + "22, " + COLORS.mint + "18)",
+            borderRadius: 20, padding: "18px 22px", marginBottom: 22,
+            border: "2px solid " + COLORS.softBlue + "33", animation: "slideUp 0.4s ease both",
+          }}>
+            <p style={{ fontSize: 15.5, lineHeight: 1.8 }}>{screen.intro}</p>
           </div>
-        );
-      })}
-
-      <Btn label={t.backToMain} onClick={function () { goTo("S00"); }} color={COLORS.warmGray} delay={0.6} />
+          {screen.sections.map(function (section, i) {
+            return (
+              <div key={section.id} onClick={function () { subGoTo(section.id); }} style={{
+                marginBottom: 12, cursor: "pointer", animation: "slideUp 0.4s ease " + (0.1 + i * 0.06) + "s both",
+              }}>
+                <div style={{ background: COLORS.white, borderRadius: 20, padding: "14px 20px", boxShadow: "0 2px 10px rgba(0,0,0,0.05)", border: "2px solid transparent", display: "flex", alignItems: "center", gap: 14 }}>
+                  <span style={{ fontSize: 28 }}>{section.emoji}</span>
+                  <div style={{ flex: 1, fontWeight: 700, fontSize: 16 }}>{section.title}</div>
+                  <span style={{ fontSize: 18, color: COLORS.textLight }}>{"→"}</span>
+                </div>
+              </div>
+            );
+          })}
+          <Btn label={t.backToMain} onClick={function () { goTo("S00"); }} color={COLORS.warmGray} delay={0.6} />
+        </div>
+      )}
+      {openSection && (
+        <div>
+          <div style={{ display: "flex", alignItems: "center", gap: 14, marginBottom: 16 }}>
+            <span style={{ fontSize: 28, animation: "float 3s ease infinite" }}>{openSection.emoji}</span>
+            <div style={{ fontWeight: 700, fontSize: 20, fontFamily: "'Baloo 2', cursive" }}>{openSection.title}</div>
+          </div>
+          <div style={{ background: COLORS.white, borderRadius: 20, padding: "18px 22px", boxShadow: "0 4px 18px rgba(0,0,0,0.09)", border: "2px solid " + COLORS.softBlue + "55", marginBottom: 16 }}>
+            {openSection.content && openSection.content.map(function (item, j) {
+              return (
+                <div key={j} style={{ display: "flex", gap: 12, alignItems: "flex-start", marginBottom: 14 }}>
+                  <span style={{ fontSize: 22, flexShrink: 0, marginTop: 2 }}>{item.emoji}</span>
+                  <p style={{ fontSize: 15.5, lineHeight: 1.8 }}>{item.text}</p>
+                </div>
+              );
+            })}
+            {openSection.items && (
+              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10 }}>
+                {openSection.items.map(function (item, j) {
+                  return (
+                    <div key={j} style={{ background: COLORS.softBlue + "12", borderRadius: 16, padding: "14px 16px", display: "flex", alignItems: "flex-start", gap: 10 }}>
+                      <span style={{ fontSize: 22, flexShrink: 0 }}>{item.emoji}</span>
+                      <span style={{ fontSize: 13, lineHeight: 1.6 }}>{item.text}</span>
+                    </div>
+                  );
+                })}
+              </div>
+            )}
+            {openSection.closing && (
+              <div style={{ background: "linear-gradient(135deg, " + COLORS.mint + "22, " + COLORS.softBlue + "18)", borderRadius: 14, padding: "12px 16px", marginTop: 10, borderLeft: "4px solid " + COLORS.mint + "66" }}>
+                <p style={{ fontSize: 13, lineHeight: 1.7, fontStyle: "italic" }}>{openSection.closing}</p>
+              </div>
+            )}
+          </div>
+          <Btn label={t.backLabel} onClick={function () { subGoBack(); }} color={COLORS.softBlue + "55"} />
+          <Btn label={t.backToMain} onClick={function () { goTo("S00"); }} color={COLORS.warmGray} />
+        </div>
+      )}
+    </div>
     </div>
   );
 }
 
 function KnowledgeModule({ screen, goTo, t, nick }) {
   var _s = useState(null), openId = _s[0], setOpenId = _s[1];
-
   var _s2 = useState(false), showMore = _s2[0], setShowMore = _s2[1];
 
+  var _sub = useState(false), subTransitioning = _sub[0], setSubTransitioning = _sub[1];
+  function subGoTo(id) {
+    setSubTransitioning(true);
+    setTimeout(function () { window.scrollTo(0, 0); setOpenId(id); setSubTransitioning(false); }, 200);
+  }
+  function subGoBack() {
+    setSubTransitioning(true);
+    setTimeout(function () { window.scrollTo(0, 0); setOpenId(null); setSubTransitioning(false); }, 200);
+  }
+
+  var openTopic = openId ? screen.topics.find(function (tp) { return tp.id === openId; }) : null;
+
   return (
+    <div style={{ opacity: subTransitioning ? 0 : 1, transition: "opacity 0.18s ease" }}>
     <div style={{ padding: "10px 0" }}>
       <h2 style={{ fontFamily: "'Baloo 2', cursive", fontSize: 24, fontWeight: 800, marginBottom: 8, animation: "fadeIn 0.4s ease both" }}>
         {"📖"} {t.lang === "hu" ? "Megértem, mi történik" : "Understanding what's happening"}
       </h2>
-      <div style={{
-        background: "linear-gradient(135deg, " + COLORS.peach + "22, " + COLORS.softBlue + "18)",
-        borderRadius: 20, padding: "18px 22px", marginBottom: 22,
-        border: "2px solid " + COLORS.peach + "40",
-        animation: "slideUp 0.4s ease both",
-      }}>
-        <p style={{ fontSize: 15.5, lineHeight: 1.8 }}>{screen.intro}</p>
-      </div>
 
-      {screen.topics.map(function (topic, i) {
-        var isOpen = openId === topic.id;
-        return (
-          <div key={topic.id} style={{ marginBottom: 12, animation: "slideUp 0.4s ease " + (0.1 + i * 0.07) + "s both" }}>
-            <div style={{
-              background: COLORS.white, borderRadius: 20,
-              padding: isOpen ? "18px 22px" : "14px 20px",
-              boxShadow: isOpen ? "0 4px 18px rgba(0,0,0,0.09)" : "0 2px 10px rgba(0,0,0,0.05)",
-              transition: "all 0.3s",
-              border: isOpen ? "2px solid " + COLORS.peach + "55" : "2px solid transparent",
-            }}>
-              <div onClick={function () { setOpenId(isOpen ? null : topic.id); setShowMore(false); }} style={{ display: "flex", alignItems: "center", gap: 14, cursor: "pointer" }}>
-                <span style={{ fontSize: 28, animation: isOpen ? "float 3s ease infinite" : "none" }}>{topic.emoji}</span>
-                <div style={{ flex: 1 }}>
-                  <div style={{ fontWeight: 700, fontSize: 16 }}>{topic.title}</div>
-                  {!isOpen && <div style={{ fontSize: 13, color: COLORS.textLight, marginTop: 3, lineHeight: 1.5 }}>{topic.short}</div>}
+      {!openTopic && (
+        <div>
+          <div style={{
+            background: "linear-gradient(135deg, " + COLORS.peach + "22, " + COLORS.softBlue + "18)",
+            borderRadius: 20, padding: "18px 22px", marginBottom: 22,
+            border: "2px solid " + COLORS.peach + "40", animation: "slideUp 0.4s ease both",
+          }}>
+            <p style={{ fontSize: 15.5, lineHeight: 1.8 }}>{screen.intro}</p>
+          </div>
+          {screen.topics.map(function (topic, i) {
+            return (
+              <div key={topic.id} onClick={function () { subGoTo(topic.id); setShowMore(false); }} style={{
+                marginBottom: 12, cursor: "pointer", animation: "slideUp 0.4s ease " + (0.1 + i * 0.07) + "s both",
+              }}>
+                <div style={{
+                  background: COLORS.white, borderRadius: 20, padding: "14px 20px",
+                  boxShadow: "0 2px 10px rgba(0,0,0,0.05)", border: "2px solid transparent",
+                  display: "flex", alignItems: "center", gap: 14,
+                }}>
+                  <span style={{ fontSize: 28 }}>{topic.emoji}</span>
+                  <div style={{ flex: 1 }}>
+                    <div style={{ fontWeight: 700, fontSize: 16 }}>{topic.title}</div>
+                    <div style={{ fontSize: 13, color: COLORS.textLight, marginTop: 3, lineHeight: 1.5 }}>{topic.short}</div>
+                  </div>
+                  <span style={{ fontSize: 18, color: COLORS.textLight }}>{"→"}</span>
                 </div>
-                <span style={{ fontSize: 18, color: COLORS.textLight, transition: "transform 0.3s", transform: isOpen ? "rotate(180deg)" : "rotate(0)" }}>{"▾"}</span>
               </div>
-
-              {isOpen && (
-                <div style={{ marginTop: 16, animation: "fadeIn 0.3s ease" }}>
-                  {topic.simple.map(function (item, j) {
-                    return (
-                      <div key={j} style={{
-                        display: "flex", gap: 12, alignItems: "flex-start", marginBottom: 14,
-                        animation: "slideInLeft 0.3s ease " + (j * 0.08) + "s both",
-                      }}>
-                        <span style={{ fontSize: 22, flexShrink: 0, marginTop: 2 }}>{item.emoji}</span>
-                        <p style={{ fontSize: 15.5, lineHeight: 1.8 }}>{item.text}</p>
-                      </div>
-                    );
-                  })}
-
-                  {topic.treatments && (
-                    <div style={{ marginTop: 8 }}>
-                      {topic.treatments.map(function (tr, t) {
-                        return (
-                          <div key={t} style={{
-                            background: COLORS.softBlue + "08", borderRadius: 16, padding: "14px 18px",
-                            marginBottom: 10, borderLeft: "4px solid " + COLORS.softBlue + "44",
-                            animation: "slideInLeft 0.3s ease " + (t * 0.08) + "s both",
-                          }}>
-                            <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 8 }}>
-                              <span style={{ fontSize: 22 }}>{tr.emoji}</span>
-                              <span style={{ fontWeight: 700, fontSize: 15 }}>{tr.title}</span>
-                            </div>
-                            <div style={{
-                              background: COLORS.gardenGreen + "12", borderRadius: 10, padding: "8px 12px",
-                              marginBottom: 8, display: "flex", gap: 8, alignItems: "center",
-                            }}>
-                              <span style={{ fontSize: 14 }}>{"🌻"}</span>
-                              <span style={{ fontSize: 12, fontStyle: "italic", color: COLORS.textLight }}>{tr.gardenTip}</span>
-                            </div>
-                            <p style={{ fontSize: 13, lineHeight: 1.75, color: COLORS.text }}>{tr.desc}</p>
-                          </div>
-                        );
-                      })}
-                    </div>
-                  )}
-
-                  {topic.more && !showMore && (
-                    <div onClick={function (e) { e.stopPropagation(); setShowMore(true); }} style={{
-                      textAlign: "center", padding: "10px 16px", marginTop: 4,
-                      background: COLORS.softBlue + "12", borderRadius: 14, cursor: "pointer",
-                      transition: "all 0.2s",
-                    }}>
-                      <span style={{ fontSize: 13, fontWeight: 700, color: COLORS.softBlue }}>{t.moreInfo}</span>
-                    </div>
-                  )}
-
-                  {topic.more && showMore && (
-                    <div style={{
-                      background: COLORS.softBlue + "10", borderRadius: 16, padding: "14px 18px",
-                      borderLeft: "4px solid " + COLORS.softBlue + "66", marginTop: 8,
-                      animation: "fadeIn 0.3s ease",
-                    }}>
-                      <p style={{ fontSize: 15.5, lineHeight: 1.8, color: COLORS.textLight }}>{topic.more}</p>
-                    </div>
-                  )}
-
-                  {topic.id === "doctors" && (
-                    <div onClick={function (e) { e.stopPropagation(); goTo("S76"); }} style={{
-                      background: "linear-gradient(135deg, #5B9BD518, " + COLORS.mint + "12)",
-                      borderRadius: 14, padding: "12px 16px", marginTop: 10,
-                      cursor: "pointer", display: "flex", alignItems: "center", gap: 10,
-                      border: "2px solid #5B9BD533", transition: "all 0.2s",
-                    }}>
-                      <span style={{ fontSize: 20 }}>{"🔬"}</span>
-                      <div style={{ flex: 1 }}>
-                        <span style={{ fontSize: 13, fontWeight: 700 }}>{t.lang === "hu" ? "Minden vizsgálatról részletesen →" : "All tests explained in detail →"}</span>
-                      </div>
-                    </div>
-                  )}
-
-                  {topic.id === "treatments" && (
-                    <div style={{ marginTop: 10 }}>
-                      <div onClick={function (e) { e.stopPropagation(); goTo("S77"); }} style={{
-                        background: "linear-gradient(135deg, #8B6BAD18, " + COLORS.mint + "12)",
-                        borderRadius: 14, padding: "12px 16px", marginBottom: 8,
-                        cursor: "pointer", display: "flex", alignItems: "center", gap: 10,
-                        border: "2px solid #8B6BAD33", transition: "all 0.2s",
-                      }}>
-                        <span style={{ fontSize: 20 }}>{"💊"}</span>
-                        <div style={{ flex: 1 }}>
-                          <span style={{ fontSize: 13, fontWeight: 700 }}>{t.lang === "hu" ? "Minden kezelésről részletesen →" : "All treatments explained in detail →"}</span>
-                        </div>
-                      </div>
-                      <div onClick={function (e) { e.stopPropagation(); goTo("S75"); }} style={{
-                        background: "linear-gradient(135deg, #6BA4D918, " + COLORS.mint + "12)",
-                        borderRadius: 14, padding: "12px 16px",
-                        cursor: "pointer", display: "flex", alignItems: "center", gap: 10,
-                        border: "2px solid #6BA4D933", transition: "all 0.2s",
-                      }}>
-                        <span style={{ fontSize: 20 }}>{"🔧"}</span>
-                        <div style={{ flex: 1 }}>
-                          <span style={{ fontSize: 13, fontWeight: 700 }}>{t.lang === "hu" ? "Részletesen a műtétről →" : "Learn more about surgery →"}</span>
-                        </div>
-                      </div>
-                    </div>
-                  )}
-                </div>
-              )}
+            );
+          })}
+          {screen.gardenLink && (
+            <div onClick={function () { goTo("S13"); }} style={{
+              background: "linear-gradient(135deg, " + COLORS.gardenGreen + "22, " + COLORS.mint + "22)",
+              borderRadius: 20, padding: "18px 22px", marginTop: 8, marginBottom: 16,
+              border: "2px solid " + COLORS.gardenGreen + "33", cursor: "pointer",
+              display: "flex", alignItems: "center", gap: 14, animation: "slideUp 0.5s ease 0.5s both",
+            }}>
+              <span style={{ fontSize: 36, animation: "sway 2s ease infinite" }}>{"🌻"}</span>
+              <div>
+                <div style={{ fontWeight: 700, fontSize: 15 }}>{t.gardenLinkTitle}</div>
+                <div style={{ fontSize: 13, color: COLORS.textLight, marginTop: 2 }}>{t.gardenLinkDesc}</div>
+              </div>
+              <span style={{ fontSize: 18, color: COLORS.textLight }}>{"→"}</span>
             </div>
-          </div>
-        );
-      })}
-
-      {screen.gardenLink && (
-        <div onClick={function () { goTo("S13"); }} style={{
-          background: "linear-gradient(135deg, " + COLORS.gardenGreen + "22, " + COLORS.mint + "22)",
-          borderRadius: 20, padding: "18px 22px", marginTop: 8, marginBottom: 16,
-          border: "2px solid " + COLORS.gardenGreen + "33", cursor: "pointer",
-          display: "flex", alignItems: "center", gap: 14,
-          animation: "slideUp 0.5s ease 0.5s both",
-          transition: "transform 0.2s",
-        }}>
-          <span style={{ fontSize: 36, animation: "sway 2s ease infinite" }}>{"🌻"}</span>
-          <div>
-            <div style={{ fontWeight: 700, fontSize: 15 }}>A kert-történet</div>
-            <div style={{ fontSize: 13, color: COLORS.textLight, marginTop: 2 }}>Ha mesével szeretnéd megérteni, mi történik anya testében</div>
-          </div>
-          <span style={{ fontSize: 18, color: COLORS.textLight }}>{"→"}</span>
+          )}
+          <Btn label={t.backToMain} onClick={function () { goTo("S00"); }} color={COLORS.warmGray} delay={0.55} />
         </div>
       )}
 
-      <Btn label={t.backToMain} onClick={function () { goTo("S00"); }} color={COLORS.warmGray} delay={0.55} />
+      {openTopic && (
+        <div>
+          <div style={{ display: "flex", alignItems: "center", gap: 14, marginBottom: 16 }}>
+            <span style={{ fontSize: 28, animation: "float 3s ease infinite" }}>{openTopic.emoji}</span>
+            <div style={{ fontWeight: 700, fontSize: 20, fontFamily: "'Baloo 2', cursive" }}>{openTopic.title}</div>
+          </div>
+          <div style={{
+            background: COLORS.white, borderRadius: 20, padding: "18px 22px",
+            boxShadow: "0 4px 18px rgba(0,0,0,0.09)", border: "2px solid " + COLORS.peach + "55", marginBottom: 16,
+          }}>
+            {openTopic.simple.map(function (item, j) {
+              return (
+                <div key={j} style={{ display: "flex", gap: 12, alignItems: "flex-start", marginBottom: 14 }}>
+                  <span style={{ fontSize: 22, flexShrink: 0, marginTop: 2 }}>{item.emoji}</span>
+                  <p style={{ fontSize: 15.5, lineHeight: 1.8 }}>{item.text}</p>
+                </div>
+              );
+            })}
+            {openTopic.treatments && openTopic.treatments.map(function (tr, ti) {
+              return (
+                <div key={ti} style={{
+                  background: COLORS.softBlue + "08", borderRadius: 16, padding: "14px 18px",
+                  marginBottom: 10, borderLeft: "4px solid " + COLORS.softBlue + "44",
+                }}>
+                  <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 8 }}>
+                    <span style={{ fontSize: 22 }}>{tr.emoji}</span>
+                    <span style={{ fontWeight: 700, fontSize: 15 }}>{tr.title}</span>
+                  </div>
+                  <div style={{ background: COLORS.gardenGreen + "12", borderRadius: 10, padding: "8px 12px", marginBottom: 8, display: "flex", gap: 8, alignItems: "center" }}>
+                    <span style={{ fontSize: 14 }}>{"🌻"}</span>
+                    <span style={{ fontSize: 12, fontStyle: "italic", color: COLORS.textLight }}>{tr.gardenTip}</span>
+                  </div>
+                  <p style={{ fontSize: 13, lineHeight: 1.75, color: COLORS.text }}>{tr.desc}</p>
+                </div>
+              );
+            })}
+            {openTopic.more && !showMore && (
+              <div onClick={function () { setShowMore(true); }} style={{
+                textAlign: "center", padding: "10px 16px", marginTop: 4,
+                background: COLORS.softBlue + "12", borderRadius: 14, cursor: "pointer",
+              }}>
+                <span style={{ fontSize: 13, fontWeight: 700, color: COLORS.softBlue }}>{t.moreInfo}</span>
+              </div>
+            )}
+            {openTopic.more && showMore && (
+              <div style={{
+                background: COLORS.softBlue + "10", borderRadius: 16, padding: "14px 18px",
+                borderLeft: "4px solid " + COLORS.softBlue + "66", marginTop: 8,
+              }}>
+                <p style={{ fontSize: 15.5, lineHeight: 1.8, color: COLORS.textLight }}>{openTopic.more}</p>
+              </div>
+            )}
+            {openTopic.id === "doctors" && (
+              <div onClick={function () { goTo("S76"); }} style={{
+                background: "linear-gradient(135deg, #5B9BD518, " + COLORS.mint + "12)",
+                borderRadius: 14, padding: "12px 16px", marginTop: 10, cursor: "pointer",
+                display: "flex", alignItems: "center", gap: 10, border: "2px solid #5B9BD533",
+              }}>
+                <span style={{ fontSize: 20 }}>{"🔬"}</span>
+                <span style={{ fontSize: 13, fontWeight: 700, flex: 1 }}>{t.lang === "hu" ? "Minden vizsgálatról részletesen →" : "All tests explained in detail →"}</span>
+              </div>
+            )}
+            {openTopic.id === "treatments" && (
+              <div style={{ marginTop: 10 }}>
+                <div onClick={function () { goTo("S77"); }} style={{
+                  background: "linear-gradient(135deg, #8B6BAD18, " + COLORS.mint + "12)",
+                  borderRadius: 14, padding: "12px 16px", marginBottom: 8, cursor: "pointer",
+                  display: "flex", alignItems: "center", gap: 10, border: "2px solid #8B6BAD33",
+                }}>
+                  <span style={{ fontSize: 20 }}>{"💊"}</span>
+                  <span style={{ fontSize: 13, fontWeight: 700, flex: 1 }}>{t.lang === "hu" ? "Minden kezelésről részletesen →" : "All treatments explained in detail →"}</span>
+                </div>
+                <div onClick={function () { goTo("S75"); }} style={{
+                  background: "linear-gradient(135deg, #6BA4D918, " + COLORS.mint + "12)",
+                  borderRadius: 14, padding: "12px 16px", cursor: "pointer",
+                  display: "flex", alignItems: "center", gap: 10, border: "2px solid #6BA4D933",
+                }}>
+                  <span style={{ fontSize: 20 }}>{"🔧"}</span>
+                  <span style={{ fontSize: 13, fontWeight: 700, flex: 1 }}>{t.lang === "hu" ? "Részletesen a műtétről →" : "Learn more about surgery →"}</span>
+                </div>
+              </div>
+            )}
+          </div>
+          <Btn label={t.backLabel} onClick={function () { subGoBack(); }} color={COLORS.peach + "55"} />
+          <Btn label={t.backToMain} onClick={function () { goTo("S00"); }} color={COLORS.warmGray} />
+        </div>
+      )}
+    </div>
     </div>
   );
 }
@@ -3673,91 +3652,91 @@ function KnowledgeModule({ screen, goTo, t, nick }) {
 function KidThoughts({ screen, goTo, t, nick }) {
   var _s = useState(null), openId = _s[0], setOpenId = _s[1];
 
+  var _sub = useState(false), subTransitioning = _sub[0], setSubTransitioning = _sub[1];
+  function subGoTo(id) {
+    setSubTransitioning(true);
+    setTimeout(function () { window.scrollTo(0, 0); setOpenId(id); setSubTransitioning(false); }, 200);
+  }
+  function subGoBack() {
+    setSubTransitioning(true);
+    setTimeout(function () { window.scrollTo(0, 0); setOpenId(null); setSubTransitioning(false); }, 200);
+  }
+
+  var openThought = null;
+  if (openId) { screen.groups.forEach(function (g) { g.thoughts.forEach(function (th) { if (th.id === openId) openThought = th; }); }); }
 
   return (
+    <div style={{ opacity: subTransitioning ? 0 : 1, transition: "opacity 0.18s ease" }}>
     <div style={{ padding: "10px 0" }}>
       <h2 style={{ fontFamily: "'Baloo 2', cursive", fontSize: 24, fontWeight: 800, marginBottom: 8, animation: "fadeIn 0.4s ease both" }}>
-        {"💭"} Amit sok gyerek gondol
+        {"💭"} {screen.title}
       </h2>
-      <div style={{
-        background: "linear-gradient(135deg, " + COLORS.lavender + "22, " + COLORS.peach + "22)",
-        borderRadius: 20, padding: "18px 22px", marginBottom: 22,
-        border: "2px solid " + COLORS.lavender + "33",
-        animation: "slideUp 0.4s ease both",
-      }}>
-        <p style={{ fontSize: 15.5, lineHeight: 1.8 }}>{screen.intro}</p>
-      </div>
-
-      {screen.groups.map(function (group, gi) {
-        return (
-          <div key={gi} style={{ marginBottom: 22 }}>
-            <div style={{
-              fontSize: 13, fontWeight: 800, color: COLORS.lavender, textTransform: "uppercase",
-              letterSpacing: 1, marginBottom: 12, paddingLeft: 4,
-              animation: "slideUp 0.4s ease " + (0.15 + gi * 0.3) + "s both",
-            }}>
-              {gi === 0 ? "🧒 " : "🌍 "}{group.title}
-            </div>
-            {group.thoughts.map(function (thought, ti) {
-              var isOpen = openId === thought.id;
-              var delay = 0.2 + gi * 0.3 + ti * 0.06;
-              return (
-                <div key={thought.id} style={{ marginBottom: 10, animation: "slideUp 0.4s ease " + delay + "s both" }}>
-                  <div style={{
-                    background: COLORS.white, borderRadius: 20,
-                    padding: isOpen ? "18px 22px" : "14px 20px",
-                    boxShadow: isOpen ? "0 4px 18px rgba(0,0,0,0.09)" : "0 2px 10px rgba(0,0,0,0.05)",
-                    transition: "all 0.3s",
-                    border: isOpen ? "2px solid " + COLORS.lavender + "55" : "2px solid transparent",
-                  }}>
-                    <div onClick={function () { setOpenId(isOpen ? null : thought.id); }} style={{ display: "flex", alignItems: "center", gap: 14, cursor: "pointer" }}>
-                      <span style={{ fontSize: 28, animation: isOpen ? "float 3s ease infinite" : "none" }}>{thought.emoji}</span>
-                      <div style={{ flex: 1, fontWeight: 700, fontSize: 16, fontStyle: "italic" }}>{thought.question}</div>
-                      <span style={{ fontSize: 18, color: COLORS.textLight, transition: "transform 0.3s", transform: isOpen ? "rotate(180deg)" : "rotate(0)" }}>{"▾"}</span>
-                    </div>
-
-                    {isOpen && (
-                      <div style={{ marginTop: 16, animation: "fadeIn 0.3s ease" }}>
-                        <div style={{
-                          background: COLORS.lavender + "15", borderRadius: 16, padding: "14px 18px", marginBottom: 12,
-                          borderLeft: "4px solid " + COLORS.lavender,
-                        }}>
-                          <div style={{ fontSize: 12, fontWeight: 800, color: COLORS.lavender, marginBottom: 6, textTransform: "uppercase", letterSpacing: 0.5 }}>{"🫂 Ezt sokan érzik"}</div>
-                          <div style={{ fontSize: 15.5, lineHeight: 1.8 }}>{thought.validation}</div>
-                        </div>
-
-                        <div style={{
-                          background: COLORS.softBlue + "12", borderRadius: 16, padding: "14px 18px", marginBottom: 12,
-                          borderLeft: "4px solid " + COLORS.softBlue,
-                        }}>
-                          <div style={{ fontSize: 12, fontWeight: 800, color: COLORS.softBlue, marginBottom: 6, textTransform: "uppercase", letterSpacing: 0.5 }}>{"💡 " + t.answerTitle}</div>
-                          <div style={{ fontSize: 15.5, lineHeight: 1.8 }}>{thought.answer}</div>
-                        </div>
-
-                        <div style={{
-                          background: "linear-gradient(135deg, " + COLORS.mint + "18, " + COLORS.peach + "12)",
-                          borderRadius: 16, padding: "14px 18px",
-                          display: "flex", alignItems: "flex-start", gap: 10,
-                        }}>
-                          <span style={{ fontSize: 18, marginTop: 1, animation: "sparkle 2s ease infinite" }}>{"💛"}</span>
-                          <div>
-                            <div style={{ fontSize: 12, fontWeight: 800, color: COLORS.gardenGreen, marginBottom: 4, textTransform: "uppercase", letterSpacing: 0.5 }}>{t.rememberThis}</div>
-                            <div style={{ fontSize: 15.5, lineHeight: 1.75, fontWeight: 600 }}>{thought.remember}</div>
-                          </div>
-                        </div>
-                      </div>
-                    )}
-                  </div>
-                </div>
-              );
-            })}
+      {!openThought && (
+        <div>
+          <div style={{
+            background: "linear-gradient(135deg, " + COLORS.lavender + "22, " + COLORS.peach + "22)",
+            borderRadius: 20, padding: "18px 22px", marginBottom: 22,
+            border: "2px solid " + COLORS.lavender + "33", animation: "slideUp 0.4s ease both",
+          }}>
+            <p style={{ fontSize: 15.5, lineHeight: 1.8 }}>{screen.intro}</p>
           </div>
-        );
-      })}
-
-      <div style={{ marginTop: 8, animation: "slideUp 0.5s ease 0.9s both" }}>
-        <Btn label={t.backToMain} onClick={function () { goTo("S00"); }} color={COLORS.warmGray} />
-      </div>
+          {screen.groups.map(function (group, gi) {
+            return (
+              <div key={gi} style={{ marginBottom: 22 }}>
+                <div style={{
+                  fontSize: 13, fontWeight: 800, color: COLORS.lavender, textTransform: "uppercase",
+                  letterSpacing: 1, marginBottom: 12, paddingLeft: 4,
+                  animation: "slideUp 0.4s ease " + (0.15 + gi * 0.3) + "s both",
+                }}>
+                  {gi === 0 ? "🧒 " : "🌍 "}{group.title}
+                </div>
+                {group.thoughts.map(function (thought, ti) {
+                  return (
+                    <div key={thought.id} onClick={function () { subGoTo(thought.id); }} style={{
+                      marginBottom: 10, cursor: "pointer", animation: "slideUp 0.4s ease " + (0.2 + gi * 0.3 + ti * 0.06) + "s both",
+                    }}>
+                      <div style={{ background: COLORS.white, borderRadius: 20, padding: "14px 20px", boxShadow: "0 2px 10px rgba(0,0,0,0.05)", border: "2px solid transparent", display: "flex", alignItems: "center", gap: 14 }}>
+                        <span style={{ fontSize: 28 }}>{thought.emoji}</span>
+                        <div style={{ flex: 1, fontWeight: 700, fontSize: 15, fontStyle: "italic" }}>{thought.question}</div>
+                        <span style={{ fontSize: 18, color: COLORS.textLight }}>{"→"}</span>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            );
+          })}
+          <Btn label={t.backToMain} onClick={function () { goTo("S00"); }} color={COLORS.warmGray} delay={0.6} />
+        </div>
+      )}
+      {openThought && (
+        <div>
+          <div style={{ display: "flex", alignItems: "center", gap: 14, marginBottom: 16 }}>
+            <span style={{ fontSize: 28, animation: "float 3s ease infinite" }}>{openThought.emoji}</span>
+            <div style={{ fontWeight: 700, fontSize: 20, fontFamily: "'Baloo 2', cursive", fontStyle: "italic" }}>{openThought.question}</div>
+          </div>
+          <div style={{ background: COLORS.white, borderRadius: 20, padding: "18px 22px", boxShadow: "0 4px 18px rgba(0,0,0,0.09)", border: "2px solid " + COLORS.lavender + "55", marginBottom: 16 }}>
+            <div style={{ background: COLORS.lavender + "15", borderRadius: 16, padding: "14px 18px", marginBottom: 12, borderLeft: "4px solid " + COLORS.lavender }}>
+              <div style={{ fontSize: 12, fontWeight: 800, color: COLORS.lavender, marginBottom: 6, textTransform: "uppercase", letterSpacing: 0.5 }}>{"🫂 " + (t.lang === "hu" ? "Ezt sokan érzik" : "Many kids feel this")}</div>
+              <div style={{ fontSize: 15.5, lineHeight: 1.8 }}>{openThought.validation}</div>
+            </div>
+            <div style={{ background: COLORS.softBlue + "12", borderRadius: 16, padding: "14px 18px", marginBottom: 12, borderLeft: "4px solid " + COLORS.softBlue }}>
+              <div style={{ fontSize: 12, fontWeight: 800, color: COLORS.softBlue, marginBottom: 6, textTransform: "uppercase", letterSpacing: 0.5 }}>{"💡 " + t.answerTitle}</div>
+              <div style={{ fontSize: 15.5, lineHeight: 1.8 }}>{openThought.answer}</div>
+            </div>
+            <div style={{ background: "linear-gradient(135deg, " + COLORS.mint + "18, " + COLORS.peach + "12)", borderRadius: 16, padding: "14px 18px", display: "flex", alignItems: "flex-start", gap: 10 }}>
+              <span style={{ fontSize: 18, marginTop: 1, animation: "sparkle 2s ease infinite" }}>{"💛"}</span>
+              <div>
+                <div style={{ fontSize: 12, fontWeight: 800, color: COLORS.gardenGreen, marginBottom: 4, textTransform: "uppercase", letterSpacing: 0.5 }}>{t.rememberThis}</div>
+                <div style={{ fontSize: 15.5, lineHeight: 1.75, fontWeight: 600 }}>{openThought.remember}</div>
+              </div>
+            </div>
+          </div>
+          <Btn label={t.backLabel} onClick={function () { subGoBack(); }} color={COLORS.lavender + "55"} />
+          <Btn label={t.backToMain} onClick={function () { goTo("S00"); }} color={COLORS.warmGray} />
+        </div>
+      )}
+    </div>
     </div>
   );
 }
@@ -4170,7 +4149,7 @@ function FeelingScreen({ screen, goTo, t, nick }) {
         </div>
       )}
       <Btn label={screen.nextLabel} onClick={function () { goTo(screen.next); }} color={screen.color + "66"} delay={0.5} />
-      <Btn label={t.backToFeelings} onClick={function () { goTo("S40"); }} color={COLORS.warmGray} delay={0.55} />
+      {screen.next !== "S40" && <Btn label={t.backToFeelings} onClick={function () { goTo("S40"); }} color={COLORS.warmGray} delay={0.55} />}
     </div>
   );
 }
@@ -4223,6 +4202,12 @@ function App() {
     setNameInput(""); setNickInput(""); setAgeInput("");
     try { localStorage.removeItem("app_child_data"); } catch (e) {}
   }
+
+  // Scroll to top whenever screen changes - after React render
+  useEffect(function () {
+    window.scrollTo(0, 0);
+    requestAnimationFrame(function () { window.scrollTo(0, 0); });
+  }, [currentScreen]);
 
   function goTo(id) {
     setTransitioning(true);
